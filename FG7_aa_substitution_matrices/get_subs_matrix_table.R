@@ -1,0 +1,9 @@
+# Set library path
+source("packages.R")
+if (!require("DNAshapeR", quietly = TRUE))
+    BiocManager::install('bios2mds', quietly = TRUE, force = TRUE, INSTALL_opts = '--no-lock')
+
+library('bios2mds')
+data(sub.mat)
+
+
