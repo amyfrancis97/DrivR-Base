@@ -8,7 +8,7 @@ The following repository contains scripts for extracting feature information for
 - [Data Input Structure](#data-input-structure)
 - [Installation](#installation)
 - [Directory Structure](#directory-structure)
-- [Usage](#usage)
+- [Feature Description & Usage](#usage)
 - [Contributing](#contributing)
 - [License](#license)
 - [Acknowledgments](#acknowledgments)
@@ -84,7 +84,7 @@ DrivR-Base/
 |   |-- get_alpha_fold_struct_conf.py
 ```
 
-## Usage
+## Feature Description & Usage
 ### FG1_conservation
 #### 1_reformat.sh
 
