@@ -17,7 +17,7 @@
 ## Directory Structure
 ```bash
 DrivR-Base/
-|__ FG1_conservation/
+|-- FG1_conservation/
 |   |-- 1_reformat.sh
 |   |-- 2_get_cons_features.sh
 |   |-- check_formatting.py
