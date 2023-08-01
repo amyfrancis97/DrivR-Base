@@ -29,7 +29,7 @@ library('GenomicRanges')
 library('dplyr')
 library('stringr')
 library("tidyverse")
-source("/user/home/uw20204/CanDrivR_scripts/features_v2/config.R")
+source("/user/home/uw20204/DrivR-Base/config.R")
 
 # Get amino acid substitution matrices
 install.packages("Peptides", dependencies = TRUE, repos = "http://cran.us.r-project.org", force = TRUE, INSTALL_opts = '--no-lock')
@@ -45,7 +45,7 @@ install.packages("data.table", dependencies = TRUE, repos = "http://cran.us.r-pr
 library("data.table")
 
 # Load the data list from the file
-sub.mat <- readRDS("/user/home/uw20204/CanDrivR_scripts/features_v2/FG7_aa_substitution_matrices/sub.mat.RDS")
+sub.mat <- readRDS("/user/home/uw20204/DrivR-Base/FG7_aa_substitution_matrices/sub.mat.RDS")
 print(sub.mat)
 
 install.packages("doParallel", dependencies = TRUE, repos = "http://cran.us.r-project.org", force = TRUE, INSTALL_opts = '--no-lock')  # Install if not already installed
