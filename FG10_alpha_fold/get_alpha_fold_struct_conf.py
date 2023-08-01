@@ -91,8 +91,7 @@ if __name__ == "__main__":
             struct_conf_list = ["_struct_conf.conf_type_id", "_struct_conf.id"]
             res3.columns = res3.columns.tolist()[:6] + struct_conf_list
             print("res3:", res3)
-
-        results.append(res3)
+            results.append(res3)
 
     print("results:", results)
     results2 = pd.concat(results)
