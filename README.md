@@ -1,7 +1,7 @@
 # DrivR-Base
 
 ## Introduction and Overview
-The following repository contains scripts for extracting feature information for single nucleotide variants of interest. 
+The following repository contains scripts for extracting feature information for single nucleotide variants (SNV's) from different databases. 
 
 ## Table of Contents
 
@@ -17,11 +17,13 @@ The following repository contains scripts for extracting feature information for
 - [Contact](#contact)
 
 ## Data Input Structure
-All variant files must be presented in the format shown in Table 1.
+All variant files must be presented in the format shown in the following table:
 
 | Chromosome | Position | Position | Reference Allele | Alternate Allele | Recurrence | Driver Status |
 | ---------- | -------- | -------- | ---------------- | ---------------- | ---------- | ------------- |
 |    chr1    |  934881  |  934881  |        A         |         G        |      1     |       1       |
+
+Importantly, the chromosomal position must exist in a string format with a prefix of "chr", and the positions must be in an integer format. The final two columns are optional and are not useful at this level of analysis. Hence, if these columns are not useful for the variants of interest, just fill these with a 0 or 1. This will not affect the analysis. Crucially, the chromosomal position **must** be in the GRCh38 reference genome format. All features are extracted and queried using these descriptors, if the variant is provided in the wrong reference genome, the feature information will be incorrect. 
 
 ## Installation
 
