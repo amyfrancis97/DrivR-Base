@@ -1,6 +1,6 @@
 # DrivR-Base
 
-'''bash
+```bash
 DrivR-Base/
 |-- FG1_conservation/
 |  |-- 1_reformat.sh
@@ -45,4 +45,4 @@ DrivR-Base/
 |  |-- get_alpha_fold_scores.sh
 |  |-- get_alpha_fold_atom.py
 |  |-- get_alpha_fold_struct_conf.py
-'''
+```
