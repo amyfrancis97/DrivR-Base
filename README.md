@@ -1,7 +1,11 @@
 # DrivR-Base
 
+## Introduction and Overview
+The following repository contains scripts for extracting feature information for single nucleotide variants of interest. 
+
 ## Table of Contents
 
+- [Data Input Structure](#data-input-structure)
 - [Installation](#installation)
 - [Directory Structure](#directory-structure)
 - [Usage](#usage)
@@ -11,6 +15,13 @@
 - [Changelog](#changelog)
 - [FAQ](#faq)
 - [Contact](#contact)
+
+## Data Input Structure
+All variant files must be presented in the format shown in Table 1.
+
+| Chromosome | Position | Position | Reference Allele | Alternate Allele | Recurrence | Driver Status |
+| ---------- | -------- | -------- | ---------------- | ---------------- | ---------- | ------------- |
+|    chr1    |  934881  |  934881  |        A         |         G        |      1     |       1       |
 
 ## Installation
 
@@ -74,3 +85,14 @@ DrivR-Base/
 ## Usage
 ### FG1_conservation
 #### 1_reformat.sh
+
+## Acknowledgments
+Tom Gaunt
+Colin Campbell
+Cancer Research UK
+University of Bristol
+MRC Integrative Cancer Epidemiology Unit
+
+## Contact
+amy.francis@bristol.ac.uk
+
