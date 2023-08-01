@@ -1,5 +1,20 @@
 # DrivR-Base
 
+## Table of Contents
+
+- [Installation](#installation)
+- [Directory Structure](#directory-structure)
+- [Usage](#usage)
+- [Contributing](#contributing)
+- [License](#license)
+- [Acknowledgments](#acknowledgments)
+- [Changelog](#changelog)
+- [FAQ](#faq)
+- [Contact](#contact)
+
+## Installation
+
+## Directory Structure
 ```bash
 DrivR-Base/
 |-- FG1_conservation/
@@ -46,3 +61,7 @@ DrivR-Base/
 |  |-- get_alpha_fold_atom.py
 |  |-- get_alpha_fold_struct_conf.py
 ```
+
+## Usage
+### FG1_conservation
+#### 1_reformat.sh
