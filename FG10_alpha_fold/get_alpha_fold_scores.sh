@@ -3,7 +3,7 @@
 #SBATCH --partition=mrcieu,short,test,compute
 #SBATCH --mem=150G
 #SBATCH --time=4-00:00:0
-#SBATCH --chdir=/bp1/mrcieu1/users/uw20204/paper1/features_v2/FG10_alpha_fold
+#SBATCH --chdir=/user/home/uw20204/DrivR-Base/FG10_alpha_fold
 #SBATCH --account=sscm013903
 
 #tail -n +6 /bp1/mrcieu1/data/encode/public/cosmic_somaMutDB_features/cosmicSomaMutDB.bed_variant_effect_output_all.txt > /bp1/mrcieu1/data/encode/public/cosmic_somaMutDB_features/cosmicSomaMutDB.bed_variant_effect_output_all.tmp

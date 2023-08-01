@@ -3,7 +3,7 @@
 #SBATCH --partition=compute
 #SBATCH --mem=175G
 #SBATCH --time=14-00:00:0
-#SBATCH --chdir=/bp1/mrcieu1/users/uw20204/paper1/features_v2/FG9_encode
+#SBATCH --chdir=/user/home/uw20204/DrivR-Base/FG9_encode
 #SBATCH --account=sscm013903
 
 # Load bedtools

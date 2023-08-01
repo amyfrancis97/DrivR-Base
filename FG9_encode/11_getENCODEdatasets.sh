@@ -3,7 +3,7 @@
 #SBATCH --partition=compute
 #SBATCH --mem=150G
 #SBATCH --time=4-00:00:0
-#SBATCH --chdir=/user/home/uw20204/CanDrivR_scripts/features_v2
+#SBATCH --chdir=/user/home/uw20204/DrivR-Base/FG9_encode
 #SBATCH --account=sscm013903
 
 # Download the ENCODE datasets
