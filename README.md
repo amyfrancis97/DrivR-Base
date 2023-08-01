@@ -17,19 +17,19 @@
 ## Directory Structure
 ```bash
 DrivR-Base/
-|-- FG1_conservation/
-|   |-- 1_reformat.sh
-|   |-- 2_get_cons_features.sh
-|   |-- check_formatting.py
+|__ FG1_conservation/
+|   |__ 1_reformat.sh
+|   |__ 2_get_cons_features.sh
+|   |__ check_formatting.py
 |-- FG2_vep/
-|   |-- 1_get_vep_cache.sh
-|   |-- 2_query_vep_cache.sh
-|   |-- 3_reformat_vep_output.sh
-|   |-- query_vep.sh
-|   |-- reformat_vep.sh
-|   |-- reformat_vep_aa.py
-|   |-- reformat_vep_conseq.py
-|   |-- reformat_vep_distance.py
+|   |__ 1_get_vep_cache.sh
+|   |__ 2_query_vep_cache.sh
+|   |__ 3_reformat_vep_output.sh
+|   |__ query_vep.sh
+|   |__ reformat_vep.sh
+|   |__ reformat_vep_aa.py
+|   |__ reformat_vep_conseq.py
+|   |__ reformat_vep_distance.py
 |-- FG3_dinucleotide_properties/
 |   |-- 1_get_dinuc_properties.sh
 |   |-- dinucleotide_properties.R
