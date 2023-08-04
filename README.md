@@ -32,8 +32,12 @@ Importantly, the chromosomal position must exist in a string format with a prefi
 DrivR-Base/
 |-- FG1_conservation/
 |   |-- 1_reformat.sh
-|   |-- 2_get_cons_features.sh
+|   |-- 2_download_cons_features.sh
+|   |-- 3_query_cons_features.sh
 |   |-- check_formatting.py
+|   |-- download_convert.job
+|   |-- module_dependencies.sh
+|   |-- package_dependencies.py
 |
 |-- FG2_vep/
 |   |-- 1_get_vep_cache.sh
