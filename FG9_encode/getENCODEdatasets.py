@@ -106,7 +106,8 @@ def process_row(row, feature_files):
         accession = feature_files.loc[row, "accession"]
         output_type = feature_files.loc[row, "output_type"]
         feature = feature_files.loc[row, "feature"]
-        
+        biosample_ontology = feature_files.loc[row, "biosample_ontology"]        
+
         download_url("https://www.encodeproject.org/files/" + accession + "/@@download/" + accession + ".bed.gz")
         
         df = pd.read_csv(accession + ".csv", sep="\t", engine="python", header=None)
@@ -121,6 +122,7 @@ def process_row(row, feature_files):
             df_filtered["target"] = "n/a"
         df_filtered["output_type"] = output_type
         df_filtered["feature"] = feature
+        df_filtered["biosample_ontology"] = biosample_ontology
 
         # Replace spaces with underscores in output_type column
         df_filtered.output_type = df_filtered.output_type.str.replace(' ', '_')

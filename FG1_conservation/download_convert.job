@@ -1,0 +1,23 @@
+#!/bin/bash
+#SBATCH --job-name=DownloadConvert
+#SBATCH --partition=test,short,mrcieu,compute
+#SBATCH --mem=80G
+#SBATCH --time=2:00:00
+#SBATCH --account=sscm013903
+
+# Load required modules (you may need to adapt this depending on the setup)
+./module_dependencies.sh
+
+# Set the directory for conservation files
+featureDir="/bp1/mrcieu1/data/ucsc/public/ConsAll/"
+cd "$featureDir"
+
+# Get the value of the 'file' variable exported from the main script
+file="$file"
+
+# Download the file and convert from .bigwig to .bedGraph
+filePath="http://hgdownload.cse.ucsc.edu/goldenpath/hg38/${file}/hg38.${file}.bw"
+wget "$filePath"
+bigWigToBedGraph "hg38.${file}.bw" "hg38.${file}.bedGraph"
+rm "hg38.${file}.bw"
+

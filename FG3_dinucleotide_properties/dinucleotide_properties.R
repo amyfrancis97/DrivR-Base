@@ -1,8 +1,8 @@
 # Get DNA shapes of 10 BP regions overlapping with variant
 #.libPaths("/bp1/mrcieu1/users/uw20204/paper1/features/RpackageLib") 
 
-source("packages.R")
-source("config.R")
+source("/user/home/uw20204/DrivR-Base/packages.R")
+source("/user/home/uw20204/DrivR-Base/config.R")
 
 args <- commandArgs()
 # Reads in variant file in the format: "chrom", "start", "end", "ref", "alt", "R", "driver_stat"
