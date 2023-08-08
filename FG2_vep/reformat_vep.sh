@@ -1,15 +1,13 @@
 #!/bin/bash
 #SBATCH --job-name=queryVEPCache
 #SBATCH --partition=mrcieu,short,compute
-#SBATCH --mem=50G
+#SBATCH --mem=80G
 #SBATCH --time=6-00:00:00
-#SBATCH --chdir=/user/home/uw20204/CanDrivR_scripts/features_v2/FG2_vep
+#SBATCH --chdir=/user/home/uw20204/DrivR-Base/FG2_vep
 #SBATCH --account=sscm013903
 
-# Load required modules
-cpanm Archive::Zip
-cpanm DBD::mysql
-module load apps/bayestraits apps/bcftools apps/samtools apps/tabix lib/htslib
+# Install modules and packages
+./module_dependencies.sh
 
 # Set input variables
 file="$1"

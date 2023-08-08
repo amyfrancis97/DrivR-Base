@@ -4,6 +4,7 @@
 #SBATCH --mem=80G
 #SBATCH --time=2:00:00
 #SBATCH --account=sscm013903
+#SBATCH --chdir=/bp1/mrcieu1/users/uw20204/DrivR-Base/FG1_conservation
 
 # Load required modules (you may need to adapt this depending on the setup)
 ./module_dependencies.sh
@@ -13,11 +14,21 @@ featureDir="/bp1/mrcieu1/data/ucsc/public/ConsAll/"
 cd "$featureDir"
 
 # Get the value of the 'file' variable exported from the main script
-file="$file"
-
+file="$fileName"
+filePath="$filePath"
+echo $filePath
+echo $file
+output_file="${file%.bw}.bedGraph"
+echo $output_file
 # Download the file and convert from .bigwig to .bedGraph
-filePath="http://hgdownload.cse.ucsc.edu/goldenpath/hg38/${file}/hg38.${file}.bw"
-wget "$filePath"
-bigWigToBedGraph "hg38.${file}.bw" "hg38.${file}.bedGraph"
-rm "hg38.${file}.bw"
+#wget "$filePath"
+
+wait
+
+# Activate bigwig conda environment containing functions
+# Download conservation files
+# Install packages for conversions
+source /user/work/uw20204/anaconda3/bin/activate bigwig
+bigWigToBedGraph "${file}" "${output_file}"
+#rm "${file}.bw"
 

@@ -1,10 +1,4 @@
-# Import packages
-import pandas as pd
-import os
-import re
-from textwrap import wrap
-import numpy as np
-import sys
+from package_dependencies import *
 
 # Check if this script is being executed as the main program
 if __name__ == "__main__":

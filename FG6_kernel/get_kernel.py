@@ -136,7 +136,7 @@ if __name__ == "__main__":
     # Reads in the human GRCh38 genome in fasta format
     record_dict = SeqIO.to_dict(SeqIO.parse("hg38_seq.fa", "fasta"))
 
-    chunk_size = 100000
+    chunk_size = 1000
     for chunk in pd.read_csv(variants, sep = "\t", names = ['chrom', 'pos', 'pos2', 'reference_allele', 'alternate_allele', 'reccurance', 'driver_status'], chunksize = chunk_size):
         # Reading in the variant file
         variants = pd.read_csv(variants, sep = "\t", names = ['chrom', 'pos', 'pos2', 'reference_allele', 'alternate_allele', 'reccurance', 'driver_status'])

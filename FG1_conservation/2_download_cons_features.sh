@@ -21,8 +21,9 @@ files=(
 
 # Download and convert from .bigwig to .bedGraph as separate array jobs
 for file in "${files[@]}"; do
+  fileName="hg38.${file}.bw"
   filePath="http://hgdownload.cse.ucsc.edu/goldenpath/hg38/${file}/hg38.${file}.bw"
-  sbatch --export=file="${file}" /user/home/uw20204/DrivR-Base/FG1_conservation/download_convert.job
+  sbatch --export=fileName="${fileName}",filePath="${filePath}" /user/home/uw20204/DrivR-Base/FG1_conservation/download_convert.job 
 done
 
 # Additional conservation files
@@ -34,8 +35,9 @@ files=(
 
 # Download and convert from .bigwig to .bedGraph as separate array jobs
 for file in "${files[@]}"; do
+  fileName="${file}.bw"
   filePath="http://hgdownload.soe.ucsc.edu/gbdb/hg38/hoffmanMappability/${file}.bw"
-  sbatch --export=file="${file}" /user/home/uw20204/DrivR-Base/FG1_conservation/download_convert.job
+  sbatch --export=fileName="${fileName}",filePath="${filePath}" /user/home/uw20204/DrivR-Base/FG1_conservation/download_convert.job
 done
 
 
