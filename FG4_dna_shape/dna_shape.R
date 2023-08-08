@@ -1,7 +1,7 @@
 # Get DNA shapes of 10 BP regions overlapping with variant
 # Gets the shape of the wild-type regions with the ref allele
 
-source("packages.R")
+source("package_dependencies.R")
 args <- commandArgs()
 print(args)
 # Reads in variant file in the format: "chrom", "pos", "end", "ref", "alt", "R", "driver_stat"
