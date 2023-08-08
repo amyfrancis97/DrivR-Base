@@ -145,13 +145,13 @@ if __name__ == "__main__":
         variants = variants.reset_index(drop = True)
 
         # List of window sizes and kmer sizes for which you want to compute the kernels
-        window_sizes = [5, 10, 50, 100, 500]
+        window_sizes = [1, 2, 3, 4, 5]
         kmer_sizes_list = [
-            list(range(1, 9)),
-            list(range(1, 19, 2)),
-            list(range(1, 99, 5)),
-            list(range(1, 199, 10)),
-            list(range(1, 199, 20))
+            list(range(1, 2)),
+            list(range(1, 4, 1)),
+            list(range(1, 6, 1)),
+            list(range(1, 8, 1)),
+            list(range(1, 10, 1))
         ]
 
         # Create a pool of worker processes with the number of cores you want to use

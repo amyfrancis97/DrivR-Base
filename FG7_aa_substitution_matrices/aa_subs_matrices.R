@@ -1,6 +1,6 @@
 # Get amino acid substitution matrices
 # Extract score for each amino acid change in each matrix
-source("/user/home/uw20204/DrivR-Base/packages.R")
+source("package_dependencies.R")
 
 args <- commandArgs()
 featureDir = args[6]

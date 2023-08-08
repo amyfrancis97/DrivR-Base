@@ -20,7 +20,8 @@ variants[2] = variants[2]-10
 variants[3] = variants[3]+10
 
 # Make a GRRanges object
-variants = makeGRangesFromDataFrame(variants)
+print(variants)
+variants = makeGRangesFromDataFrame(variants, start.field="pos", end.field="end")
 
 # Get the 10bp fasta for each variant
 getFasta(variants, BSgenome = Hsapiens, width = 20, filename = "hg38.fa")

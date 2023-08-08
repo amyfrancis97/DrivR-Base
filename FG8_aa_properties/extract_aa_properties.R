@@ -1,7 +1,7 @@
 # Import the AAdata matrix from the peptides package
 # The matrix contains different amino acid properties 
 # Relating to each of the 20 amino acids
-source("/user/home/uw20204/CanDrivR_scripts/features_v2/packages.R")
+source("package_dependencies.R")
 
 args <- commandArgs()
 print(args)

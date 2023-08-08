@@ -2,6 +2,7 @@
 #.libPaths("/bp1/mrcieu1/users/uw20204/paper1/features/RpackageLib") 
 
 source("package_dependencies.R")
+
 source("config.R")
 
 args <- commandArgs()
@@ -13,14 +14,17 @@ featureOutputDir=args[8]
 
 variants = read.table(paste(variantDir, file, sep = ""), sep = "\t")
 colnames(variants) = c("chrom", "start", "end", "ref", "alt", "R", "driver_stat")
+print(variants)
+
 
 # Read in dinucleotide properties
 dinucleotideProperty=read.csv(dinucleotidePropertyTable)
+print(dinucleotideProperty)
 
 # Create an empty dataframe to store the merged results
 mergedVariants <- data.frame()
 
-getDinucleotideProperties = function(chrom){
+getDinucleotideProperties = function(chrom, variants){
     tryCatch(
     {
         chrom=paste("chr", chrom, sep = "")
@@ -30,10 +34,10 @@ getDinucleotideProperties = function(chrom){
         # Get the desired base pair range for DNA shape
         variants2[2] = variants2[2]-1
         variants2[3] = variants2[3]+1
-
+        print(variants2)
         # Make a GRRanges object
         variants2 = makeGRangesFromDataFrame(variants2)
-
+        print(variants2)
         # Get the 10bp fasta for each variant
         getFasta(variants2, BSgenome = Hsapiens, width = 3, filename = paste(chrom, "VariantDinucleotides.fa", sep = "_"))
 
@@ -114,7 +118,7 @@ getDinucleotideProperties = function(chrom){
 }
 
 for(i in 1:22){
-    try(getDinucleotideProperties(i))
+    try(getDinucleotideProperties(i, variants))
 }
 
 # Write the merged results to a CSV file
