@@ -1,7 +1,9 @@
 # FG2_vep
 
 ## Introduction and Overview
+**FG2_vep** is a module within the **DrivR-Base** framework that provides a comprehensive toolkit for Variant Effect Prediction (VEP) analysis. It streamlines the process of downloading VEP cache, querying variants against the cache, and reformatting the query results. The module includes a set of scripts and resources to simplify and accelerate VEP analysis tasks.
 
+## Directory Structure
 ```bash
 DrivR-Base/
 |-- FG2_vep/
@@ -16,39 +18,35 @@ DrivR-Base/
 |   |-- reformat_vep_distance.py
 ```
 ## Packages and Dependencies
-All package and module dependencies are listed and called from the **module_dependencies.sh** and scripts. Most importantly, the VEP cache must first be downloaded in order for the scripts to work. All of the code required for installation of the VEP cache is described in **1_download_vep.sh**. Please note that there are a large number of dependencies required to install the cache. For more detailed information on this, please see the [VEP website and tutorial](https://www.ensembl.org/info/docs/tools/vep/script/vep_download.html#installer). 
+All required packages and module dependencies are organized and managed within the following files:
+* **module_dependencies.sh**: Manages module-specific dependencies, ensuring a smooth and consistent environment.
+* **1_download_vep.sh**:  Installs and manages the VEP cache. Note that this process involves a range of dependencies; refer to the [VEP website and tutorial](https://www.ensembl.org/info/docs/tools/vep/script/vep_download.html#installer). for detailed instructions.
 
 ## Script Usage
 
 ### 2_query_vep.sh
-This script downloads the GRCh38 genome version from the VEP cache. It then submits the **query_vep.sh** script. The **query_vep.sh** script then queries the given variants against the human genome VEP cache. Specifically, it submits four queries. Firstly, it queries for protein uniprot predictions, which will be used further down the line in the **FG10_alpha_fold** scripts. It then queries the cache for consequence features. These are predictions on what the effect might be of a variant on each transcript. For more information on possible consequence outputs, please see the [VEP consequence web page](https://www.ensembl.org/info/genome/variation/prediction/predicted_data.html). Thirdly, we extract the amino acids that are predicted to be affected by the variant. More specifically, the output gives the predicted wild-type amino acid, and for a non-synonymous variant, the predicted mutant amino acid. Finally, we extract the distance features from VEP. This describes the distance between a variant and a particular transcript. The reason for four separate queries is that the output **INFO** column after querying the cache is extremely difficult to work with. It's much easier to do four separate queries (although it will take longer to run).
+This script initiates the VEP analysis by downloading the GRCh38 genome version from the VEP cache. It then submits the query_vep.sh script to perform the actual queries against the cache. The query_vep.sh script conducts four distinct queries to extract crucial information from the VEP cache.
+
+1. **Protein Uniprot Predictions**: Queries protein predictions that play a role in subsequent **FG10_alpha_fold** scripts.
+2. **Consequence Features**: Queries predictions about the impact of a variant on each transcript. Different consequence outputs are detailed on the [VEP consequence web page](https://www.ensembl.org/info/genome/variation/prediction/predicted_data.html).
+3. **Amino Acid Effects**: Extracts amino acid predictions, including wild-type and mutant amino acids, from variants.
+4. **Distance Features**: Captures distances between a variant and specific transcripts.
 
 ### 3_reformat_vep_res.sh
-The output of the VEP cache query is a VCF file and all of the information is contained in the **INFO** field. It is necessary to reformat the file in order to create a more useable file format. Each of the separate reformatting python scripts are designed to reformat the corresponding output files. The following documentation gos into more detail on the individual scripts used here.
+The VEP cache query results are stored in VCF files, with information concentrated in the **INFO** field. To enhance usability, the reformatting process is introduced through Python scripts.
 
 ### reformat_vep_aa.py
 
-Querying the cache for amino acid prediction gives the following formatted file:
+This script processes amino acid prediction data obtained from the cache query. It extracts relevant information from the INFO field, including wild-type and mutant amino acids for each variant. The script then performs one-hot encoding, creating a compact representation of amino acid predictions for further analysis.
 
-| #CHROM |   POS  |   ID   | REF | ALT | QUAL | FILTER |     INFO    |
-| ------ | ------ | ------ | --- | --- | ---- | ------ | ----------- |
-|  chr1  | 935778 | 935778 |  C  |  T  |   1  |    1   | CSQ=D,D,D,D |
-|  chr1  | 935785 | 935785 |  C  |  A  |   2  |    1   | CSQ=L/I,L/I |
+### reformat_vep_conseq.py
+For consequence predictions, this script extracts and compiles unique consequence features for each variant. It creates a one-hot-encoded table, simplifying downstream analysis by indicating the presence or absence of specific consequences.
 
-The info field contains the query results for the variants of interest. The commas separate results for individual transcripts. In the case of amino acids, we can ignore everything after the first comma in the info field. The **reformat_vep_aa.py** script extracts everything after the "CSQ=" and the first "," in the INFO field. If there is only one amino acid, the variant is predicted to be synonymous, so the script assigns both the wild type and mutant amino acid as the single letter extracted. In the case of two amino acids separated by a "/", then the first amino acid is the predicted wild type, and the second is the predicted mutant. This is repeated for every variant to produce the following table:
+### reformat_vep_distance.py
+To analyze distance features, this script calculates the minimum, maximum, and mean distances between a variant and its associated transcripts. It leverages the INFO field to gather these insights, facilitating a comprehensive understanding of variant effects.
 
-| chrom |   pos  |  ref_allele | alt_allele |  R  | driver_stat | WT_AA | mutant_AA |
-| ----- | ------ | ----------- | ---------- | --- | ----------- | ----- | --------- |
-|  chr1 | 935778 |      C      |      T     |  1  |      1      |   D   |      D    |
-|  chr1 | 935785 |      C      |      A     |  2  |      1      |   L   |      I    |
+## Conclusion
+The FG2_vep module empowers users with a comprehensive toolkit for Variant Effect Prediction analysis. By automating key steps in the VEP workflow and facilitating data reformatting, this module contributes to a more efficient and insightful genomic analysis process.
 
-Finally, we convert this into one-hot-encoding, where each column represents the amino acid (WT and mutant), and the corresponding row will either be a "0" if not predicted, and "1" if predicted. For example:
+For detailed usage instructions and examples, please refer to the individual script documentation.
 
-| chrom |   pos  |  ref_allele | alt_allele |  R  | driver_stat | WT_D | WT_L | mutant_D | mutant_L |
-| ----- | ------ | ----------- | ---------- | --- | ----------- | ---- | ---- | -------- | -------- |
-|  chr1 | 935778 |      C      |      T     |  1  |      1      |   1  |   0  |     1    |     0    |
-|  chr1 | 935785 |      C      |      A     |  2  |      1      |   0  |   1  |     0    |     1    |
-
-The script saves both the non-autoencoded and autoencoded tables.
-
-### reformat_vep_aa.py
