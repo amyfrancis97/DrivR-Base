@@ -35,7 +35,7 @@ The primary script, get_kernel.py, performs the following steps:
 
 * **Application of a Mapping Function**: Code is implemented to count the occurrence of each k-mer in each sequence as in:
 * 
-![k-mer-count](https://github.com/amyfrancis97/DrivR-Base/assets/68270793/6b9ff69d-bdf1-4436-a33e-c447f0c2ae61)
+![k-mer-count](https://github.com/amyfrancis97/DrivR-Base/images/mapping-function.png)
 
 * **Derivation of a P-spectra Kernel**: Utilizing the mapping function, a p-spectrum kernel matrix is derived by summing the products of corresponding row entries for the two sequences.
 
