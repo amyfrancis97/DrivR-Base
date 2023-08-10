@@ -1,7 +1,9 @@
 # FG1_conservation
 
 ## Introduction and Overview
+The **FG1_conservation** module is designed to facilitate the reformatting, downloading, and conversion of conservation and uniqueness files from the UCSC genome browser. It includes a set of scripts and resources to streamline the process.
 
+## Directory Structure
 ```bash
 DrivR-Base/
 |-- FG1_conservation/
@@ -14,28 +16,39 @@ DrivR-Base/
 |   |-- package_dependencies.py
 ```
 ## Packages and Dependencies
-All packages and dependencies are listed and called in the **module_dependencies.sh** and **package_dependencies.py** scripts. Most importantly, *bedtools* must be installed in order for the *bigWigToBedGraph* command to work in the **download_convert.job** script.
+All required packages and dependencies are managed in the following files:
+
+* **module_dependencies.sh**: Manages module-specific dependencies.
+* **package_dependencies.py**: Lists and manages Python package dependencies.
+
+Make sure to have the necessary dependencies installed, including the critical requirement for the *bedtools* package, which is essential for executing the *bigWigToBedGraph* command in the **download_convert.job** script.
 
 ## Script Usage
 ### 1_reformat.sh
-This script reformats the variant file to match that in the UCSC sequence conservation files. Specifically, the position columns are altered from pos, pos to pos, pos-1.
-For example, the script converts this variant:
+This script restructures the variant file to align with the format used in UCSC sequence conservation files. It adjusts the position columns to ensure accurate value matching during subsequent queries. The modification is exemplified below:
+
+Original Variant Format:
 
 | Chromosome | Position | Position | Reference Allele | Alternate Allele | Recurrence | Driver Status |
 | ---------- | -------- | -------- | ---------------- | ---------------- | ---------- | ------------- |
 |    chr1    |  934881  |  934881  |        A         |         G        |      1     |       1       |
 
-Into the following format:
+Reformatted Variant Format:
 
 | Chromosome | Position | Position | Reference Allele | Alternate Allele | Recurrence | Driver Status |
 | ---------- | -------- | -------- | ---------------- | ---------------- | ---------- | ------------- |
 |    chr1    |  934880  |  934881  |        A         |         G        |      1     |       1       |
 
-This is done to get exact value matches when querying using the bedtools_intersect command.
+This adjustment enhances compatibility with the bedtools_intersect command during queries.
 
 ### 2_download_cons_features.sh & download_convert.job
-These scripts are used to download all of the available conservation and uniqueness files available in the UCSC genome browser and converts them from bigWig to bedGraph format. 
-The **2_download_cons_features** script submits the **download_convert.job** as a separate batch job for each possible feature. The **download_convert.job** script then downloads the file, and then converts the file to bedGraph format using the *bigWigToBedGraph* command in *bedtools*.
+These scripts collaboratively automate the download and conversion of conservation and uniqueness files from the UCSC genome browser.
+
+* **2_download_cons_features.sh**: Initiates batch jobs for each available feature using the **download_convert.job** script.
+* **download_convert.job**: Downloads and converts files from bigWig to bedGraph format utilizing the *bigWigToBedGraph* command within *bedtools*.
 
 ### check_formatting.py
-In case of any issues with tab-separated formatting in the converted bed file, simple import the data into python and export it again as a tab-separated file. Sometimes tab formatting can be disrupted during the conversion process.
+In situations where tab-separated formatting issues arise during the conversion of bed files, this Python script provides a quick solution. By importing the data and re-exporting it as a tab-separated file, this script mitigates potential disruptions in tab formatting that may occur during the conversion process.
+
+### Conclusion
+The FG1_conservation module simplifies the process of reformatting, downloading, and converting conservation and uniqueness files, contributing to a more efficient workflow for genomic analysis.
