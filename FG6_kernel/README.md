@@ -34,8 +34,8 @@ The primary script, get_kernel.py, performs the following steps:
 * **K-mer Generation**: An "over_slice()" function generates all possible combinations of k-mers of size k for each pair of wild-type and mutant variant sequences. This function generates substrings of length *k* by sliding a window of size *w* across the sequences, capturing local sequence patterns around the variants.
 
 * **Application of a Mapping Function**: Code is implemented to count the occurrence of each k-mer in each sequence as in:
-
-![Equation](images/mapping-function.png)
+* 
+![k-mer-count](https://github.com/amyfrancis97/DrivR-Base/assets/68270793/6b9ff69d-bdf1-4436-a33e-c447f0c2ae61)
 
 * **Derivation of a P-spectra Kernel**: Utilizing the mapping function, a p-spectrum kernel matrix is derived by summing the products of corresponding row entries for the two sequences.
 
