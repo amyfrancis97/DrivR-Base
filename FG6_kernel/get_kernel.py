@@ -16,6 +16,7 @@ import sys
 from itertools import islice
 
 import multiprocessing
+from config import *
 
 def process_kmer(windowSize, kmerSize):
     # kmer of window size 5 and kmer size 3
@@ -134,7 +135,7 @@ if __name__ == "__main__":
     outputDir = sys.argv[3]
 
     # Reads in the human GRCh38 genome in fasta format
-    record_dict = SeqIO.to_dict(SeqIO.parse("hg38_seq.fa", "fasta"))
+    record_dict = SeqIO.to_dict(SeqIO.parse(hg38_seq, "fasta"))
 
     chunk_size = 1000
     for chunk in pd.read_csv(variants, sep = "\t", names = ['chrom', 'pos', 'pos2', 'reference_allele', 'alternate_allele', 'reccurance', 'driver_status'], chunksize = chunk_size):

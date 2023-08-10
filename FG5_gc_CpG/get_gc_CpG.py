@@ -1,4 +1,5 @@
 from packages_dependencies import *
+from config import *
 
 if __name__ == "__main__":
     variantType = sys.argv[1]
@@ -7,7 +8,7 @@ if __name__ == "__main__":
     outputDir = sys.argv[3]
 
     # reads in the human GRCh38 genome in fasta format
-    record_dict = SeqIO.to_dict(SeqIO.parse("hg38_seq.fa", "fasta"))
+    record_dict = SeqIO.to_dict(SeqIO.parse(hg38_seq, "fasta"))
 
     # reading in the variant file
     variants = pd.read_csv(variants, sep="\t", names=['chrom', 'pos', 'pos2', 'ref_allele', 'alt_allele', 'R', 'driver_stat'])
