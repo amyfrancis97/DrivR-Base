@@ -26,3 +26,8 @@ The primary script, get_gc_CpG.py, carries out the following steps:
 * **Variant Query and Sequence Extraction**: Similar to the approach used in the **FG3_dinucleotide_properties** and **FG4_dna_shape modules**, this script queries the GRCh38 genome for provided variants within a specified window size. Unlike the other scripts, this Python script requires the pre-downloaded GRCh38 genome for accurate querying. Make sure to update the "hg38_seq" variable in config.py before running the script.
 
 * **Calculation of GC Content, CpG Count, and CpG Observed/Expected Ratio**: The script calculates GC content using the formula (wildType.count("G") + wildType.count("C")) / len(wildType) * 100. Additionally, CpG count is computed with wildType.count("CG"), and CpG observed/expected ratio is calculated using (CpGCount * len(wildType)) / (wildType.count("G") * wildType.count("C")).
+
+## Conclusion
+The **FG5_gc_CpG** module provides a powerful tool for extracting and analyzing nucleotide sequences, contributing to a deeper understanding of GC content and CpG-related features within the context of genetic variants. By leveraging the GRCh38 genome and executing comprehensive calculations, this module facilitates valuable insights into molecular properties.
+
+For detailed instructions and usage examples, refer to the scripts and dependencies listed in the directory structure above.
