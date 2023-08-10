@@ -11,6 +11,7 @@ DrivR-Base/
 |   |-- 2_query_vep.sh
 |   |-- 3_reformat_vep_res.sh
 |   |-- module_dependencies.sh
+|   |-- package_dependencies.py
 |   |-- query_vep.sh
 |   |-- reformat_vep.sh
 |   |-- reformat_vep_aa.py
@@ -20,6 +21,7 @@ DrivR-Base/
 ## Packages and Dependencies
 All required packages and module dependencies are organized and managed within the following files:
 * **module_dependencies.sh**: Manages module-specific dependencies, ensuring a smooth and consistent environment.
+* **package_dependencies.py**: Manages python-specific dependencies, ensuring a smooth and consistent environment.
 * **1_download_vep.sh**:  Installs and manages the VEP cache. Note that this process involves a range of dependencies; refer to the [VEP website and tutorial](https://www.ensembl.org/info/docs/tools/vep/script/vep_download.html#installer). for detailed instructions.
 
 ## Script Usage
