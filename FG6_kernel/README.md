@@ -35,13 +35,11 @@ The primary script, get_kernel.py, performs the following steps:
 
 * **Application of a Mapping Function**: Code is implemented to count the occurrence of each k-mer in each sequence as in:
 
-  Φ_u^p (s)=|{〖(v〗_1,v_2 ) ∶ s= v_1 u〖 v〗_2 }|![image](https://github.com/amyfrancis97/DrivR-Base/assets/68270793/3399c62e-ba9d-43b4-adb3-aa3116c255b7)
-
 
 * **Derivation of a P-spectra Kernel**: Utilizing the mapping function, a p-spectrum kernel matrix is derived by summing the products of corresponding row entries for the two sequences.
 
 ## Conclusion
-We calculated p-spectra for different sequence lengths (xyz) and k-mer sizes (abc) based on the requirements of our analysis.
-By analysing the p-spectra matrices, we captured the similarities and dissimilarities between sequences, considering the patterns of k-mers of various sizes. This approach provided valuable insights into the sequence variations induced by the variants and their potential impact on the overall sequence structure.
+Overall, this script enables p-spectra to be calculated for different sequence lengths and k-mer sizes based on the requirements of the analysis.
+By analysing the p-spectra matrices, it is possible to capture the similarities and dissimilarities between sequences, considering the patterns of k-mers of various sizes. This approach can provide valuable insights into the sequence variations induced by the variants and their potential impact on the overall sequence structure.
 
   
