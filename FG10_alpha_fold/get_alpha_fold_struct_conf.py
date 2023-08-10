@@ -4,11 +4,13 @@ import os
 import sys
 import numpy as np
 import re
+from unipressed import IdMappingClient
+import time
 
 def getAlphaFoldScores(variantVEPresults, df4):
     # Replace the URL with the actual URL of the text file
     if df4["trembl"][variantVEPresults] is not None:
-        url = "https://alphafold.ebi.ac.uk/files/AF-" + df4["trembl"][variantVEPresults] + "-F1-model_v4.cif"
+        url = "https://alphafold.ebi.ac.uk/files/AF-" + df4["uniprot_conversion"][variantVEPresults] + "-F1-model_v4.cif"
         # Fetch the content of the text file
         response = requests.get(url)
         res = []
@@ -63,8 +65,8 @@ if __name__ == "__main__":
     variants = variantDir + sys.argv[2]
 
     results = []
-    chunksize = 10
-    for chunk in pd.read_csv(variants + "_variant_effect_output_all.txt", sep="\t", header=None, low_memory=False, chunksize=chunksize):
+    chunksize = 1000
+    for chunk in pd.read_csv(variants + "_variant_effect_output_all.bed", sep="\t", header=None, low_memory=False, chunksize=chunksize):
         df2 = chunk[7].str.split("ENST", expand=True)[1].str.split("|", expand=True)
 
         # Extract protein ID's and protein position from VEP results
@@ -79,9 +81,40 @@ if __name__ == "__main__":
         df3 = pd.concat([chunk.iloc[:, :7], gene, uniprot, uniparc, trembl, swissprot, proteinPosition], axis=1)
         df3 = df3.drop(2, axis=1)
         df3.columns = ["chrom", "pos", "ref_allele", "alt_allele", "R", "driver_stat", "gene", "uniprot", "uniparc", "trembl", "swissprot", "protein_position"]
+        df3["uniprot_conversion"] = np.nan
 
+        lst = []
+        for i in list(df3["gene"].unique()):
+
+            request = IdMappingClient.submit(
+                source="GeneCards", dest="UniProtKB", ids={i}
+            )
+
+            time.sleep(20)
+            # Continuously check for the completion of the results
+            while True:
+                try:
+                    ans = list(request.each_result())[0]
+                    uniprot_conv = [x for x in ans.values()][1]
+                    lst.append([i, uniprot_conv])
+                    break  # Break the loop if successful
+                except Exception as e:
+                    print("Waiting for results:", e)
+                    time.sleep(20)  # Adjust the sleep time based on your experience
+
+            ans = list(request.each_result())[0]
+            uniprot_conv = [x for x in ans.values()][1]
+            lst.append([i, uniprot_conv])
+        
+
+        # Find rows where the condition is met
+        condition = df3["gene"] == lst[0][0]
+
+        # Update the specified column for the matching rows using .loc[]
+        df3.loc[condition, "uniprot_conversion"] = lst[0][1]
         # only retrieve info for those with protein position
-        df4 = df3[(df3["protein_position"] != "") & (df3["trembl"] != "") & (df3["trembl"] != np.nan) & (df3["protein_position"] != np.nan)].reset_index(drop=True)
+        df4 = df3[(df3["protein_position"] != "") & (df3["uniprot_conversion"] != "") & (df3["uniprot_conversion"] != np.nan) & (df3["protein_position"] != np.nan)].reset_index(drop=True)
+
         res2 = [getAlphaFoldScores(i, df4) for i in range(0, len(df4))]
 
         res3 = pd.DataFrame()
@@ -91,14 +124,14 @@ if __name__ == "__main__":
 
         if len(valid_res2) != 0:
             res3 = pd.concat(valid_res2)
+
             res3 = res3.drop([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 15, 16], axis=1)
             struct_conf_list = ["_struct_conf.conf_type_id", "_struct_conf.id"]
             res3.columns = res3.columns.tolist()[:6] + struct_conf_list
-            print("res3:", res3)
-            results.append(res3)
 
-    print("results:", results)
+            results.append(res3)
     results2 = pd.concat(results)
+    print(results2)
 
     # One-hot-encoding of structural conformation results
     results_encoded = pd.get_dummies(results2, columns=['_struct_conf.conf_type_id', '_struct_conf.id'])

@@ -3,12 +3,14 @@ import requests
 import os
 import sys
 import numpy as np
+from unipressed import IdMappingClient
+import time
 
 def getAlphaFoldScores(variantVEPresults, df4):
     # Replace the URL with the actual URL of the text file
     #url = "https://alphafold.ebi.ac.uk/files/AF-" + df3["trembl"][variantVEPresults] + "-F1-model_v4.pdb"
     if df4["trembl"][variantVEPresults] is not None:
-        url = "https://alphafold.ebi.ac.uk/files/AF-" + df4["trembl"][variantVEPresults] + "-F1-model_v4.cif"
+        url = "https://alphafold.ebi.ac.uk/files/AF-" + df4["uniprot_conversion"][variantVEPresults] + "-F1-model_v4.cif"
         # Fetch the content of the text file
         response = requests.get(url)
         res = []
@@ -45,7 +47,7 @@ if __name__ == "__main__":
     variantDir = sys.argv[1]
     variants = variantDir + sys.argv[2]
     chunksize = 10000
-    for chunk in  pd.read_csv(variants + "_variant_effect_output_all.txt", sep = "\t", header = None, low_memory=False, chunksize=chunksize):
+    for chunk in  pd.read_csv(variants + "_variant_effect_output_all.bed", sep = "\t", header = None, low_memory=False, chunksize=chunksize):
         df2 = chunk[7].str.split("ENST", expand = True)[1].str.split("|", expand = True)
         uniparc = df2[19].str.split(".", expand = True)[0]
         uniprot = df2[20].str.split(".", expand = True)[0]
@@ -56,8 +58,38 @@ if __name__ == "__main__":
         df3 = pd.concat([chunk.iloc[:, :7], gene, uniprot, uniparc, trembl, swissprot, proteinPosition], axis =1)
         df3 = df3.drop(2, axis = 1)
         df3.columns = ["chrom", "pos", "ref_allele", "alt_allele", "R", "driver_stat", "gene", "uniprot", "uniparc", "trembl", "swissprot", "protein_position"]
-        # only retreive info for those with protein position
-        df4 = df3[(df3["protein_position"] != "") & (df3["trembl"] != "") & (df3["trembl"] != np.nan) & (df3["protein_position"] != np.nan)].reset_index(drop = True)
+
+        df3["uniprot_conversion"] = np.nan
+
+        lst = []
+        for i in list(df3["gene"].unique()):
+
+            request = IdMappingClient.submit(
+                source="GeneCards", dest="UniProtKB", ids={i}
+            )
+            time.sleep(5)
+            # Continuously check for the completion of the results
+            while True:
+                try:
+                    ans = list(request.each_result())[0]
+                    uniprot_conv = [x for x in ans.values()][1]
+                    lst.append([i, uniprot_conv])
+                    break  # Break the loop if successful
+                except Exception as e:
+                    print("Waiting for results:", e)
+                    time.sleep(20)  # Adjust the sleep time based on your experience
+
+            ans = list(request.each_result())[0]
+            uniprot_conv = [x for x in ans.values()][1]
+            lst.append([i, uniprot_conv])
+        
+
+        # Find rows where the condition is met
+        condition = df3["gene"] == lst[0][0]
+        # Update the specified column for the matching rows using .loc[]
+        df3.loc[condition, "uniprot_conversion"] = lst[0][1]
+        # only retrieve info for those with protein position
+        df4 = df3[(df3["protein_position"] != "") & (df3["uniprot_conversion"] != "") & (df3["uniprot_conversion"] != np.nan) & (df3["protein_position"] != np.nan)].reset_index(drop=True)
         print(df4)
         res2 = [getAlphaFoldScores(i, df4) for i in range(0, len(df4))]
         if len(res2) != 0:

@@ -8,6 +8,6 @@
 
 srun python getENCODEdatasets.py $1 $2
 
-wait
+#wait
 
-gzip ${2}${1}_results_encode_appended.txt
+#gzip ${2}${1}_results_encode_appended.txt
