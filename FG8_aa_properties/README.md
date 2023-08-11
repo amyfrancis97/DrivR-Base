@@ -6,12 +6,14 @@ The **FG8_aa_properties** dataset provides three distinct groups of physicochemi
 ## Directory Structure
 The directory structure is as follows:
 
+```bash
 DrivR-Base/
 |-- FG8_aa_properties
 |   |-- 1_get_aa_properties.sh
 |   |-- extract_aa_properties.R
 |   |-- package_dependencies.R
 |   |-- AAindex.rda
+```
 
 ## Packages and Dependencies
 All required package dependencies are effectively managed through the **package_dependencies.R** script.
