@@ -131,6 +131,8 @@ def process_row(row, feature_files):
         os.remove(accession + ".bed.gz")
     except:
         print("file not found")
+        os.remove(accession + ".csv")
+        os.remove(accession + ".bed.gz")
         # Save vepData dataframe to CSV
 
     if os.path.exists(feature + "_results_encode_appended.txt"):
