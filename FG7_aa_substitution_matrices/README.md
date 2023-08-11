@@ -1,6 +1,6 @@
 # FG7_aa_substitution_matrices
 
-## Overview
+## Introduction and Overview
 The **FG7_aa_substitution_matrices** script utilizes 13 different substitution matrices sourced from [Bio2mds](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3403911/) to perform queries on predicted mutant and wild type amino acids against a database. This functionality provides valuable insights into the evolutionary frequency of amino acid substitutions. These insights can aid in assessing amino acid conservation, particularly when analyzing non-synonymous variants.
 
 ## Directory Structure
