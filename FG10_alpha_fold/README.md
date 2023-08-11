@@ -39,7 +39,7 @@ The two main scripts are **get_alpha_fold_atom.py** and **get_alpha_fold_struct_
 
 **get_alpha_fold_struct_conf.py:**
 
-* Extracts [structural conformation features](http://mmcif.rcsb.org/dictionaries/mmcif_pdbx_v31.dic/Categories/struct_conf.html) features for a given protein position.
+* Extracts [**structural conformation features**](http://mmcif.rcsb.org/dictionaries/mmcif_pdbx_v31.dic/Categories/struct_conf.html) features for a given protein position.
 * Features are based on imputations from PDB and include:
   *  [**Structural Conformation Type ID**](https://mmcif.wwpdb.org/dictionaries/mmcif_pdbx_v50.dic/Items/_struct_conf.conf_type_id.html)
   *  [**Structural Conformation ID**]([bx_v50.dic/Items/_struct_conf.id.html](https://mmcif.wwpdb.org/dictionaries/mmcif_pdbx_v50.dic/Items/_struct_conf.id.html)https://mmcif.wwpdb.org/dictionaries/mmcif_pdbx_v50.dic/Items/_struct_conf.id.html)
