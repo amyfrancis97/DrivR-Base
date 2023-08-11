@@ -5,7 +5,7 @@ The **FG7_aa_substitution_matrices** script utilizes 13 different substitution m
 
 ## Directory Structure
 The directory structure is as follows:
-
+```bash
 DrivR-Base/
 |-- FG7_aa_substitution_matrices/
 |   |-- 1_get_aa_matrices.sh
@@ -13,7 +13,7 @@ DrivR-Base/
 |   |-- aa_subs_matrices.R
 |   |-- package_dependencies.R
 |   |-- sub.mat.RDS
-
+```
 
 ## Packages and Dependencies
 Package dependencies are managed through the **package_dependencies.R** script.
