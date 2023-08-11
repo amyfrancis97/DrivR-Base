@@ -35,14 +35,6 @@ The primary script, get_kernel.py, performs the following steps:
 
 * **Application of a Mapping Function**: Code is implemented to count the occurrence of each k-mer in each sequence as in:
 
-The expression \\(\\Phi_u^p (s) = |\\{(v_1, v_2) : s = v_1 u v_2 \\}|\\) represents the count (cardinality) of pairs \\((v_1, v_2)\\) such that \\(s\\) is equal to the concatenation of \\(v_1\\), \\(u\\), and \\(v_2\\).
-
-- \\(\\Phi_u^p (s)\\): The count of pairs that satisfy the condition.
-- \\((v_1, v_2)\\): A pair of sequences or strings.
-- \\(s\\): The concatenated string formed by combining \\(v_1\\), \\(u\\), and \\(v_2\\).
-- \\(u\\): A given sequence or string.
-- \\(| |\\): Denotes the cardinality or count of elements in the set.
-
 * **Derivation of a P-spectra Kernel**: Utilizing the mapping function, a p-spectrum kernel matrix is derived by summing the products of corresponding row entries for the two sequences.
 
 ## Conclusion
