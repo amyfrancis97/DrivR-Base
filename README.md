@@ -25,6 +25,7 @@ Welcome to DrivR-Base! This repository contains scripts for extracting feature i
 |         FG3         | 125 dinucleotide properties for wild-type and mutant nucleotide sequences                                        | [DiProGB](https://diprodb.fli-leibniz.de/ShowTable.php) |
 |         FG4         | 5 DNA shape properties, including electrostatic potential and minor groove width                                 | [DNAshapeR](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4824130/) |
 |         FG5         | GC-content and CpG counts for various window sizes                                                               | [Self-calculated](https://github.com/amyfrancis97/DrivR-Base/blob/main/FG5_gc_CpG/get_gc_CpG.py)
+|         FG6         | Kernel-based DNA sequence similarity scores for wild-type and mutant sequences                                   | [Self-calculated](https://github.com/amyfrancis97/DrivR-Base/blob/main/FG6_kernel/get_kernel.py) |
 |         FG7         | scores for 13 different amino acid substitution matrices                                                         | [Bio2mds](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3403911/) |
 |         FG8         | 533 amino acid properties for both wild-type and mutant amino acids                                              | [AAindex](https://academic.oup.com/nar/article/28/1/374/2384334?login=false) |
 |         FG9         | Results for 10 different ENCODE assays, including transcription factor binding sites and histone modifications   | [ENCODE](https://www.encodeproject.org/)
