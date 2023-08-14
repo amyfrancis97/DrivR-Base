@@ -1,7 +1,12 @@
 # DrivR-Base
 
 ## Introduction and Overview
-The following repository contains scripts for extracting feature information for single nucleotide variants (SNV's) from different databases. 
+The following repository contains scripts for extracting feature information for single nucleotide variants (SNV's) from different databases. The features included in this extraction process are the following:
+
+* 10 sequence conservation and uniqueness features from UCSC genome browser , includinP and PhastCons scores
+* 3 Variant Effect Predictor features, including amino acid prediction, consequence on transcripts, and distances to transcripts
+* 125 dinucleotide properties for wild-type and mutant nucleotide sequences
+* 5DNA shape properties
 
 ## Table of Contents
 
