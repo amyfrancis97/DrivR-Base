@@ -15,18 +15,6 @@ The following repository contains scripts for extracting feature information for
 |         FG9         | Results for 10 different ENCODE assays, including transcription factor binding sites and histone modifications   | [ENCODE](https://www.encodeproject.org/)
 |         FG10        | AlphaFold structural conformation and atom properties at the predicted amino acid site                           | [AlphaFold](https://alphafold.ebi.ac.uk/)
 
-
-* FG1: 20 sequence conservation and uniqueness features from UCSC genome browser , including PhyloP and PhastCons scores.
-* FG2: 3 Variant Effect Predictor features, including amino acid prediction, consequence on transcripts, and distances to transcripts
-* FG3: 125 dinucleotide properties for wild-type and mutant nucleotide sequences
-* FG4:  5 DNA shape properties, including electrostatic potential, minor groove width, Roll, propeller twist (ProT) and helix twist (HelT)
-* FG5: GC-content and CpG counts for various window sizes.
-* FG6: kernel-based sequence similarity measures
-* FG7: scores for 13 different amino acid substitution matrices
-* FG8: 533 amino acid properties for both wild-type and mutant amino acids
-* FG9: Results for 10 different ENCODE assays, including transcription factor binding sites and histone modifications.
-* FG10: AlphaFold structural conformation and atom properties at the predicted amino acid site
-
 ## Table of Contents
 
 - [Data Input Structure](#data-input-structure)
