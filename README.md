@@ -115,6 +115,7 @@ Contributions are welcome! Follow the guidelines in CONTRIBUTING.md
 This project is licensed under [LICENSE](https://github.com/amyfrancis97/DrivR-Base/blob/main/LICENSE).
 
 ## Acknowledgments
+Special thanks to:
 Tom Gaunt
 Colin Campbell
 Cancer Research UK
@@ -122,5 +123,6 @@ University of Bristol
 MRC Integrative Cancer Epidemiology Unit
 
 ## Contact
-amy.francis@bristol.ac.uk
+For inquiries, contact us at [amy.francis@bristol.ac.uk](mailto:amy.francis@bristol.ac.uk).
+
 
