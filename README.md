@@ -1,7 +1,22 @@
 # DrivR-Base
 
 ## Introduction and Overview
-The following repository contains scripts for extracting feature information for single nucleotide variants (SNV's) from different databases. These features can be used as input of machine learning models to predict the functional impact of genetic variants in human genome sequencing. The features included in this framework are divided into separate sub-directories reflecting different feature groups (**FG_**), based on concept and data source. The features that are extracted in this framework include the following:
+Welcome to DrivR-Base! This repository contains scripts for extracting feature information from different databases for single nucleotide variants (SNVs). These features are designed to be inputs for machine learning models, aiding in the prediction of functional impacts of genetic variants in human genome sequencing. The repository is organized into separate sub-directories for different feature groups (**FG_**), each serving a unique purpose.
+
+## Table of Contents
+- [Introduction and Overview](#introduction-and-overview)
+- [Table of Contents](#table-of-contents)
+- [Feature Descriptions and Sources](#feature-descriptions)
+- [Data Input Structure](#data-input-structure)
+- [Installation](#installation)
+- [Directory Structure](#directory-structure)
+- [Feature Description & Usage](#feature-description--usage)
+- [Contributing](#contributing)
+- [License](#license)
+- [Acknowledgments](#acknowledgments)
+- [Contact](#contact)
+
+## Feature Descriptions and Sources
 
 | Feature Group Label |                                             Feature Group Description                                            |                          Source                         |
 | ------------------- | ---------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------- |
@@ -15,18 +30,6 @@ The following repository contains scripts for extracting feature information for
 |         FG9         | Results for 10 different ENCODE assays, including transcription factor binding sites and histone modifications   | [ENCODE](https://www.encodeproject.org/)
 |         FG10        | AlphaFold structural conformation and atom properties at the predicted amino acid site                           | [AlphaFold](https://alphafold.ebi.ac.uk/)
 
-## Table of Contents
-
-- [Data Input Structure](#data-input-structure)
-- [Installation](#installation)
-- [Directory Structure](#directory-structure)
-- [Feature Description & Usage](#usage)
-- [Contributing](#contributing)
-- [License](#license)
-- [Acknowledgments](#acknowledgments)
-- [Changelog](#changelog)
-- [FAQ](#faq)
-- [Contact](#contact)
 
 ## Data Input Structure
 All variant files must be presented in the format shown in the following table:
@@ -103,6 +106,12 @@ DrivR-Base/
 ## Feature Description & Usage
 ### FG1_conservation
 #### 1_reformat.sh
+
+## Contributing
+Contributions are welcome! Follow the guidelines in CONTRIBUTING.md
+
+## License
+This project is licensed under [LICENSE](https://github.com/amyfrancis97/DrivR-Base/blob/main/LICENSE).
 
 ## Acknowledgments
 Tom Gaunt
