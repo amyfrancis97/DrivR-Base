@@ -3,9 +3,13 @@
 ## Introduction and Overview
 The following repository contains scripts for extracting feature information for single nucleotide variants (SNV's) from different databases. These features can be used as input of machine learning models to predict the functional impact of genetic variants in human genome sequencing. The features included in this framework are divided into separate sub-directories reflecting different feature groups (**FG_**), based on concept and data source. The features that are extracted in this framework include the following:
 
-| Feature Group Label |                                             Feature Group Description                                            |  Source  |
-| ------------------- | ---------------------------------------------------------------------------------------------------------------- | -------- |
-|         FG1         | 20 sequence conservation and uniqueness features from UCSC genome browser, including PhyloP and PhastCons scores |  [UCSC](http://hgdownload.cse.ucsc.edu/goldenpath/hg38/)|
+| Feature Group Label |                                             Feature Group Description                                            |                          Source                         |
+| ------------------- | ---------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------- |
+|         FG1         | 20 sequence conservation and uniqueness features from UCSC genome browser, including PhyloP and PhastCons scores | [UCSC](http://hgdownload.cse.ucsc.edu/goldenpath/hg38/) |
+|         FG2         | 3 Variant Effect Predictor features, including amino acid prediction, consequences, and distances to transcripts | [VEP Cache](https://www.ensembl.org/info/docs/tools/vep/script/vep_cache.html) |
+|         FG3         | 125 dinucleotide properties for wild-type and mutant nucleotide sequences                                        | [DiProGB](https://diprodb.fli-leibniz.de/ShowTable.php) |
+|         FG4         | 5 DNA shape properties, including electrostatic potential and minor groove width                                 | [DNAshapeR](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4824130/) |
+
 
 * FG1: 20 sequence conservation and uniqueness features from UCSC genome browser , including PhyloP and PhastCons scores.
 * FG2: 3 Variant Effect Predictor features, including amino acid prediction, consequence on transcripts, and distances to transcripts
