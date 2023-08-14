@@ -1,12 +1,22 @@
 # DrivR-Base
 
 ## Introduction and Overview
-The following repository contains scripts for extracting feature information for single nucleotide variants (SNV's) from different databases. The features included in this extraction process are the following:
+The following repository contains scripts for extracting feature information for single nucleotide variants (SNV's) from different databases. These features can be used as input of machine learning models to predict the functional impact of genetic variants in human genome sequencing. The features included in this framework are divided into separate sub-directories reflecting different feature groups (**FG_**), based on concept and data source. The features that are extracted in this framework include the following:
 
-* 10 sequence conservation and uniqueness features from UCSC genome browser , includinP and PhastCons scores
-* 3 Variant Effect Predictor features, including amino acid prediction, consequence on transcripts, and distances to transcripts
-* 125 dinucleotide properties for wild-type and mutant nucleotide sequences
-* 5DNA shape properties
+| Feature Group Label |                                             Feature Group Description                                            |  Source  |
+| ------------------- | ---------------------------------------------------------------------------------------------------------------- | -------- |
+|         FG1         | 20 sequence conservation and uniqueness features from UCSC genome browser, including PhyloP and PhastCons scores |  [UCSC](http://hgdownload.cse.ucsc.edu/goldenpath/hg38/)|
+
+* FG1: 20 sequence conservation and uniqueness features from UCSC genome browser , including PhyloP and PhastCons scores.
+* FG2: 3 Variant Effect Predictor features, including amino acid prediction, consequence on transcripts, and distances to transcripts
+* FG3: 125 dinucleotide properties for wild-type and mutant nucleotide sequences
+* FG4:  5 DNA shape properties, including electrostatic potential, minor groove width, Roll, propeller twist (ProT) and helix twist (HelT)
+* FG5: GC-content and CpG counts for various window sizes.
+* FG6: kernel-based sequence similarity measures
+* FG7: scores for 13 different amino acid substitution matrices
+* FG8: 533 amino acid properties for both wild-type and mutant amino acids
+* FG9: Results for 10 different ENCODE assays, including transcription factor binding sites and histone modifications.
+* FG10: AlphaFold structural conformation and atom properties at the predicted amino acid site
 
 ## Table of Contents
 
