@@ -38,7 +38,7 @@ def query_api(path, query):
     return headers, result
 
 # Define the query for retrieving feature files
-query = "type=File&assay_title={}&status=released&file_format=bed&file_type=bed+broadPeak&file_type=bed+narrowPeak&file_type=bed+bedMethyl&assembly=GRCh38&limit=all&format=json"
+query = "type=File&assay_title={}&status=released&output_category=annotation&file_format=bigBed&file_format=bed&assembly=GRCh38&limit=all&format=json"
 
 # Query the API for the feature group
 headers, result = query_api("search/", query.format(feature))
@@ -135,6 +135,8 @@ def process_row(row, feature_files):
         os.remove(accession + ".bed.gz")
         # Save vepData dataframe to CSV
 
+    df_filtered["start"] = df_filtered["start"].astype("int")
+    df_filtered["end"] = df_filtered["end"].astype("int")
     if os.path.exists(feature + "_results_encode_appended.txt"):
         df_filtered.to_csv(feature + "_results_encode_appended.txt", mode='a', header=False, index=None, sep="\t")
     else:

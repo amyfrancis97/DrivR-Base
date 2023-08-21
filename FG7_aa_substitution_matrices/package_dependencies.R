@@ -11,8 +11,8 @@ if (!require("dplyr", quietly = TRUE))
 library('dplyr')
 library('stringr')
 library("tidyverse")
-source("/user/home/uw20204/DrivR-Base/config.R")
+source("config.R")
 
 # Load the data list from the file
-sub.mat <- readRDS("/user/home/uw20204/DrivR-Base/FG7_aa_substitution_matrices/sub.mat.RDS")
+sub.mat <- readRDS(substitution_matrix)
 print(sub.mat)
