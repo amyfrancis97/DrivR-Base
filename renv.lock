@@ -4,7 +4,7 @@
     "Repositories": [
       {
         "Name": "CRAN",
-        "URL": "https://cran.ma.imperial.ac.uk"
+        "URL": "https://cloud.r-project.org"
       }
     ]
   },
@@ -313,18 +313,13 @@
     },
     "Peptides": {
       "Package": "Peptides",
-      "Version": "2.4.4",
-      "Source": "GitHub",
-      "RemoteType": "github",
-      "RemoteHost": "api.github.com",
-      "RemoteRepo": "Peptides",
-      "RemoteUsername": "dosorio",
-      "RemoteRef": "HEAD",
-      "RemoteSha": "f36996a42f9bea6d852a38d62e4188ee2838a744",
+      "Version": "2.4.5",
+      "Source": "Repository",
+      "Repository": "CRAN",
       "Requirements": [
         "Rcpp"
       ],
-      "Hash": "db671e0da1f12ca4d3b8041961791f14"
+      "Hash": "7542f0e78caaeb8df917d6f7d51ac9a2"
     },
     "R6": {
       "Package": "R6",
