@@ -7,12 +7,11 @@
 #SBATCH --account=sscm013903
 
 # Load required modules
-cpanm Archive::Zip
-cpanm DBD::mysql
-module load apps/bayestraits apps/bcftools apps/samtools apps/tabix lib/htslib
+source config.sh
+source ${module_dependencies_loc}module_dependencies.sh
 
-# You must also have samtools/tabix/bedtools loaded in the environment
-cd ~/ensembl-vep
+# relocate to where the cache was downloaded
+cd ${vep_cache}ensembl-vep
 
 # Set input variables
 file="$1"
@@ -20,17 +19,15 @@ newDir="$2"
 
 # Uncomment and modify the following commands according to your needs
 # Query VEP cache for all variant effect output
-./vep -i "${file[@]}" --fork 4 --offline --cache --force_overwrite --vcf --protein --uniprot -o "${newDir[@]}$(basename "$file")_variant_effect_output_all.txt"
+./vep -i "${file[@]}" --fork 4 --offline --cache --force_overwrite --vcf --protein --uniprot -o "${newDir[@]}$(basename "$file")_variant_effect_output_all.txt" --no_html
 
 # Query VEP cache for consequence features
-./vep -i "${file[@]}" --fork 4 --offline --cache --force_overwrite --vcf --fields "Consequence" -o "${newDir[@]}$(basename "$file")_variant_effect_output_conseq.txt"
+./vep -i "${file[@]}" --fork 4 --offline --cache --force_overwrite --vcf --fields "Consequence" -o "${newDir[@]}$(basename "$file")_variant_effect_output_conseq.txt" --no_html
 
 # Query VEP cache for AA features
-./vep -i "${file[@]}" --fork 4 --offline --cache --force_overwrite --vcf --fields "Amino_acids" -o "${newDir[@]}$(basename "$file")_variant_effect_output_AA.txt"
+./vep -i "${file[@]}" --fork 4 --offline --cache --force_overwrite --vcf --fields "Amino_acids" -o "${newDir[@]}$(basename "$file")_variant_effect_output_AA.txt" --no_html
 
 # Query VEP cache for distance features
-./vep -i "${file[@]}" --fork 4 --offline --cache --force_overwrite --vcf --fields "DISTANCE" -o "${newDir[@]}$(basename "$file")_variant_effect_output_distance.txt"
+./vep -i "${file[@]}" --fork 4 --offline --cache --force_overwrite --vcf --fields "DISTANCE" -o "${newDir[@]}$(basename "$file")_variant_effect_output_distance.txt" --no_html
 
-# Change to the appropriate directory
-#cd X
 

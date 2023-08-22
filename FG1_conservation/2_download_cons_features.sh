@@ -7,13 +7,13 @@
 #SBATCH --account=sscm013903
 
 # Load required modules
-./module_dependencies.sh
+source config.sh
+source ${module_dependencies_loc}module_dependencies.sh
 
 # Set the directory for conservation files
-featureDir="/bp1/mrcieu1/data/ucsc/public/ConsAll/"
-cd "$featureDir"
+cd $download_cons_dir
 
-# Conservation files
+# Conservation files≈
 files=(
   phyloP4way phyloP7way phyloP17way phyloP20way phyloP30way phyloP100way phyloP470way
   phastCons4way phastCons7way phastCons17way phastCons20way phastCons30way phastCons100way phastCons470way
@@ -23,7 +23,7 @@ files=(
 for file in "${files[@]}"; do
   fileName="hg38.${file}.bw"
   filePath="http://hgdownload.cse.ucsc.edu/goldenpath/hg38/${file}/hg38.${file}.bw"
-  sbatch --export=fileName="${fileName}",filePath="${filePath}" /user/home/uw20204/DrivR-Base/FG1_conservation/download_convert.job 
+  sbatch --export=fileName="${fileName}",filePath="${filePath}" ${working_dir}download_convert.job 
 done
 
 # Additional conservation files
@@ -37,7 +37,7 @@ files=(
 for file in "${files[@]}"; do
   fileName="${file}.bw"
   filePath="http://hgdownload.soe.ucsc.edu/gbdb/hg38/hoffmanMappability/${file}.bw"
-  sbatch --export=fileName="${fileName}",filePath="${filePath}" /user/home/uw20204/DrivR-Base/FG1_conservation/download_convert.job
+  sbatch --export=fileName="${fileName}",filePath="${filePath}" ${working_dir}download_convert.job
 done
 
 

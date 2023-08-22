@@ -1,9 +1,12 @@
 # Get DNA shapes of 10 BP regions overlapping with variant
-#.libPaths("/bp1/mrcieu1/users/uw20204/paper1/features/RpackageLib") 
-
-source("package_dependencies.R")
-
+# Load project path and any other variables
 source("config.R")
+
+# Load renv project from environment
+renv::load(project_path)
+
+library(c(BSgenome, bios2mds, BSgenome.Hsapiens.UCSC.hg38, DNAshapeR, usethis, dplyr, withr, ggplot2, tzdb, readr,
+tidyverse, data.table, ps, devtools, foreach, iterators, doParallel, doSNOW, Peptides, stringr,tidyr ))
 
 args <- commandArgs()
 # Reads in variant file in the format: "chrom", "start", "end", "ref", "alt", "R", "driver_stat"

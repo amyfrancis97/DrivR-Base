@@ -6,8 +6,9 @@
 #SBATCH --chdir=/user/home/uw20204/DrivR-Base/FG2_vep
 #SBATCH --account=sscm013903
 
-# Install modules and packages
-./module_dependencies.sh
+# Load required modules
+source config.sh
+source ${module_dependencies_loc}module_dependencies.sh
 
 # Set input variables
 file="$1"

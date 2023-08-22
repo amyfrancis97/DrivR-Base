@@ -16,12 +16,12 @@ outputDir="/bp1/mrcieu1/data/encode/public/test/"
 # FG1: Get conservation features
 #sbatch FG1_conservation/1_reformat.sh $variantDir $variantFileName $variantDir
 #sbatch FG1_conservation/2_download_cons_features.sh $variantDir $variantFileName $variantDir
-#sbatch FG1_conservation/3_query_cons_features.sh $variantDir $variantFileName $variantDir
+sbatch FG1_conservation/3_query_cons_features.sh $variantDir $variantFileName $variantDir
 
 # FG2: Get VEP features - DONE
-#sbatch FG2_vep/1_get_vep_cache.sh ${scriptDir}FG2_vep
-#sbatch  FG2_vep/2_query_vep_cache.sh $variantDir $variantFileName $outputDir 
-#sbatch FG2_vep/3_reformat_vep_res.sh $variantDir $variantFileName $outputDir
+#sbatch FG2_vep/1_download_vep.sh ${scriptDir}FG2_vep
+#sbatch  FG2_vep/2_query_vep.sh $variantDir $variantFileName $outputDir 
+sbatch FG2_vep/3_reformat_vep_res.sh $variantDir $variantFileName $outputDir
 
 # FG3: Get dinucleotide properties - DONE
 #sbatch FG3_dinucleotide_properties/1_get_dinuc_properties.sh $variantDir $variantFileName $outputDir
@@ -44,4 +44,4 @@ outputDir="/bp1/mrcieu1/data/encode/public/test/"
 # FG10: Get alpha fold scores -DONE but may need to change sleep time depending on query size
 #tail -n +6 ${variantDir}${variantFileName}_variant_effect_output_all.txt > ${variantDir}${variantFileName}_variant_effect_output_all.bed
 #sbatch FG10_alpha_fold/get_alpha_fold_scores_struct_conform.sh $outputDir $variantFileName
-sbatch FG10_alpha_fold/get_alpha_fold_scores_atom.sh $outputDir $variantFileName
+#sbatch FG10_alpha_fold/get_alpha_fold_scores_atom.sh $outputDir $variantFileName

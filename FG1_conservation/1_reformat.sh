@@ -7,7 +7,8 @@
 #SBATCH --account=sscm013903
 
 # Load required modules
-./module_dependencies.sh
+source config.sh
+source ${module_dependencies_loc}module_dependencies.sh
 
 # Print input arguments
 echo "Input files: ${1}${2}"
@@ -18,4 +19,4 @@ cat "${1}${2}" | awk '{print $1"\t"$2-1"\t"$2"\t"$4"\t"$5"\t"$6"\t"$7}' | bedtoo
 
 # Perform additional checks
 python check_formatting.py "${3}${basename}.reformatted.bed" "${3}${basename}.reformatted.sorted.bed"
-
+rm "${3}${basename}.reformatted.bed"

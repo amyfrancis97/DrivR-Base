@@ -6,11 +6,9 @@
 #SBATCH --chdir=/user/home/uw20204/DrivR-Base/FG2_vep
 #SBATCH --account=sscm013903
 
-# Install modules and packages
-./module_dependencies.sh
-
-# After installation, download the GRCh38 genome cache
-./vep -a acf -s homo_sapiens -y GRCh38 --cache_version 104 --cache -dir_cache /path/to/cache/directory
+# Load required modules
+source config.sh
+source ${module_dependencies_loc}module_dependencies.sh
 
 # Set input and output directories
 variantDir="$1"
