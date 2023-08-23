@@ -33,13 +33,13 @@ outputDir="/bp1/mrcieu1/data/encode/public/test/"
 #sbatch FG5_gc_CpG/1_get_gc_CpG.sh $variantDir $variantFileName $outputDir
 
 # FG6: Get kernels - DONE
-sbatch FG6_kernel/1_get_kernel.sh $variantDir $variantFileName $outputDir
+#sbatch FG6_kernel/1_get_kernel.sh $variantDir $variantFileName $outputDir
 
 # FG7: Get aa substitution matrices - DONE
 #sbatch FG7_aa_substitution_matrices/1_get_aa_matrices.sh $outputDir
 
 # FG8: Get amino acid properties - DONE
-#sbatch FG8_aa_properties/1_get_aa_properties.sh $outputDir 
+sbatch FG8_aa_properties/1_get_aa_properties.sh $outputDir 
 
 # FG10: Get alpha fold scores -DONE but may need to change sleep time depending on query size
 #tail -n +6 ${variantDir}${variantFileName}_variant_effect_output_all.txt > ${variantDir}${variantFileName}_variant_effect_output_all.bed

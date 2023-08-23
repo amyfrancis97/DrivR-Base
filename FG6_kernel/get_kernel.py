@@ -32,7 +32,7 @@ def process_kmer(windowSize, kmerSize):
     spectrumdf["pos"] = spectrumdf["pos"].astype(int)
     spectrumdf = spectrumdf.rename(columns={0: str(windowSize*2) + "_" + str(kmerSize) + "_w", 1: str(windowSize*2) + "_" + str(kmerSize) + "_x", 2: str(windowSize*2) + "_" + str(kmerSize) + "_y", 3: str(windowSize*2) + "_" + str(kmerSize) + "_z"})
     # save each result to CSV file
-    spectrumdf.to_csv(outputDir + "kernels/" + str(windowSize*2) + "_" + str(kmerSize) + "_kernel.txt", sep="\t")
+    spectrumdf.to_csv(outputDir  + str(windowSize*2) + "_" + str(kmerSize) + "_kernel.txt", sep="\t")
 
 # unput is the variant dataset and window size either side of the variants (e.g. w of 100 = 200 bp in total)
 def getSequences(dataset, window_size, k):
@@ -121,12 +121,12 @@ def getFinalSpectrumDf(windowSize, kmerSize):
     spectrumdf = spectrumdf.rename(columns = {0: str(windowSize*2) + "_" + str(kmerSize) + "_w", 1: str(windowSize*2) + "_" + str(kmerSize) + "_x", 2: str(windowSize*2) + "_" + str(kmerSize) + "_y", 3: str(windowSize*2) + "_" + str(kmerSize) + "_z"})
     
     # Check if the output file already exists
-    if os.path.exists(outputDir + "kernels/" + str(windowSize) + "_" + str(kmerSize) + "_kernel.txt"):
+    if os.path.exists(outputDir + str(windowSize) + "_" + str(kmerSize) + "_kernel.txt"):
         # If the file exists, append the new data to it
-        spectrumdf.to_csv(outputDir + "kernels/" + str(windowSize) + "_" + str(kmerSize) + "_kernel.txt", sep='\t', mode='a', header=False)
+        spectrumdf.to_csv(outputDir + str(windowSize) + "_" + str(kmerSize) + "_kernel.txt", sep='\t', mode='a', header=False)
     else:
         # If the file doesn't exist, create a new file and write the data to it
-        spectrumdf.to_csv(outputDir + "kernels/" + str(windowSize) + "_" + str(kmerSize) + "_kernel.txt", sep='\t', index=False)
+        spectrumdf.to_csv(outputDir  + str(windowSize) + "_" + str(kmerSize) + "_kernel.txt", sep='\t', index=False)
 
 
 if __name__ == "__main__":

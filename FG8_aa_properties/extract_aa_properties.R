@@ -1,7 +1,33 @@
 # Import the AAdata matrix from the peptides package
 # The matrix contains different amino acid properties 
 # Relating to each of the 20 amino acids
-source("package_dependencies.R")
+# Get DNA shapes of 10 BP regions overlapping with variant
+# Load project path and any other variables
+source("config.R")
+
+library(bios2mds)
+library(BSgenome.Hsapiens.UCSC.hg38)
+library(DNAshapeR)
+library(usethis)
+library(dplyr)
+library(withr)
+library(ggplot2)
+library(tzdb)
+library(readr)
+library(tidyverse)
+library(data.table)
+library(ps)
+library(devtools)
+library(foreach)
+library(iterators)
+library(doParallel)
+library(doSNOW)
+library(Peptides)
+library(stringr)
+library(tidyr)
+
+library("data.table")
+load(aa_properties)
 
 args <- commandArgs()
 print(args)
