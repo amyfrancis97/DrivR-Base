@@ -6,8 +6,4 @@
 #SBATCH --chdir=/user/home/uw20204/DrivR-Base/FG5_gc_CpG
 #SBATCH --account=sscm013903
 
-# Load required modules
-source config.sh
-source ${module_dependencies_loc}module_dependencies.sh
-
 python get_gc_CpG.py $1 $2 $3

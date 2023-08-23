@@ -5,12 +5,6 @@
 #SBATCH --time=3-00:00:0
 #SBATCH --chdir=/user/home/uw20204/DrivR-Base/FG3_dinucleotide_properties
 #SBATCH --account=sscm013903
-##SBATCH --array=1-22
-
-# Download dinucleotide property table from https://diprodb.fli-leibniz.de/ShowTable.php
-# Load required modules
-source config.sh
-source ${module_dependencies_loc}module_dependencies.sh
 
 # Activate the renv environment in which to run the Rscript
 RENVCMD="/user/home/uw20204/DrivR-Base/FG3_dinucleotide_properties -e 'renv::activate(\"/user/home/uw20204/renv.lock\")'"
