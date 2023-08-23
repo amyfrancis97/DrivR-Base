@@ -1,7 +1,29 @@
 # Get DNA shapes of 10 BP regions overlapping with variant
 # Gets the shape of the wild-type regions with the ref allele
 
-source("package_dependencies.R")
+# Get DNA shapes of 10 BP regions overlapping with variant
+
+library(bios2mds)
+library(BSgenome.Hsapiens.UCSC.hg38)
+library(DNAshapeR)
+library(usethis)
+library(dplyr)
+library(withr)
+library(ggplot2)
+library(tzdb)
+library(readr)
+library(tidyverse)
+library(data.table)
+library(ps)
+library(devtools)
+library(foreach)
+library(iterators)
+library(doParallel)
+library(doSNOW)
+library(Peptides)
+library(stringr)
+library(tidyr)
+
 args <- commandArgs()
 print(args)
 # Reads in variant file in the format: "chrom", "pos", "end", "ref", "alt", "R", "driver_stat"

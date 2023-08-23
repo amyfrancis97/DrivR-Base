@@ -24,13 +24,13 @@ outputDir="/bp1/mrcieu1/data/encode/public/test/"
 #sbatch FG2_vep/3_reformat_vep_res.sh $variantDir $variantFileName $outputDir
 
 # FG3: Get dinucleotide properties - DONE
-sbatch FG3_dinucleotide_properties/1_get_dinuc_properties.sh $variantDir $variantFileName $outputDir
+#sbatch FG3_dinucleotide_properties/1_get_dinuc_properties.sh $variantDir $variantFileName $outputDir
 
 # FG4: Get dna shapes -DONE
 #sbatch FG4_dna_shape/1_get_dna_shape.sh  $variantDir $variantFileName $outputDir
 
 # FG5: Get gc & CpG - DONE
-#sbatch FG5_gc_CpG/1_get_gc_CpG.sh $variantDir $variantFileName $outputDir
+sbatch FG5_gc_CpG/1_get_gc_CpG.sh $variantDir $variantFileName $outputDir
 
 # FG6: Get kernels - DONE
 #sbatch FG6_kernel/1_get_kernel.sh $variantDir $variantFileName $outputDir

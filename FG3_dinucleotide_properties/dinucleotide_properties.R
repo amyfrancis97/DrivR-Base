@@ -2,9 +2,6 @@
 # Load project path and any other variables
 source("config.R")
 
-# Load renv project from environment
-renv::load(renv_project)
-
 library(bios2mds)
 library(BSgenome.Hsapiens.UCSC.hg38)
 library(DNAshapeR)
