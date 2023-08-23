@@ -19,15 +19,15 @@ newDir="$2"
 
 # Uncomment and modify the following commands according to your needs
 # Query VEP cache for all variant effect output
-./vep -i "${file[@]}" --fork 4 --offline --cache --force_overwrite --vcf --protein --uniprot -o "${newDir[@]}$(basename "$file")_variant_effect_output_all.txt" --no_html
+./vep -i "${file[@]}" --fork 4 --offline --cache --force_overwrite --vcf --protein --uniprot -o "${newDir[@]}$(basename "$file")_variant_effect_output_all.txt" --no_stats
 
 # Query VEP cache for consequence features
-./vep -i "${file[@]}" --fork 4 --offline --cache --force_overwrite --vcf --fields "Consequence" -o "${newDir[@]}$(basename "$file")_variant_effect_output_conseq.txt" --no_html
+./vep -i "${file[@]}" --fork 4 --offline --cache --force_overwrite --vcf --fields "Consequence" -o "${newDir[@]}$(basename "$file")_variant_effect_output_conseq.txt" --no_stats
 
 # Query VEP cache for AA features
-./vep -i "${file[@]}" --fork 4 --offline --cache --force_overwrite --vcf --fields "Amino_acids" -o "${newDir[@]}$(basename "$file")_variant_effect_output_AA.txt" --no_html
+./vep -i "${file[@]}" --fork 4 --offline --cache --force_overwrite --vcf --fields "Amino_acids" -o "${newDir[@]}$(basename "$file")_variant_effect_output_AA.txt" --no_stats
 
 # Query VEP cache for distance features
-./vep -i "${file[@]}" --fork 4 --offline --cache --force_overwrite --vcf --fields "DISTANCE" -o "${newDir[@]}$(basename "$file")_variant_effect_output_distance.txt" --no_html
+./vep -i "${file[@]}" --fork 4 --offline --cache --force_overwrite --vcf --fields "DISTANCE" -o "${newDir[@]}$(basename "$file")_variant_effect_output_distance.txt" --no_stats
 
 

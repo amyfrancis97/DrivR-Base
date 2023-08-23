@@ -3,10 +3,28 @@
 source("config.R")
 
 # Load renv project from environment
-renv::load(project_path)
+renv::load(renv_project)
 
-library(c(BSgenome, bios2mds, BSgenome.Hsapiens.UCSC.hg38, DNAshapeR, usethis, dplyr, withr, ggplot2, tzdb, readr,
-tidyverse, data.table, ps, devtools, foreach, iterators, doParallel, doSNOW, Peptides, stringr,tidyr ))
+library(bios2mds)
+library(BSgenome.Hsapiens.UCSC.hg38)
+library(DNAshapeR)
+library(usethis)
+library(dplyr)
+library(withr)
+library(ggplot2)
+library(tzdb)
+library(readr)
+library(tidyverse)
+library(data.table)
+library(ps)
+library(devtools)
+library(foreach)
+library(iterators)
+library(doParallel)
+library(doSNOW)
+library(Peptides)
+library(stringr)
+library(tidyr)
 
 args <- commandArgs()
 # Reads in variant file in the format: "chrom", "start", "end", "ref", "alt", "R", "driver_stat"

@@ -21,3 +21,5 @@ echo $i
 sbatch reformat_vep.sh "${variantDir}${variantFile}" "${outputDir}" "${i}";
 done
 
+wait 
+

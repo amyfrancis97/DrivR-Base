@@ -17,3 +17,7 @@ vep_output="$3"
 
 # Run Python script for reformatting
 python reformat_vep_${vep_output}.py  "${newDir}" "${newDir[@]}$(basename "$file")_"
+
+wait 
+
+
