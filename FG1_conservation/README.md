@@ -3,18 +3,6 @@
 ## Introduction and Overview
 The **FG1_conservation** module is designed to facilitate the reformatting, downloading, and conversion of conservation and uniqueness files from the UCSC genome browser. It includes a set of scripts and resources to streamline the process.
 
-## Directory Structure
-```bash
-DrivR-Base/
-|-- FG1_conservation/
-|   |-- 1_reformat.sh
-|   |-- 2_download_cons_features.sh
-|   |-- 3_query_cons_features.sh
-|   |-- check_formatting.py
-|   |-- download_convert.job
-|   |-- module_dependencies.sh
-|   |-- package_dependencies.py
-```
 ## Packages and Dependencies
 All required packages and dependencies are managed in the following files:
 
