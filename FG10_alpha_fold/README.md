@@ -3,18 +3,6 @@
 ## Introduction and Overview
 This repository contains scripts for extracting key structural information from alpha-fold protein models. The extracted data includes atomic site properties and structural conformation features.
 
-## Directory Structure
-The directory structure is as follows:
-
-```bash
-DrivR-Base/
-|-- FG10_alpha_fold/
-|   |-- get_alpha_fold_scores_atom.sh
-|   |-- get_alpha_fold_atom.py
-|   |-- get_alpha_fold_scores_struct_conform.sh
-|   |-- get_alpha_fold_struct_conf.py
-|   |-- package_dependencies.py
-```
 ## Packages and Dependencies
 Package dependencies are managed through the **package_dependencies.py** script. 
 
