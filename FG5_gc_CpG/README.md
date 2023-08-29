@@ -3,15 +3,6 @@
 ## Introduction and Overview
 The **FG5_gc_CpG** module is designed to calculate and analyze GC content and CpG-related features within nucleotide windows for given variants. By querying the human GRCh38 genome, this script enables the extraction of relevant sequence information and the calculation of essential molecular properties.
 
-## Directory Structure
-```bash
-DrivR-Base/
-|-- FG5_gc_CpG/
-|   |-- 1_get_gc_CpG.sh
-|   |-- get_gc_CpG.py
-|   |-- packages_dependencies.py
-```
-
 ## Packages and Dependencies
 The module relies on the following package for efficient dependency management:
 
