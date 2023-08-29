@@ -7,15 +7,6 @@ The outcome of the spectrum kernel algorithm results in two k-spectra: one repre
 
 Leveraging spectrum kernels and the associated k-spectra, the goal is to capture and quantify the specific alterations and disruptions introduced by the SNV within the flanking sequence regions. This approach provides valuable insights into the impact of the SNV on the overall sequence composition, enhancing the understanding of potential functional consequences and their relevance in driver prediction.
 
-## Directory Structure
-```bash
-DrivR-Base/
-|-- FG3_kernel/
-|   |-- 1_get_kernel.sh
-|   |-- get_kernel.py
-|   |-- package_dependencies.py
-|   |-- config.py
-```
 
 ## Packages and Dependencies
 The management of packages and module dependencies is facilitated through the following files:
