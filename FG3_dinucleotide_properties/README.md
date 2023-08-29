@@ -3,17 +3,6 @@
 ## Introduction and Overview
 **FG3_dinucleotide_properties** is a module within the **DrivR-Base** framework designed to analyze the effects of genetic variants on dinucleotide properties. This module enables the exploration of 125 thermodynamic, structural, and other dinucleotide properties by querying variant sequences against a comprehensive dinucleotide property database. The module facilitates the extraction of meaningful insights into the impact of variants on nucleotide interactions.
 
-## Directory Structure
-```bash
-DrivR-Base/
-|-- FG3_dinucleotide_properties/
-|   |-- 1_get_dinuc_properties.sh
-|   |-- config.R
-|   |-- module_dependencies.sh
-|   |-- package_dependencies.R
-|   |-- dinucleotide_properties.R
-|   |-- dinucleotidePropertyTable.csv
-```
 ## Packages and Dependencies
 Efficient management of packages and dependencies is ensured through the following files:
 
