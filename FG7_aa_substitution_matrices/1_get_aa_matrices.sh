@@ -1,15 +1,12 @@
 #!/bin/bash
-#SBATCH --job-name=getAASubMatrices
-#SBATCH --partition=short,test,mrcieu,compute
-#SBATCH --mem=80G
-#SBATCH --time=4-00:00:0
-#SBATCH --chdir=/user/home/uw20204/DrivR-Base/FG7_aa_substitution_matrices
-#SBATCH --account=sscm013903
 
 dir=$1
 
+# specify renv location
+source config.sh
+
 # Activate the renv environment in which to run the Rscript
-RENVCMD="/user/home/uw20204/DrivR-Base/FG7_aa_substitution_matrices -e 'renv::activate(\"/user/home/uw20204/renv.lock\")'"
+RENVCMD="renv::activate(\"$renv_dir/renv.lock\")"
 
 # Separate script to get the data since sometimes bio2mds has issues being run without XQuarts 
 # Rscript get_subs_matrix_table.R

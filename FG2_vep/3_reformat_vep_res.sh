@@ -1,10 +1,4 @@
 #!/bin/bash
-#SBATCH --job-name=queryVEPCache
-#SBATCH --partition=mrcieu,compute
-#SBATCH --mem=150G
-#SBATCH --time=7-00:00:00
-#SBATCH --chdir=/user/home/uw20204/DrivR-Base/FG2_vep
-#SBATCH --account=sscm013903
 
 # Load required modules
 source config.sh

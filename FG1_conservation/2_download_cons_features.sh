@@ -1,10 +1,4 @@
 #!/bin/bash
-#SBATCH --job-name=DownloadConservationFeatures
-#SBATCH --partition=test,short,mrcieu,compute
-#SBATCH --mem=80G
-#SBATCH --time=5-00:00:00
-#SBATCH --chdir=/user/home/uw20204/DrivR-Base/FG1_conservation
-#SBATCH --account=sscm013903
 
 # Load required modules
 source config.sh

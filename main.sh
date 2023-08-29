@@ -1,4 +1,10 @@
 #!/bin/bash
+#SBATCH --job-name=reformatVariants
+#SBATCH --partition=test,short,compute
+#SBATCH --mem=150G
+#SBATCH --time=3-00:00:00
+#SBATCH --chdir=/user/home/uw20204/DrivR-Base
+#SBATCH --account=sscm013903
 
 #variantDir="/bp1/mrcieu1/data/encode/public/"
 #variantFileName="cosmicSomaMutDB.bed"
@@ -14,9 +20,10 @@ outputDir="/bp1/mrcieu1/data/encode/public/test/"
 #mkdir -p $outputDir
 
 # FG1: Get conservation features
-#sbatch FG1_conservation/1_reformat.sh $variantDir $variantFileName $variantDir
-#sbatch FG1_conservation/2_download_cons_features.sh $variantDir $variantFileName $variantDir
-#sbatch FG1_conservation/3_query_cons_features.sh $variantDir $variantFileName $variantDir
+cd FG1_conservation
+#./1_reformat.sh $variantDir $variantFileName $variantDir
+#./2_download_cons_features.sh $variantDir $variantFileName $variantDir
+./3_query_cons_features.sh $variantDir $variantFileName $variantDir
 
 # FG2: Get VEP features - DONE
 #sbatch FG2_vep/1_download_vep.sh ${scriptDir}FG2_vep
