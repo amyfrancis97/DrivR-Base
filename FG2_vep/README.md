@@ -3,21 +3,6 @@
 ## Introduction and Overview
 **FG2_vep** is a module within the **DrivR-Base** framework that provides a comprehensive toolkit for Variant Effect Prediction (VEP) analysis. It streamlines the process of downloading VEP cache, querying variants against the cache, and reformatting the query results. The module includes a set of scripts and resources to simplify and accelerate VEP analysis tasks.
 
-## Directory Structure
-```bash
-DrivR-Base/
-|-- FG2_vep/
-|   |-- 1_download_vep.sh
-|   |-- 2_query_vep.sh
-|   |-- 3_reformat_vep_res.sh
-|   |-- module_dependencies.sh
-|   |-- package_dependencies.py
-|   |-- query_vep.sh
-|   |-- reformat_vep.sh
-|   |-- reformat_vep_aa.py
-|   |-- reformat_vep_conseq.py
-|   |-- reformat_vep_distance.py
-```
 ## Packages and Dependencies
 All required packages and module dependencies are organized and managed within the following files:
 * **module_dependencies.sh**: Manages module-specific dependencies, ensuring a smooth and consistent environment.
