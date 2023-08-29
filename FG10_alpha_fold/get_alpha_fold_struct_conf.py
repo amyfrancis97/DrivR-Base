@@ -1,4 +1,11 @@
-from package_dependencies import *
+import pandas as pd
+import requests
+import os
+import sys
+import numpy as np
+from unipressed import IdMappingClient
+import time
+import re
 
 def getAlphaFoldScores(variantVEPresults, df4):
     # Replace the URL with the actual URL of the text file

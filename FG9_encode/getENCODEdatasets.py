@@ -82,14 +82,21 @@ def download_url(url):
         for chunk in r.iter_content(chunk_size=8192):
             if chunk:
                 f_out.write(chunk)
+
+    title = ""    
+    if ".bed." in file_title:
+        # Create the title for the unzipped file
+        title = re.split(pattern=r'\.bed', string=file_title)[0] + ".csv"
+    elif ".bigBed." in file_title:
+        title = re.split(pattern=r'\.bigBed', string=file_title)[0] + ".csv"
     
-    # Create the title for the unzipped file
-    title = re.split(pattern=r'\.bed', string=file_title)[0] + ".csv"
-    
-    # Unzip the downloaded file
-    with gzip.open(file_title, 'rb') as f_in:
-        with open(title, 'wb') as f_out:
-            shutil.copyfileobj(f_in, f_out)
+    if ".gz" in file_title:
+        # Unzip the downloaded file
+        with gzip.open(file_title, 'rb') as f_in:
+            with open(title, 'wb') as f_out:
+                shutil.copyfileobj(f_in, f_out)
+    else:
+        os.rename(file_title, title)
 
 def process_row(row, feature_files):
     """Process a single row of feature_files DataFrame
@@ -102,15 +109,16 @@ def process_row(row, feature_files):
         df_filtered (DataFrame): Filtered DataFrame with processed data
     """
     df_filtered = pd.DataFrame()
+    accession = feature_files.loc[row, "accession"]
+    output_type = feature_files.loc[row, "output_type"]
+    feature = feature_files.loc[row, "feature"]
+    biosample_ontology = feature_files.loc[row, "biosample_ontology"]        
     try:
-        accession = feature_files.loc[row, "accession"]
-        output_type = feature_files.loc[row, "output_type"]
-        feature = feature_files.loc[row, "feature"]
-        biosample_ontology = feature_files.loc[row, "biosample_ontology"]        
-
+        # Try different URL variations one by one
         download_url("https://www.encodeproject.org/files/" + accession + "/@@download/" + accession + ".bed.gz")
-        
         df = pd.read_csv(accession + ".csv", sep="\t", engine="python", header=None)
+        print(".bed.gz:")
+        print(df.head())
         df_filtered = df[[0, 1, 2, 6]].rename(columns={0: "chrom", 1: "start", 2: "end", 6: "value"})
         df_filtered["start"] = df_filtered["start"].astype("int")
         df_filtered["end"] = df_filtered["end"].astype("int")
@@ -129,11 +137,87 @@ def process_row(row, feature_files):
 
         os.remove(accession + ".csv")
         os.remove(accession + ".bed.gz")
-    except:
-        print("file not found")
-        os.remove(accession + ".csv")
-        os.remove(accession + ".bed.gz")
-        # Save vepData dataframe to CSV
+        
+    except requests.exceptions.HTTPError:
+        try:
+            download_url("https://www.encodeproject.org/files/" + accession + "/@@download/" + accession + ".bigBed.gz")
+            df = pd.read_csv(accession + ".csv", sep="\t", engine="python", header=None)
+            print(".bigBed.gz:")
+            print(df.head())
+            df_filtered = df[[0, 1, 2, 6]].rename(columns={0: "chrom", 1: "start", 2: "end", 6: "value"})
+            df_filtered["start"] = df_filtered["start"].astype("int")
+            df_filtered["end"] = df_filtered["end"].astype("int")
+            df_filtered["accession"] = accession
+            if "target" in feature_files.columns:
+                target = feature_files.loc[row, "target"]
+                df_filtered["target"] = target
+            else:
+                df_filtered["target"] = "n/a"
+            df_filtered["output_type"] = output_type
+            df_filtered["feature"] = feature
+            df_filtered["biosample_ontology"] = biosample_ontology
+
+            # Replace spaces with underscores in output_type column
+            df_filtered.output_type = df_filtered.output_type.str.replace(' ', '_')
+
+            os.remove(accession + ".csv")
+            os.remove(accession + ".bigBed.gz")
+
+
+        except requests.exceptions.HTTPError:
+            try:
+                download_url("https://www.encodeproject.org/files/" + accession + "/@@download/" + accession + ".bigBed")
+                df = pd.read_csv(accession + ".csv", sep="\t", engine="python", header=None)
+                print(".bigBed:")
+                print(df.head())
+                df_filtered = df[[0, 1, 2, 6]].rename(columns={0: "chrom", 1: "start", 2: "end", 6: "value"})
+                df_filtered["start"] = df_filtered["start"].astype("int")
+                df_filtered["end"] = df_filtered["end"].astype("int")
+                df_filtered["accession"] = accession
+                if "target" in feature_files.columns:
+                    target = feature_files.loc[row, "target"]
+                    df_filtered["target"] = target
+                else:
+                    df_filtered["target"] = "n/a"
+                df_filtered["output_type"] = output_type
+                df_filtered["feature"] = feature
+                df_filtered["biosample_ontology"] = biosample_ontology
+
+                # Replace spaces with underscores in output_type column
+                df_filtered.output_type = df_filtered.output_type.str.replace(' ', '_')
+
+                os.remove(accession + ".csv")
+                os.remove(accession + ".bigBed")
+
+            except requests.exceptions.HTTPError:
+                try:
+                    download_url("https://www.encodeproject.org/files/" + accession + "/@@download/" + accession + ".bed")
+                    df = pd.read_csv(accession + ".csv", sep="\t", engine="python", header=None)
+                    print(".bed:")
+                    print(df.head())
+                    df_filtered = df[[0, 1, 2, 6]].rename(columns={0: "chrom", 1: "start", 2: "end", 6: "value"})
+                    df_filtered["start"] = df_filtered["start"].astype("int")
+                    df_filtered["end"] = df_filtered["end"].astype("int")
+                    df_filtered["accession"] = accession
+                    if "target" in feature_files.columns:
+                        target = feature_files.loc[row, "target"]
+                        df_filtered["target"] = target
+                    else:
+                        df_filtered["target"] = "n/a"
+                    df_filtered["output_type"] = output_type
+                    df_filtered["feature"] = feature
+                    df_filtered["biosample_ontology"] = biosample_ontology
+
+                    # Replace spaces with underscores in output_type column
+                    df_filtered.output_type = df_filtered.output_type.str.replace(' ', '_')
+
+                    os.remove(accession + ".csv")
+                    os.remove(accession + ".bed")
+    
+
+                except requests.exceptions.HTTPError:
+                    print("Error: File not found for accession", accession)
+                    # Handle the case where none of the URLs work
 
     df_filtered["start"] = df_filtered["start"].astype("int")
     df_filtered["end"] = df_filtered["end"].astype("int")
@@ -142,6 +226,10 @@ def process_row(row, feature_files):
     else:
         df_filtered.to_csv(feature + "_results_encode_appended.txt", index=None, sep="\t")
     return df_filtered
+    
+    # Save vepData dataframe to CSV
+
+
 
 # Use ThreadPool for parallel execution
 pool = ThreadPool(processes=8)  # Adjust the number of processes as per your system's capacity

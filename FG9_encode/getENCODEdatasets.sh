@@ -1,8 +1,8 @@
 #!/bin/bash
 #SBATCH --job-name=getEncodeData
-#SBATCH --partition=compute
-#SBATCH --mem=250G
-#SBATCH --time=4-00:00:0
+#SBATCH --partition=mrcieu,test,short,compute
+#SBATCH --mem=80G
+#SBATCH --time=1-00:00:0
 #SBATCH --chdir=/user/home/uw20204/DrivR-Base/FG9_encode
 #SBATCH --account=sscm013903
 

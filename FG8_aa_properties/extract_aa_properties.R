@@ -41,8 +41,6 @@ AA = AA[AA['WT_AA'] != "-", ]
 AA = AA[AA['mutant_AA'] != "-", ]
 
 # For each variant, pull out the scores for both the wild type and mutant amino acid
-load("/user/home/uw20204/CanDrivR_scripts/features_v2/AAindex.rda")
-
 getAAExtraProperties = function(variant){
   datalist2=list()
   datalist = c()
