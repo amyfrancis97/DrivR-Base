@@ -3,15 +3,6 @@
 ## Introduction and Overview
 **FG4_dna_shape** is a module within the **DrivR-Base** framework designed to extract DNA shape features from genetic variant sequences. This module leverages the power of the DNAshapeR package to capture essential characteristics such as minor groove width (MGW), Roll, propeller twist (ProT), helix twist (HelT), and electrostatic potential (EP). By querying and analyzing variant sequences, researchers gain insights into how genetic variations impact the structural properties of DNA.
 
-## Directory Structure
-
-```bash
-DrivR-Base/
-|-- FG4_dna_shape/
-|   |-- 1_get_dna_shape.sh
-|   |-- dna_shape.R
-|   |-- package_dependencies.R
-```
 ## Packages and Dependencies
 
 Streamlined management of packages and dependencies is facilitated through the following file:
