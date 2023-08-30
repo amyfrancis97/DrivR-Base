@@ -53,11 +53,11 @@ if __name__ == "__main__":
     outputDir = sys.argv[3]
 
     # Read the CSV file into a DataFrame
-    df = pd.read_csv(f"{inputDir}/{feature}.final.bed", header=None, sep="\t")
+    df = pd.read_csv(f"{inputDir}{feature}.final.bed", header=None, sep="\t")
 
     # Extract unique variants by selecting columns 16 to 22 and dropping duplicates
     unique_variants_1 = df[range(16, 23)].drop_duplicates()
 
     # Create a result DataFrame by concatenating results for all variants
     res = pd.concat([getValues(variant) for variant in range(0, len(unique_variants_1))])
-    res.to_csv(f"{outputDir}/{feature}.bed", sep = "\t", index = None)
+    res.to_csv(f"{outputDir}{feature}.bed", sep = "\t", index = None)

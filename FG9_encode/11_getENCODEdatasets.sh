@@ -6,26 +6,26 @@
 #SBATCH --chdir=/user/home/uw20204/DrivR-Base/FG9_encode/new
 #SBATCH --account=sscm013903
 
-variantDir="/bp1/mrcieu1/data/encode/public/test/"
-variantFileName="variants.test.bed"
-variantFileNameReformat="variants.test.reformatted.sorted.bed"
-outputDir="/bp1/mrcieu1/data/encode/public/test/"
-
 # Load required modules
 source config.sh
 source ${module_dependencies_loc}module_dependencies.sh
+
+variantDir=$2
+variantFileName=$2
+outputDir=$3
 
 # Download the ENCODE datasets
 #features=("TF+ChIP-seq" "Histone+ChIP-seq" "DNase-seq" "Mint-ChIP-seq" "ATAC-seq" "eCLIP" "ChIA-PET" "GM+DNase-seq")
 features=("TF+ChIP-seq" "Histone+ChIP-seq")
 for feature in ${features[@]}; do
-    cd /user/home/uw20204/DrivR-Base/FG9_encode/new
+    cd $working_dir
+
     # Run python script to download all peak bedGraph files for each feature
-    python downloadEncode.py $feature "/bp1/mrcieu1/data/encode/public"
+    python downloadEncode.py $feature $download_dir
 
     wait
 
-    cd /bp1/mrcieu1/data/encode/public
+    cd $download_dir
 
     # Convert the file from bedGraph to bed
     for i in *${feature}.bigBed; do bigBedToBed $i "${i%.bigBed}.bed"; done
@@ -43,14 +43,15 @@ for feature in ${features[@]}; do
     # Combine the files
     cat *${feature}.bed.tmp > ${feature}.bed 
 
-    cd /user/home/uw20204/DrivR-Base/FG9_encode/new
+    cd $working_dir
 
     # Merge annotation and peaks
-    python addAnnotations.py $feature "/bp1/mrcieu1/data/encode/public"
+    python addAnnotations.py $feature $download_dir
 
     wait
 
-    cd /bp1/mrcieu1/data/encode/public
+    cd $download_dir
+
     # Remove all of the bed and bigBed files
     rm *".${feature}.bed.tmp"
     rm *"${feature}_fileInfo.txt"
@@ -62,5 +63,8 @@ for feature in ${features[@]}; do
 
     wait
 
-    python reformat_encode.py $feature "/bp1/mrcieu1/data/encode/public" "/bp1/mrcieu1/data/encode/public";
+    python reformat_encode.py $feature $download_dir $outputDir;
+
+    rm *".${feature}.final.bed"
+    rm *".${feature}_feature+anno.txt"
 done

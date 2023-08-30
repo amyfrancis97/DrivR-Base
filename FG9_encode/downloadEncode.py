@@ -81,7 +81,7 @@ def process_row(row):
     file = testdf[testdf["output_type"] == file_type].reset_index(drop=True)
     accession = file.loc[row, "accession"]
     file_url = f"https://www.encodeproject.org/files/{accession}/@@download/{accession}.bigBed"
-    dest_path = f"{dir}/{accession}.{feature}.bigBed"
+    dest_path = f"{dir}{accession}.{feature}.bigBed"
     download_file(file_url, dest_path)
 
 # Assuming 'testdf', 'dir', and 'feature' are defined
