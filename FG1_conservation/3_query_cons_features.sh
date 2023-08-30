@@ -22,5 +22,5 @@ reformattedOutput="${1}${2}"
 
 # Find intersects between cosmic/gnomad data and conservation scores
 bedtools intersect -wa -wb -a "$i" -b "$reformattedOutput" -sorted |
-  awk '{print $5"\t"$7"\t"$8"\t"$9"\t"$10"\t"$11"\t"$4}' > "${outputDir}${i[6]}_cons.out.bed";
+  awk '{print $5"\t"$7"\t"$8"\t"$9"\t"$10"\t"$11"\t"$4}' > "${outputDir}${i[6]}_cons.out.bed" &;
 done
