@@ -13,27 +13,38 @@ Make sure to have the necessary dependencies installed, including the critical r
 
 ## Script Usage
 ### 1_reformat.sh
-This script restructures the variant file to align with the format used in UCSC sequence conservation files. It adjusts the position columns to ensure accurate value matching during subsequent queries. The modification is exemplified below:
+This script restructures the variant file to align with the format used in UCSC sequence conservation files. It adjusts the position columns to ensure accurate value matching during subsequent queries. To run the script, execute the following command in the terminal prompt:
 
-Original Variant Format:
+```bash
+variant_file_location="/users/name/dir/"
+variant_file_name="variants.bed"
+./1_reformat.sh $variant_file_location $variant_file_name
+```
+
+The **variant_file_location** must end with a "/" and the variant file should be tab-delimited and should comply with the following extended bed formatting:
 
 | Chromosome | Position | Position | Reference Allele | Alternate Allele | Recurrence | Driver Status |
 | ---------- | -------- | -------- | ---------------- | ---------------- | ---------- | ------------- |
 |    chr1    |  934881  |  934881  |        A         |         G        |      1     |       1       |
 
-Reformatted Variant Format:
+The script will then reformat the positions in the file to match those in the UCSC conservation files:
 
 | Chromosome | Position | Position | Reference Allele | Alternate Allele | Recurrence | Driver Status |
 | ---------- | -------- | -------- | ---------------- | ---------------- | ---------- | ------------- |
 |    chr1    |  934880  |  934881  |        A         |         G        |      1     |       1       |
 
-This adjustment enhances compatibility with the bedtools_intersect command during queries.
 
 ### 2_download_cons_features.sh & download_convert.job
 These scripts collaboratively automate the download and conversion of conservation and uniqueness files from the UCSC genome browser.
 
 * **2_download_cons_features.sh**: Initiates batch jobs for each available feature using the **download_convert.job** script.
 * **download_convert.job**: Downloads and converts files from bigWig to bedGraph format utilizing the *bigWigToBedGraph* command within *bedtools*.
+
+To execute this script, simply run the following command in your terminal:
+
+```bash
+./2_download_cons_features.sh
+```
 
 ### check_formatting.py
 In situations where tab-separated formatting issues arise during the conversion of bed files, this Python script provides a quick solution. By importing the data and re-exporting it as a tab-separated file, this script mitigates potential disruptions in tab formatting that may occur during the conversion process.
