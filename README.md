@@ -39,9 +39,16 @@ All variant files must be presented in the format shown in the following table:
 | ---------- | -------- | -------- | ---------------- | ---------------- | ---------- | ------------- |
 |    chr1    |  934881  |  934881  |        A         |         G        |     N/A    |      N/A      |
 
-Importantly, the chromosomal position must exist in a string format with a prefix of "chr", and the positions must be in an integer format. The final two columns are optional and are not useful at this level of analysis. Hence, if these columns are not useful for the variants of interest, just fill these with N/A. This will not affect the analysis. Crucially, the chromosomal position **must** be in the GRCh38 reference genome format. All features are extracted and queried using these descriptors, if the variant is provided in the wrong reference genome, the feature information will be incorrect. 
+Importantly, the chromosomal position must exist in a string format with a prefix of "chr", and the positions must be in an integer format. The final two columns are optional and are not useful at this level of analysis. Hence, if these columns are not useful for the variants of interest, just fill these with N/A. This will not affect the analysis. Crucially, the chromosomal position **must** be in the GRCh38 reference genome format. All features are extracted and queried using these descriptors, if the variant is provided in the wrong reference genome, the feature information will be incorrect. An example variant file in the correct format can be found in the **/example** directory.
 
 ## Installation
+Various python and R packages, as well as command line tools must be installed to run these scripts. Firstly, in order to set up the python environment, you must first download and install anaconda on your system. If anaconda is not already installed on your system, please follow the instructions on the [anaconda website](https://docs.anaconda.com/free/anaconda/install/) to set this up. Once set up, you can run the **conda_setup.sh** script in the **/DrivR-Base** directory to build the conda environment from the **DrivR-Base.yml** file. To execute the script, simply run the following command in the terminal prompt:
+
+```bash
+./conda_setup.sh
+```
+
+
 
 ## Directory Structure
 ```bash
