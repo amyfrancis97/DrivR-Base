@@ -63,9 +63,14 @@ if __name__ == "__main__":
     variantDir = sys.argv[1]
     variants = variantDir + sys.argv[2]
 
+    with open(variants + "_variant_effect_output_all.txt", 'r') as fin:
+        data = fin.read().splitlines(True)
+    with open(variants + "_variant_effect_output_all.head.rem.txt", 'w') as fout:
+        fout.writelines(data[5:])
+
     results = []
     chunksize = 1000
-    for chunk in pd.read_csv(variants + "_variant_effect_output_all.bed", sep="\t", header=None, low_memory=False, chunksize=chunksize):
+    for chunk in pd.read_csv(variants + "_variant_effect_output_all.head.rem.txt", sep="\t", header=None, low_memory=False, chunksize=chunksize):
 
         # REMOVE BELOW SECTION IF YOU HAVE ALTERNATIVE INPUT FILE
         ##################################################################
@@ -77,7 +82,7 @@ if __name__ == "__main__":
         df3 = pd.concat([chunk.iloc[:, :7], gene, proteinPosition], axis=1)
         df3 = df3.drop(2, axis=1)
         df3.columns = ["chrom", "pos", "ref_allele", "alt_allele", "R", "driver_stat", "gene", "protein_position"]
-        print(df3)
+        print(df3.head())
         #####################################################################
 
         # If you are reading in the alternative file, rather than that generated from VEP, then use the code below
@@ -116,7 +121,6 @@ if __name__ == "__main__":
         df3.loc[condition, "uniprot_conversion"] = lst[0][1]
         # only retrieve info for those with protein position
         df4 = df3[(df3["protein_position"] != "") & (df3["uniprot_conversion"] != "") & (df3["uniprot_conversion"] != np.nan) & (df3["protein_position"] != np.nan)].reset_index(drop=True)
-        print(df4)
         res2 = [getAlphaFoldScores(i, df4) for i in range(0, len(df4))]
 
         res3 = pd.DataFrame()
@@ -129,16 +133,13 @@ if __name__ == "__main__":
             for i in range(0, 16):
                 print(res3[i])
             res3 = res3.drop([0, 1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 14, 15, 16], axis=1)
-            print(res3)
             struct_conf_list = ["_struct_conf.conf_type_id", "_struct_conf.id"]
             res3.columns = res3.columns.tolist()[:7] + struct_conf_list
-
             results.append(res3)
+
     results2 = pd.concat(results)
     results2 = results2[results2["chrom"].notna()]
-
     # One-hot-encoding of structural conformation results
-    results_encoded = pd.get_dummies(results2, columns=['_struct_conf.conf_type_id', '_struct_conf.id'])
-    
+    results_encoded = pd.get_dummies(results2, columns=['_struct_conf.conf_type_id', '_struct_conf.id'], dtype=float)
     file_path = variantDir + "alpha_fold_pbd_struct_conf.txt"
     results_encoded.to_csv(file_path, mode="w", index=False, sep="\t")

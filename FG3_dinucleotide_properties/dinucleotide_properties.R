@@ -32,12 +32,9 @@ featureOutputDir=args[8]
 
 variants = read.table(paste(variantDir, file, sep = ""), sep = "\t")
 colnames(variants) = c("chrom", "start", "end", "ref", "alt", "R", "driver_stat")
-print(variants)
-
 
 # Read in dinucleotide properties
 dinucleotideProperty=read.csv(dinucleotidePropertyTable)
-print(dinucleotideProperty)
 
 # Create an empty dataframe to store the merged results
 mergedVariants <- data.frame()
@@ -49,13 +46,14 @@ getDinucleotideProperties = function(chrom, variants){
         # import variants
         variants = variants[variants$chrom == chrom, ]
         variants2 = variants
+
         # Get the desired base pair range for DNA shape
         variants2[2] = variants2[2]-1
         variants2[3] = variants2[3]+1
-        print(variants2)
+
         # Make a GRRanges object
         variants2 = makeGRangesFromDataFrame(variants2)
-        print(variants2)
+
         # Get the 10bp fasta for each variant
         getFasta(variants2, BSgenome = Hsapiens, width = 3, filename = paste(chrom, "VariantDinucleotides.fa", sep = "_"))
 
@@ -104,7 +102,6 @@ getDinucleotideProperties = function(chrom, variants){
         # Carry out function to retrieve mutant dicleotide properties for each variant
         # Four concatenated vectors
         dinucleotides <- lapply(1:nrow(variants), getDinucleotidePropertyVector)
-        library(dplyr)
 
         # Melt lists of variants into a dataframe
         variantdf = do.call(rbind.data.frame, dinucleotides)
@@ -124,13 +121,14 @@ getDinucleotideProperties = function(chrom, variants){
             )
 
         variants = variants[, -3]
+
         # Append the variants dataframe to the mergedVariants dataframe
         mergedVariants <<- rbind(mergedVariants, variants)
-
+	file.remove(paste(chrom, "VariantDinucleotides.fa", sep = "_"))
         return(variants)    },
     error = function(e) {
       # Print the error message if an error occurs
-      cat("Error occurred for chromosome", chrom, ":", conditionMessage(e), "\n")
+      cat("Warning for chromosome", chrom, ":", conditionMessage(e), "\n")
     }
   )
 }

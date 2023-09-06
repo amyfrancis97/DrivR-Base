@@ -22,7 +22,6 @@ def process_kmer(windowSize, kmerSize):
     # kmer of window size 5 and kmer size 3
     # get sequences given a set of variants and specified sequence lengths
     variantsSequences = getSequences(variants, windowSize, kmerSize)
-    print(variantsSequences.head())
     spectrumFeatureList = [getSpectrumFeatures(list(variantsSequences.loc[i, :])[0], list(variantsSequences.loc[i, :])[1], kmerSize) for i in range(0, len(variantsSequences))]
     y = variants["driver_status"]
     spectrumList = [list(spectrumFeatureList[x].loc[0, :]) + list(spectrumFeatureList[x].loc[1, :]) for x in range(0, len(spectrumFeatureList))]
@@ -90,6 +89,7 @@ def getSpectrumFeatures(seq1, seq2, k):
 
     for seq in [seq1, seq2]:
         [getMappingFunction(x, seq) for x in res]
+
     # generate p-spectra
     pSpectrumKernel = pd.DataFrame(columns=[seq1, seq2])
     pSpectrumKernel.insert(0, "seq", [seq1, seq2])
@@ -110,7 +110,6 @@ def getFinalSpectrumDf(windowSize, kmerSize):
     # kmer of window size 5 and kmer size 3
     # get sequences given a set of variants and specified sequence lengths
     variantsSequences = getSequences(variants, windowSize, kmerSize)
-    print(variantsSequences.head())
     spectrumFeatureList = [getSpectrumFeatures(list(variantsSequences.loc[i, :])[0], list(variantsSequences.loc[i, :])[1], kmerSize) for i in range(0, len(variantsSequences))]
     y = variants["driver_status"]
     spectrumList = [list(spectrumFeatureList[x].loc[0, :]) + list(spectrumFeatureList[x].loc[1, :]) for x in range(0, len(spectrumFeatureList))]
@@ -141,6 +140,7 @@ if __name__ == "__main__":
     for chunk in pd.read_csv(variants, sep = "\t", names = ['chrom', 'pos', 'pos2', 'reference_allele', 'alternate_allele', 'reccurance', 'driver_status'], chunksize = chunk_size):
         # Reading in the variant file
         variants = pd.read_csv(variants, sep = "\t", names = ['chrom', 'pos', 'pos2', 'reference_allele', 'alternate_allele', 'reccurance', 'driver_status'])
+
         # Removes sex chromosomes
         variants = variants[(variants['chrom'] != "chrX") & (variants['chrom'] != "chrY")]
         variants = variants.reset_index(drop = True)

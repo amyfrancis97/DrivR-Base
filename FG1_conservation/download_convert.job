@@ -1,10 +1,4 @@
 #!/bin/bash
-#SBATCH --job-name=DownloadConvert
-#SBATCH --partition=test,short,mrcieu,compute
-#SBATCH --mem=80G
-#SBATCH --time=2:00:00
-#SBATCH --account=sscm013903
-#SBATCH --chdir=/bp1/mrcieu1/users/uw20204/DrivR-Base/FG1_conservation
 
 # Load required modules
 source config.sh
@@ -15,8 +9,8 @@ featureDir="/bp1/mrcieu1/data/ucsc/public/ConsAll/"
 cd "$featureDir"
 
 # Get the value of the 'file' variable exported from the main script
-file="$fileName"
-filePath="$filePath"
+file=$1
+filePath=$2
 
 output_file="${file%.bw}.bedGraph"
 echo $output_file

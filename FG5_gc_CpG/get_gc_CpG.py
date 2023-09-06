@@ -19,7 +19,6 @@ from functools import reduce
 
 if __name__ == "__main__":
     variantType = sys.argv[1]
-    print(variantType)
     variants = sys.argv[1] + sys.argv[2]
     outputDir = sys.argv[3]
 
@@ -72,4 +71,3 @@ if __name__ == "__main__":
     # Write the merged dataframe to a CSV file
     output_file = os.path.join(outputDir, "GC.csv")
     data_merge.to_csv(output_file, index=None, sep="\t")
-    print(data_merge)

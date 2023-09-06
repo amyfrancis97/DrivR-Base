@@ -29,6 +29,14 @@ library(tidyr)
 library("data.table")
 load(aa_properties)
 
+round_df <- function(df, digits) {
+  nums <- vapply(df, is.numeric, FUN.VALUE = logical(1))
+
+  df[,nums] <- round(df[,nums], digits = digits)
+
+  (df)
+}
+
 args <- commandArgs()
 print(args)
 featureDir = args[6]
@@ -71,5 +79,6 @@ df = do.call(rbind, lists)
 # If synonymous, then the two vectors are identical
 colnames(df) = c(paste("WT_AA", AAindex$name, sep = "_"), paste("mutant_AA", AAindex$name, sep = "_"))
 df = cbind(AA[, 1:6], df)
+df = round_df(df, 4)
 name = paste(featureDir,"AAproperties.txt", sep = "")
 write.table(df, name, quote = FALSE, row.names = FALSE, sep = "\t")
