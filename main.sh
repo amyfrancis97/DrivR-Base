@@ -1,7 +1,7 @@
 #!/bin/bash
 #SBATCH --job-name=reformatVariants
 #SBATCH --partition=test,short,compute,mrcieu
-#SBATCH --mem=50G
+#SBATCH --mem=250G
 #SBATCH --time=3-00:00:00
 #SBATCH --chdir=/user/home/uw20204/DrivR-Base
 #SBATCH --account=sscm013903
@@ -60,14 +60,11 @@ outputDir="/bp1/mrcieu1/data/encode/public/test/"
 
 # FG9: Get encode values
 cd /user/home/uw20204/DrivR-Base/FG9_encode
-./test.sh $variantDir $variantFileName $outputDir
+./get_encode.sh $variantDir $variantFileName $outputDir
 
 
 # FG10: Get alpha fold scores -DONE but may need to change sleep time depending on query size
 #cd /user/home/uw20204/DrivR-Base/FG10_alpha_fold
-#python get_alpha_fold_atom.py $outputDir $variantFileName
+#python get_alpha_fold.py $outputDir $variantFileName
 
-#wait 
-
-#python get_alpha_fold_struct_conf.py $outputDir $variantFileName
 
