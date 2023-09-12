@@ -1,7 +1,7 @@
 #!/bin/bash
 #SBATCH --job-name=reformatVariants
 #SBATCH --partition=test,short,compute,mrcieu
-#SBATCH --mem=250G
+#SBATCH --mem=80G
 #SBATCH --time=3-00:00:00
 #SBATCH --chdir=/user/home/uw20204/DrivR-Base
 #SBATCH --account=sscm013903
@@ -34,7 +34,6 @@ outputDir="/bp1/mrcieu1/data/encode/public/test/"
 
 # FG3: Get dinucleotide properties - DONE
 #cd /user/home/uw20204/DrivR-Base/FG3_dinucleotide_properties
-#source config.sh
 #Rscript dinucleotide_properties.R $variantDir $variantFileName $outputDir
 
 # FG4: Get dna shapes -DONE
@@ -42,8 +41,8 @@ outputDir="/bp1/mrcieu1/data/encode/public/test/"
 #Rscript dna_shape.R $variantDir $variantFileName $outputDir
 
 # FG5: Get gc & CpG - DONE
-#cd /user/home/uw20204/DrivR-Base/FG5_gc_CpG
-#python get_gc_CpG.py $variantDir $variantFileName $outputDir
+cd /user/home/uw20204/DrivR-Base/FG5_gc_CpG
+python get_gc_CpG.py $variantDir $variantFileName $outputDir
 
 # FG6: Get kernels - DONE
 #cd /user/home/uw20204/DrivR-Base/FG6_kernel
@@ -59,8 +58,8 @@ outputDir="/bp1/mrcieu1/data/encode/public/test/"
 #Rscript extract_aa_properties.R ${outputDir}
 
 # FG9: Get encode values
-cd /user/home/uw20204/DrivR-Base/FG9_encode
-./get_encode.sh $variantDir $variantFileName $outputDir
+#cd /user/home/uw20204/DrivR-Base/FG9_encode
+#./get_encode.sh $variantDir $variantFileName $outputDir
 
 
 # FG10: Get alpha fold scores -DONE but may need to change sleep time depending on query size

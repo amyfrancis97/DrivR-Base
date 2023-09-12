@@ -26,7 +26,7 @@ library(tidyr)
 
 args <- commandArgs()
 print(args)
-# Reads in variant file in the format: "chrom", "pos", "end", "ref", "alt", "R", "driver_stat"
+# Reads in variant file in the format: "chrom", "pos", "end", "ref", "alt"
 featureDir=args[6]
 featureOutputDir=args[8]
 variants = paste(featureDir, args[7], sep = "")
@@ -34,7 +34,7 @@ print(variants)
 
 # Import variants for shaping
 variants=read.table(variants, sep = "\t")
-colnames(variants) =  c("chrom", "pos", "end", "ref_allele", "alt_allele", "R", "driver_stat")
+colnames(variants) =  c("chrom", "pos", "end", "ref_allele", "alt_allele")
 varTable = variants
 
 # Get the desired base pair range for DNA shape

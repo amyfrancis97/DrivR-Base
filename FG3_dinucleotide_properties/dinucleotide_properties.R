@@ -24,14 +24,14 @@ library(stringr)
 library(tidyr)
 
 args <- commandArgs()
-# Reads in variant file in the format: "chrom", "start", "end", "ref", "alt", "R", "driver_stat"
+# Reads in variant file in the format: "chrom", "start", "end", "ref", "alt"
 
 variantDir=args[6]
 file=args[7]
 featureOutputDir=args[8]
 
 variants = read.table(paste(variantDir, file, sep = ""), sep = "\t")
-colnames(variants) = c("chrom", "start", "end", "ref", "alt", "R", "driver_stat")
+colnames(variants) = c("chrom", "start", "end", "ref", "alt")
 
 # Read in dinucleotide properties
 dinucleotideProperty=read.csv(dinucleotidePropertyTable)

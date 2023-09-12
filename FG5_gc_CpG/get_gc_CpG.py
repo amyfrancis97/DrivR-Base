@@ -26,7 +26,7 @@ if __name__ == "__main__":
     record_dict = SeqIO.to_dict(SeqIO.parse("hg38_seq.fa", "fasta"))
 
     # reading in the variant file
-    variants = pd.read_csv(variants, sep = "\t", names = ['chrom', 'pos', 'pos2', 'ref_allele', 'alt_allele', 'R','driver_stat'])
+    variants = pd.read_csv(variants, sep = "\t", names = ['chrom', 'pos', 'pos2', 'ref_allele', 'alt_allele'])
 
     # Drops variants on the sex chromosomes
     variants = variants[(variants['chrom'] != "chrX") & (variants['chrom'] != "chrY")]
@@ -65,7 +65,7 @@ if __name__ == "__main__":
             
     data_merge = reduce(lambda left, right:     # Merge DataFrames in list
                      pd.merge(left , right,
-                              on = ["chrom", "pos", "ref_allele", "alt_allele", "R", "driver_stat"],
+                              on = ["chrom", "pos", "ref_allele", "alt_allele"],
                               how = "outer"),
                      dataframeList)
     # Write the merged dataframe to a CSV file
