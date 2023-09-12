@@ -1,14 +1,17 @@
 # DrivR-Base
 
 ## Introduction and Overview
-Welcome to DrivR-Base! This repository contains scripts for extracting feature information from different databases for single nucleotide variants (SNVs). These features are designed to be inputs for machine learning models, aiding in the prediction of functional impacts of genetic variants in human genome sequencing. The repository is organized into separate sub-directories for different feature groups (**FG_**), each serving a unique purpose.
+Welcome to DrivR-Base! This repository contains scripts for extracting feature information from different databases for single nucleotide variants (SNVs). These features are designed to be inputs for machine learning models, aiding in the prediction of functional impacts of genetic variants in human genome sequencing. The repository is organized into separate sub-directories for different feature groups (**FG_**), each serving a unique purpose. Please note that these scripts are only set up to analyse autosomal variants in the GRCh38 genome format.
 
 ## Table of Contents
 - [Introduction and Overview](#introduction-and-overview)
 - [Table of Contents](#table-of-contents)
 - [Feature Descriptions and Sources](#feature-descriptions)
 - [Data Input Structure](#data-input-structure)
-- [Installation](#installation)
+- [Dependencies](#dependencies)
+- [Package Installation](#package-installation)
+- [R Environment Setup with renv](renv-setup)
+- [Python Environment Setup with Anaconda](anaconda-setup)
 - [Directory Structure](#directory-structure)
 - [Feature Description & Usage](#feature-description--usage)
 - [Contributing](#contributing)
@@ -41,14 +44,105 @@ All variant files must be presented in the format shown in the following table:
 
 Importantly, the chromosomal position must exist in a string format with a prefix of "chr", and the positions must be in an integer format. The final two columns are optional and are not useful at this level of analysis. Hence, if these columns are not useful for the variants of interest, just fill these with N/A. This will not affect the analysis. Crucially, the chromosomal position **must** be in the GRCh38 reference genome format. All features are extracted and queried using these descriptors, if the variant is provided in the wrong reference genome, the feature information will be incorrect. An example variant file in the correct format can be found in the **/example** directory.
 
-## Installation
-Various python and R packages, as well as command line tools must be installed to run these scripts. Firstly, in order to set up the python environment, you must first download and install anaconda on your system. If anaconda is not already installed on your system, please follow the instructions on the [anaconda website](https://docs.anaconda.com/free/anaconda/install/) to set this up. Once set up, you can run the **conda_setup.sh** script in the **/DrivR-Base** directory to build the conda environment from the **DrivR-Base.yml** file. To execute the script, simply run the following command in the terminal prompt:
+## Dependencies and Installation
+The scripts in this repository require a range of dependencies.
 
-```bash
-./conda_setup.sh
-```
+## Dependencies
 
+- [Bedtools](https://github.com/arq5x/bedtools2)
+- [Bedops](https://github.com/bedops/bedops)
+- [Samtools](https://github.com/samtools/samtools)
+- [Bcftools](https://github.com/samtools/bcftools)
+- [Tabix](https://github.com/samtools/tabix)
+- [Htslib](https://github.com/samtools/htslib)
+- [Anaconda](https://www.anaconda.com/products/distribution)
+- [Git](https://git-scm.com/)
+- [Perl](https://www.perl.org/)
 
+## Package Installation
+
+To install the required packages, use the appropriate package manager for your system:
+
+- **On Ubuntu/Debian:**
+
+  ```bash
+  sudo apt-get install bedtools samtools bcftools tabix libhts-dev
+  ```
+
+- **On CentOS/RHEL:**
+
+  ```bash
+  sudo yum install bedtools samtools bcftools tabix htslib-devel
+  ```
+
+- **On macOS (using Homebrew):**
+
+  ```bash
+  brew install bedtools samtools bcftools tabix htslib
+  ```
+
+### **Anaconda Setup:**
+If Anaconda is not already installed on your system, you can download and install Anaconda from the official Anaconda website: https://www.anaconda.com/products/distribution
+
+These commands will install all the necessary packages for your project. Make sure you have the appropriate package manager installed on your system.
+
+### **Git Setup:**
+If you haven't already, make sure you have Git installed on your system. You can download and install Git from the official website: https://git-scm.com/
+
+### **Perl Modules Installation:**
+To install the required Perl modules, follow these steps:
+
+  1) Install cpanminus (App::cpanminus):
+  
+      ```bash
+      curl -L https://cpanmin.us | perl - App::cpanminus
+      ```
+  
+  2) Set up local::lib:
+  
+      ```bash
+      cpanm --local-lib=~/perl5 local::lib
+      eval $(perl -I ~/perl5/lib/perl5/ -Mlocal::lib)
+      ```
+  
+  3) Install the Perl modules:
+  
+      ```bash
+      cpanm Archive::Zip
+      cpanm DBD::mysql
+      cpanm DBI
+      ```
+
+These commands will install the required Perl modules for your project.
+
+## R Environment Setup with renv
+
+The R environment for this project has been set up using [renv](https://rstudio.github.io/renv/articles/renv.html). The relevant packages and versions can be found in the `renv.lock` file.
+
+To activate the `renv` environment before executing any R script, use the following command in the command prompt:
+  
+  ```bash
+  RENVCMD="renv::activate(\"$renv_dir/renv.lock\")"
+  ```
+
+Where $renv_dir is the directory in which the renv.lock file is located.
+
+## Python Environment Setup with Anaconda
+To set up the Anaconda environment for this project, follow these steps:
+
+1. Once Anaconda is installed on your system, navigate to the **/DrivR-Base** directory in your project.
+
+2. Run the **conda_setup.sh** script to build the Conda environment using the **DrivR-Base.yml** file:
+
+    ```bash
+    ./conda_setup.sh
+    ```
+    
+After running the script, the Conda environment named "DrivR-Base" will be created, and the required packages will be installed. You can activate the Conda environment anytime you work on your project using:
+
+  ```bash
+  conda activate DrivR-Base
+  ```
 
 ## Directory Structure
 ```bash
