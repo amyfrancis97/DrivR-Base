@@ -35,7 +35,7 @@ The input variant file should be in **.BED** format, tab-delimited, with the chr
 Refer to the variant.bed file in the /DrivR-Base/Example folder for guidance.
 
 ### Script execution
-To execute the script, navigate to the /FG3_dna_shape directory and run:
+To execute the script, navigate to the /FG6_kernel directory and run:
 
 ```bash
 python get_kernel.py $variantDir $variantFileName $outputDir
