@@ -19,12 +19,10 @@ To execute the script, navigate to the /FG7_aa_substitution_matrices directory a
 
 ```bash
 RENVCMD="renv::activate(\"$renv_dir/renv.lock\")"
-Rscript aa_subs_matrices.R $variantDir $variantFileName $outputDir
+Rscript aa_subs_matrices.R $outputDir
 ```
 
 * $renv_dir: Location of the renv.lock file (within /DrivR-Base folder)
-* $variantDir: Location of the variant file (ends with /).
-* $variantFileName: Name of the variant file.
 * $outputDir: Location to store the resulting file (ends with /).
 
 ## Conclusion
