@@ -206,8 +206,7 @@ DrivR-Base/
 ```
 
 ## Feature Description & Usage
-### FG1_conservation
-#### 1_reformat.sh
+For individual feature descriptions and usage, please see the documentation within the relevant sub-directory.
 
 ## Contributing
 Contributions are welcome! Follow the guidelines in CONTRIBUTING.md
