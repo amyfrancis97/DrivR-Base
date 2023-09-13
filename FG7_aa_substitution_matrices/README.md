@@ -15,7 +15,7 @@ Before executing the script, ensure you have the human genome in GRCh38 fasta fo
 This script leverages predicted amino acids for each variant (obtained from variant effect predictor) to retrieve substitution matrix values for both the wild type and mutant amino acids. When using this module as a standalone tool, adhere to the provided input data format and column names in the "vepAA.bed" file:
 
 ### Script execution
-To execute the script, navigate to the /FG3_dna_shape directory and run:
+To execute the script, navigate to the /FG7_aa_substitution_matrices directory and run:
 
 ```bash
 RENVCMD="renv::activate(\"$renv_dir/renv.lock\")"
