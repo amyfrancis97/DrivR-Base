@@ -1,26 +1,55 @@
-# FG3_dinucleotide_properties
+# FG3: Dinucleotide Properties
 
-## Introduction and Overview
-**FG3_dinucleotide_properties** is a module within the **DrivR-Base** framework designed to analyze the effects of genetic variants on dinucleotide properties. This module enables the exploration of 125 thermodynamic, structural, and other dinucleotide properties by querying variant sequences against a comprehensive dinucleotide property database. The module facilitates the extraction of meaningful insights into the impact of variants on nucleotide interactions.
+## Introduction
 
-## Packages and Dependencies
-Efficient management of packages and dependencies is ensured through the following files:
+FG3_dinucleotide_properties, a module within DrivR-Base, analyzes the effects of genetic variants on dinucleotide properties. It allows exploration of 125 thermodynamic, structural, and other dinucleotide properties by querying variant sequences against a comprehensive database. This module facilitates insights into how variants impact nucleotide interactions.
 
-* **module_dependencies.sh**:  Facilitates the handling of module-specific dependencies, ensuring a seamless and consistent environment.
-* **package_dependencies.R**: Manages the installation and maintenance of required R packages.
-* **config.R**: Configures the directory location of the essential **dinucleotidePropertyTable.csv** file.
+## Installation and Dependencies
 
-## Prerequisite data
-To initiate the script successfully, you must initially download the dinucleotidePropertyTable.csv file, which contains the dinucleotide property table for querying purposes. The table, sourced from [DiProDB](https://diprodb.fli-leibniz.de/ShowTable.php), encompasses 125 diverse thermodynamic, structural, and other dinucleotide properties.
+Configure the required packages for this module in the top-level directory **/DrivR-Base**.
 
-## Script Usage
-The core script driving this module is dinucleotide_properties.R. Here's an overview of the process it undertakes:
+### Prerequisites
 
-1. **Variant Query and Sequence Extraction**: The script queries the provided variant against the Hsapiens GRCh38 genome using the getFasta function. This operation yields both wild-type and mutant sequences, each spanning three base pairs.
-2. **Dinucleotide Property Query**: Using the acquired 3-base pair sequences, the script performs queries against the dinucleotide property database. For instance, given a wild-type sequence "ATG" and a mutant sequence "AGG", four dinucleotides are queried: Wild-type-1 (1): "AT", Wild-type-2 (2): "TG", mutant-1 (3): "AG", mutant-2 (4): "GG".
-3. **Output Representation**: The script generates an output table, where each row corresponds to a variant of interest. Columns encompassing 500 entries (125 properties x 4 dinucleotide queries) provide the dinucleotide property values for each respective query.
+To use the script successfully, download the **dinucleotidePropertyTable.csv** file, containing dinucleotide property data from DiProDB. This table encompasses 125 diverse properties.
+
+## Usage
+
+### `dinucleotide_properties.R`
+
+This script performs the following tasks:
+
+1. Variant Query and Sequence Extraction: Queries the variant against the Hsapiens GRCh38 genome to obtain wild-type and mutant sequences spanning three base pairs.
+
+2. Dinucleotide Property Query: Utilizes the 3-base pair sequences to query the dinucleotide property database. Four dinucleotide configurations are considered for each variant, resulting in a table with 125 properties for each configuration.
+
+3. Output Representation: Generates an output table where each row corresponds to a variant, and columns provide dinucleotide property values for each query configuration.
+
+### Script Input
+
+Input variant file in **.BED** format, tab-delimited, with the chromosome labeled as "chr". Example:
+
+| Chromosome | Position | Position | Reference Allele | Alternate Allele |
+| ---------- | -------- | -------- | ---------------- | ---------------- |
+| chr1       | 934881   | 934881   | A                | G                | 
+
+Refer to **variant.bed** in **/DrivR-Base/Example** for guidance.
+
+### Script Execution
+
+To run the script, navigate to the **/FG2_dinucleotide_properties** directory and execute:
+
+```bash
+RENVCMD="renv::activate(\"$renv_dir/renv.lock\")"
+Rscript dinucleotide_properties.R $variantDir $variantFileName $outputDir
+```
+
+* $renv_dir: Location of the renv.lock file (within /DrivR-Base folder)
+* $variantDir: Location of the variant file (ends with /).
+* $variantFileName: Name of the variant file.
+* $outputDir: Location to store the resulting file (ends with /).
 
 ## Conclusion
-By employing the FG3_dinucleotide_properties module, researchers gain the ability to comprehensively assess the impact of genetic variants on diverse dinucleotide properties. This module streamlines the querying and analysis process, paving the way for deeper insights into nucleotide interactions and their contributions to genetic variation.
+FG3_dinucleotide_properties enables a comprehensive assessment of genetic variant impacts on dinucleotide properties. It simplifies querying and analysis, facilitating deeper insights into nucleotide interactions and genetic variation contributions.
 
-For detailed instructions and examples on using the scripts, please refer to the respective script documentation.
+For detailed instructions and examples, consult the script documentation.
+
