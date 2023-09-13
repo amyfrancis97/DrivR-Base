@@ -34,7 +34,6 @@ To execute the script, navigate to the /FG3_dna_shape directory and run:
 python get_gc_CpG.py $variantDir $variantFileName $outputDir
 ```
 
-* $renv_dir: Location of the renv.lock file (located wihtin the /DrivR-Base folder)
 * $variantDir: Location of the variant file (ends with /).
 * $variantFileName: Name of the variant file.
 * $outputDir: Location to store the resulting file (ends with /).
