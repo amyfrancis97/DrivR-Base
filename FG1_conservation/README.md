@@ -27,10 +27,9 @@ This script performs the following tasks:
 
 The input variant file should be in **.BED** format, tab-delimited, with the chromosome labeled as "chr". Example:
 
-```plaintext
-Chromosome  Position  Position  Reference Allele  Alternate Allele  Recurrence  Driver Status
-chr1        934881    934881    A                G                1           1
-```
+| Chromosome | Position | Position | Reference Allele | Alternate Allele |
+| ---------- | -------- | -------- | ---------------- | ---------------- |
+|    chr1    |  934881  |  934881  |        A         |         G        | 
 
 Refer to the variant.bed file in the /DrivR-Base/Example folder for guidance.
 
