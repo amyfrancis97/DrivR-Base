@@ -34,7 +34,7 @@ chr1        934881    934881    A                G                1           1
 
 Refer to the variant.bed file in the /DrivR-Base/Example folder for guidance.
 
-## Script execution
+### Script execution
 To execute the script, navigate to the /FG1_conservation module directory and run:
 
 ```bash
@@ -45,5 +45,5 @@ To execute the script, navigate to the /FG1_conservation module directory and ru
 * $variantFileName: Name of the variant file.
 * $outputDir: Location to store the resulting file (ends with /).
 
-### Conclusion
+## Conclusion
 The FG1_conservation module simplifies reformatting, downloading, and converting conservation and uniqueness files, enhancing the efficiency of genomic analysis workflows.
