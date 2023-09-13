@@ -35,11 +35,13 @@ file="${variantDir}${variantFile}"
 
 wait 
 
-vep_output=("conseq" "distance" "aa")
-for i in ${vep_output[@]}; do
+#vep_output=("conseq" "distance" "aa")
+#for i in ${vep_output[@]}; do
 # Run Python script for reformatting VEP output
-python ${working_dir}reformat_vep_${i}.py  "${outputDir}" "${outputDir[@]}$(basename "$file")_";
-done
+#python ${working_dir}reformat_vep_${i}.py  "${outputDir}" "${outputDir[@]}$(basename "$file")_";
+#done
+
+python reformat_vep.py "${outputDir}" "${outputDir[@]}$(basename "$file")_"
 
 wait
 

@@ -45,16 +45,16 @@ outputDir="/bp1/mrcieu1/data/encode/public/test/"
 #python get_gc_CpG.py $variantDir $variantFileName $outputDir
 
 # FG6: Get kernels - DONE
-#cd /user/home/uw20204/DrivR-Base/FG6_kernel
-#python get_kernel.py $variantDir $variantFileName $outputDir
+cd /user/home/uw20204/DrivR-Base/FG6_kernel
+python get_kernel.py $variantDir $variantFileName $outputDir
 
 # FG7: Get aa substitution matrices - DONE
-cd /user/home/uw20204/DrivR-Base/FG7_aa_substitution_matrices
-Rscript aa_subs_matrices.R ${outputDir}
+#cd /user/home/uw20204/DrivR-Base/FG7_aa_substitution_matrices
+#Rscript aa_subs_matrices.R ${outputDir}
 
 # FG8: Get aa properties - DONE
-cd /user/home/uw20204/DrivR-Base/FG8_aa_properties
-Rscript extract_aa_properties.R ${outputDir}
+$cd /user/home/uw20204/DrivR-Base/FG8_aa_properties
+$Rscript extract_aa_properties.R ${outputDir}
 
 # FG9: Get encode values
 #cd /user/home/uw20204/DrivR-Base/FG9_encode
