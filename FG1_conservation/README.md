@@ -1,35 +1,49 @@
-# FG1: Conservation-based features
+# FG1: Conservation-based Features
 
-## Introduction and Overview
-The **FG1_conservation** module is designed to facilitate the reformatting, downloading, and conversion of conservation and uniqueness files from the UCSC genome browser. It includes a set of scripts and resources to streamline the process.
+## Introduction
 
-## Packages and Dependencies
-The instructions to configure packages for this module can be found in the top-level directory **/DrivR-Base**.
+The **FG1_conservation** module streamlines the retrieval and conversion of conservation and uniqueness data from the UCSC genome browser. It provides scripts and resources to simplify this process.
 
-Make sure to have the necessary dependencies installed, including the critical requirement for the *bedtools* package, which is essential for executing the *bigWigToBedGraph* command.
+## Installation and Dependencies
 
-## Script Description
-### get_conservation.sh
-This script first reformats the variant input file to match that in UCSC. The *check_formatting.py* script fixes any possible formatting issues that might occur during this process. Next, it downloads the 22 conservation and mappability datasets from the UCSC (golden path)[http://hgdownload.cse.ucsc.edu/goldenpath/hg38/]. The names of these datasets can be found within the script. **Please note that this script downloads all conservation data locally for querying and will temporarily require approximately 1TB of space**. Hence, ensure that the *download_cons_dir* in the *config.sh* file is updated to a location that has enough space to store these files. Once downloaded, the script will convert the files from *.bigwig* to *.bedGraph* format and then will query the resulting files against the provided input variants.
+Please configure the required packages for this module in the top-level directory **/DrivR-Base**.
 
-### Script input
-The variant file must follow the guidelines stated in the **/DrivR-Base** .README file. It should be in **.BED** format, separated by tab-delimited spaces. The chromosome should be in string format, proceeded by *"chr"*:
+Ensure that the following dependencies are installed:
+- **bedtools**: Essential for executing the *bigWigToBedGraph* command.
 
-| Chromosome | Position | Position | Reference Allele | Alternate Allele | Recurrence | Driver Status |
-| ---------- | -------- | -------- | ---------------- | ---------------- | ---------- | ------------- |
-|    chr1    |  934881  |  934881  |        A         |         G        |      1     |       1       |
+## Usage
 
+### `get_conservation.sh`
 
-Please refer to the example **variant.bed** file in the **/DrivR-Base/Example** folder for more information.
+This script performs the following tasks:
+1. Reformats the input variant file to match UCSC format.
+2. Downloads 22 conservation and mappability datasets from UCSC golden path.
+3. Converts downloaded files from *.bigwig* to *.bedGraph* format.
+4. Queries the resulting files against input variants.
 
-### Script execution
-In order to execute this script, simply navigate to the directory in which the **/FG1_conservation** module is located and execute the run command:
+**Note:** This script downloads all conservation data locally for querying and temporarily requires approximately 1TB of space. Update the *download_cons_dir* in the *config.sh* file to a location with sufficient space.
+
+### Script Input
+
+The input variant file should be in **.BED** format, tab-delimited, with the chromosome labeled as "chr". Example:
+
+```plaintext
+Chromosome  Position  Position  Reference Allele  Alternate Allele  Recurrence  Driver Status
+chr1        934881    934881    A                G                1           1
+```
+
+Refer to the variant.bed file in the /DrivR-Base/Example folder for guidance.
+
+## Script execution
+To execute the script, navigate to the /FG1_conservation module directory and run:
 
 ```bash
 ./get_conservation.sh $variantDir $variantFileName $outputDir
 ```
 
-Where *$variantDir* is the location in which the variant file is located and must end with a */*, *$variantFileName* is the name of the variant file, and $outputDir is the location in which you wish to store the resulting file associated with your variants (this must also end with a */*.
+* $variantDir: Location of the variant file (ends with /).
+* $variantFileName: Name of the variant file.
+* $outputDir: Location to store the resulting file (ends with /).
 
 ### Conclusion
-The FG1_conservation module simplifies the process of reformatting, downloading, and converting conservation and uniqueness files, contributing to a more efficient workflow for genomic analysis.
+The FG1_conservation module simplifies reformatting, downloading, and converting conservation and uniqueness files, enhancing the efficiency of genomic analysis workflows.
