@@ -1,4 +1,4 @@
-# FG6: Amino Acid Substitution Matrices
+# FG8: Amino Acid Properties
 
 ## Introduction
 The **FG8_aa_properties** dataset provides three distinct groups of physicochemical properties: "Cruciani," "Fasgai," and "Kidera," in addition to all properties listed in the "AAindex."
