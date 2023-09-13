@@ -6,7 +6,8 @@ The FG5_gc_CpG module is designed to calculate and analyze GC content and CpG-re
 
 ## Installation and Dependencies
 Please configure the required packages for this module in the top-level directory **/DrivR-Base**. Importantly, make sure that the anaconda environment is loaded properly.
-## Prerequisits
+
+## Prerequisites
 Before running the script, ensure you have the human genome in GRCh38 fasta format for accurate querying of nucleotide windows. The genome can be downloaded from NCBI. To proceed, update the "hg38_seq" variable in the config.py file to specify the path to your downloaded genome.
 
 ## Usage
