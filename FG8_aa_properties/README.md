@@ -15,7 +15,7 @@ Before getting started, its essential to load the amino acid properties from the
 This script facilitates queries of vep-predicted amino acids against the **AAindex.rda** database, enabling you to access the physicochemical properties associated with each amino acid.
 
 ### Script execution
-To execute the script, navigate to the /FG3_dna_shape directory and run:
+To execute the script, navigate to the /FG8_aa_properties directory and run:
 
 ```bash
 RENVCMD="renv::activate(\"$renv_dir/renv.lock\")"
