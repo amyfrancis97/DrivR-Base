@@ -41,21 +41,20 @@ outputDir="/bp1/mrcieu1/data/encode/public/test/"
 #Rscript dna_shape.R $variantDir $variantFileName $outputDir
 
 # FG5: Get gc & CpG - DONE
-cd /user/home/uw20204/DrivR-Base/FG5_gc_CpG
-python get_gc_CpG.py $variantDir $variantFileName $outputDir
+#cd /user/home/uw20204/DrivR-Base/FG5_gc_CpG
+#python get_gc_CpG.py $variantDir $variantFileName $outputDir
 
 # FG6: Get kernels - DONE
 #cd /user/home/uw20204/DrivR-Base/FG6_kernel
 #python get_kernel.py $variantDir $variantFileName $outputDir
 
-
 # FG7: Get aa substitution matrices - DONE
-#cd /user/home/uw20204/DrivR-Base/FG7_aa_substitution_matrices
-#Rscript aa_subs_matrices.R ${outputDir}
+cd /user/home/uw20204/DrivR-Base/FG7_aa_substitution_matrices
+Rscript aa_subs_matrices.R ${outputDir}
 
 # FG8: Get aa properties - DONE
-#cd /user/home/uw20204/DrivR-Base/FG8_aa_properties
-#Rscript extract_aa_properties.R ${outputDir}
+cd /user/home/uw20204/DrivR-Base/FG8_aa_properties
+Rscript extract_aa_properties.R ${outputDir}
 
 # FG9: Get encode values
 #cd /user/home/uw20204/DrivR-Base/FG9_encode
@@ -63,7 +62,7 @@ python get_gc_CpG.py $variantDir $variantFileName $outputDir
 
 
 # FG10: Get alpha fold scores -DONE but may need to change sleep time depending on query size
-#cd /user/home/uw20204/DrivR-Base/FG10_alpha_fold
-#python get_alpha_fold.py $outputDir $variantFileName
+cd /user/home/uw20204/DrivR-Base/FG10_alpha_fold
+python get_alpha_fold.py $outputDir $variantFileName
 
 

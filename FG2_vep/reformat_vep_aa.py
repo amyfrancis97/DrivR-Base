@@ -31,6 +31,7 @@ if __name__ == "__main__":
         df3 = df3.drop(["ID"], axis=1)
         df3 = df3.rename(columns={"#CHROM": "chrom", "POS": "pos", "REF": "ref_allele", "ALT": "alt_allele", "QUAL": "R", "FILTER": "driver_stat", 0: "WT_AA", 1: "mutant_AA"})
         df3 = df3[(df3["ref_allele"].str.len() == 1) & (df3["alt_allele"].str.len() == 1) ]
+        df3 = df3.drop(["R", "driver_stat"], axis = 1)
         # Save the processed DataFrame to a TSV file
         file_path = outputDir + "vepAA.bed"
         if os.path.exists(file_path):

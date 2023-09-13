@@ -36,7 +36,7 @@ if __name__ == "__main__":
         
         # Round numeric columns to two decimal places
         df = df.round(2)
-
+        df = df.drop(["R", "driver_stat"], axis = 1)
         # Save the processed DataFrame to a TSV file
         file_path = outputDir + "vepDistance.bed"
         if os.path.exists(file_path):

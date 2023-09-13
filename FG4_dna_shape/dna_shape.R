@@ -57,7 +57,7 @@ dnaShape = Reduce("cbind", pred)
 
 dnaShape = cbind(varTable, dnaShape)
 
-colnames(dnaShape) = c(colnames(dnaShape)[1:7], paste(1:20, "MGW", sep = "_"), paste(1:19, "HelT", sep = "_"), paste(1:20, "ProT", sep = "_"),
+colnames(dnaShape) = c(colnames(dnaShape)[1:5], paste(1:20, "MGW", sep = "_"), paste(1:19, "HelT", sep = "_"), paste(1:20, "ProT", sep = "_"),
                  paste(1:19, "Roll", sep = "_"), paste(1:20, "EP", sep = "_"))
 
 dnaShape = dnaShape[-3]

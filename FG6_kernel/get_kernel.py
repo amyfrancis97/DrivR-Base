@@ -14,16 +14,16 @@ import numpy as np
 from numpy import random
 import sys
 from itertools import islice
-
+import glob
 import multiprocessing
 from config import *
+from funtools import reduce
 
 def process_kmer(windowSize, kmerSize):
     # kmer of window size 5 and kmer size 3
     # get sequences given a set of variants and specified sequence lengths
     variantsSequences = getSequences(variants, windowSize, kmerSize)
     spectrumFeatureList = [getSpectrumFeatures(list(variantsSequences.loc[i, :])[0], list(variantsSequences.loc[i, :])[1], kmerSize) for i in range(0, len(variantsSequences))]
-    y = variants["driver_status"]
     spectrumList = [list(spectrumFeatureList[x].loc[0, :]) + list(spectrumFeatureList[x].loc[1, :]) for x in range(0, len(spectrumFeatureList))]
     spectrumdf = pd.DataFrame(spectrumList)
     spectrumdf = pd.concat([variants, spectrumdf], axis=1)
@@ -31,7 +31,7 @@ def process_kmer(windowSize, kmerSize):
     spectrumdf["pos"] = spectrumdf["pos"].astype(int)
     spectrumdf = spectrumdf.rename(columns={0: str(windowSize*2) + "_" + str(kmerSize) + "_w", 1: str(windowSize*2) + "_" + str(kmerSize) + "_x", 2: str(windowSize*2) + "_" + str(kmerSize) + "_y", 3: str(windowSize*2) + "_" + str(kmerSize) + "_z"})
     # save each result to CSV file
-    spectrumdf.to_csv(outputDir  + str(windowSize*2) + "_" + str(kmerSize) + "_kernel.txt", sep="\t")
+    spectrumdf.to_csv(outputDir  + str(windowSize*2) + "_" + str(kmerSize) + "_kernel.txt", sep="\t", index = False)
 
 # unput is the variant dataset and window size either side of the variants (e.g. w of 100 = 200 bp in total)
 def getSequences(dataset, window_size, k):
@@ -111,21 +111,20 @@ def getFinalSpectrumDf(windowSize, kmerSize):
     # get sequences given a set of variants and specified sequence lengths
     variantsSequences = getSequences(variants, windowSize, kmerSize)
     spectrumFeatureList = [getSpectrumFeatures(list(variantsSequences.loc[i, :])[0], list(variantsSequences.loc[i, :])[1], kmerSize) for i in range(0, len(variantsSequences))]
-    y = variants["driver_status"]
     spectrumList = [list(spectrumFeatureList[x].loc[0, :]) + list(spectrumFeatureList[x].loc[1, :]) for x in range(0, len(spectrumFeatureList))]
     spectrumdf = pd.DataFrame(spectrumList)
     spectrumdf = pd.concat([variants, spectrumdf], axis = 1)
     spectrumdf["chrom"] = spectrumdf["chrom"].str.replace("chr", "").astype(str)
     spectrumdf["pos"] = spectrumdf["pos"].astype(int)
     spectrumdf = spectrumdf.rename(columns = {0: str(windowSize*2) + "_" + str(kmerSize) + "_w", 1: str(windowSize*2) + "_" + str(kmerSize) + "_x", 2: str(windowSize*2) + "_" + str(kmerSize) + "_y", 3: str(windowSize*2) + "_" + str(kmerSize) + "_z"})
-    
+    spectrumdf = spectrumdf.drop("pos2", axis = 1)    
     # Check if the output file already exists
-    if os.path.exists(outputDir + str(windowSize) + "_" + str(kmerSize) + "_kernel.txt"):
-        # If the file exists, append the new data to it
-        spectrumdf.to_csv(outputDir + str(windowSize) + "_" + str(kmerSize) + "_kernel.txt", sep='\t', mode='a', header=False)
-    else:
-        # If the file doesn't exist, create a new file and write the data to it
-        spectrumdf.to_csv(outputDir  + str(windowSize) + "_" + str(kmerSize) + "_kernel.txt", sep='\t', index=False)
+#    if os.path.exists(outputDir + str(windowSize) + "_" + str(kmerSize) + "_kernel.txt"):
+ #       # If the file exists, append the new data to it
+  #      spectrumdf.to_csv(outputDir + str(windowSize) + "_" + str(kmerSize) + "_kernel.txt", sep='\t', mode='a', header=False, index = False)
+   # else:
+    #    # If the file doesn't exist, create a new file and write the data to it
+     #   spectrumdf.to_csv(outputDir  + str(windowSize) + "_" + str(kmerSize) + "_kernel.txt", sep='\t', index=False)
 
 
 if __name__ == "__main__":
@@ -137,10 +136,10 @@ if __name__ == "__main__":
     record_dict = SeqIO.to_dict(SeqIO.parse(hg38_seq, "fasta"))
 
     chunk_size = 1000
-    for chunk in pd.read_csv(variants, sep = "\t", names = ['chrom', 'pos', 'pos2', 'reference_allele', 'alternate_allele', 'reccurance', 'driver_status'], chunksize = chunk_size):
+    for chunk in pd.read_csv(variants, sep = "\t", names = ['chrom', 'pos', 'pos2', 'reference_allele', 'alternate_allele'], chunksize = chunk_size):
         # Reading in the variant file
-        variants = pd.read_csv(variants, sep = "\t", names = ['chrom', 'pos', 'pos2', 'reference_allele', 'alternate_allele', 'reccurance', 'driver_status'])
-
+        #variants = pd.read_csv(variants, sep = "\t", names = ['chrom', 'pos', 'pos2', 'reference_allele', 'alternate_allele', 'reccurance', 'driver_status'])
+        variants = chunk
         # Removes sex chromosomes
         variants = variants[(variants['chrom'] != "chrX") & (variants['chrom'] != "chrY")]
         variants = variants.reset_index(drop = True)
@@ -166,3 +165,13 @@ if __name__ == "__main__":
         # Close the pool of processes
         pool.close()
         pool.join()
+    
+    os.chdir(outputDir)
+    dfs = []
+    for file in glob.glob("*kernel.txt"):
+        dfs.append(pd.read_csv(file, sep = "\t"))
+
+    merged_df = dfs[0]
+    for df in dfs[1:]:
+        merged_df = pd.merge(merged_df, df, on=["chrom", "pos", "ref_allele", "alt_allele"], how='outer')
+    merged_df.to_csv(outputDir  + "spectrum_kernels.txt", sep="\t", index = False)

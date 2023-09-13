@@ -78,7 +78,7 @@ df = do.call(rbind, lists)
 # Vector 2: properties for mutant amino acid
 # If synonymous, then the two vectors are identical
 colnames(df) = c(paste("WT_AA", AAindex$name, sep = "_"), paste("mutant_AA", AAindex$name, sep = "_"))
-df = cbind(AA[, 1:6], df)
+df = cbind(AA[, 1:4], df)
 df = round_df(df, 4)
 name = paste(featureDir,"AAproperties.txt", sep = "")
 write.table(df, name, quote = FALSE, row.names = FALSE, sep = "\t")

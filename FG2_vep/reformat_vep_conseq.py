@@ -96,7 +96,7 @@ if __name__ == "__main__":
         
         # Round the numeric columns to two decimal places
         df3 = df3.round(2)
-        
+        df3 = df3.drop(["R", "driver_stat"], axis = 1)        
         # Save the processed DataFrame to a TSV file
         file_path = outputDir + "vepConsequences.bed"
         if os.path.exists(file_path):

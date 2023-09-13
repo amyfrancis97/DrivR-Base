@@ -24,7 +24,7 @@ library(stringr)
 library(tidyr)
 
 args <- commandArgs()
-# Reads in variant file in the format: "chrom", "start", "end", "ref", "alt"
+# Reads in variant file in the format: "chrom", "start", "end", "ref", "alt", "R", "driver_stat"
 
 variantDir=args[6]
 file=args[7]
@@ -62,7 +62,7 @@ getDinucleotideProperties = function(chrom, variants){
         toDelete <- seq(1, nrow(VariantDinucleotideWTSeq), 2)
         variants = cbind(variants, VariantDinucleotideWTSeq[ -toDelete ,])
         getMutantTrinucleotides = function(variantRow){
-        mutantTrinucleotides = paste(substr(variants[variantRow, 8], 1, 1), variants[variantRow, 5], substr(variants[variantRow, 8], 3, 3), sep = "")
+        mutantTrinucleotides = paste(substr(variants[variantRow, 6], 1, 1), variants[variantRow, 5], substr(variants[variantRow, 6], 3, 3), sep = "")
         return(mutantTrinucleotides)
         }
 
@@ -72,7 +72,7 @@ getDinucleotideProperties = function(chrom, variants){
         # Melt lists of variants into a dataframe
         variantdf = do.call(rbind.data.frame, variantdfapply)
         variants = cbind(variants, variantdf)
-        colnames(variants) = c("chrom", "start", "end", "ref_allele", "alt_allele", "R", "driver_stat", "WTtrinuc", "mutTrinuc")
+        colnames(variants) = c("chrom", "start", "end", "ref_allele", "alt_allele", "WTtrinuc", "mutTrinuc")
 
         # Get names of dinucleotide properties
         dinucleotidePropertyNames = apply(dinucleotideProperty['PropertyName'],2,function(x)gsub('\\s+', '_',x))
@@ -109,6 +109,7 @@ getDinucleotideProperties = function(chrom, variants){
 
         variants = variants %>%
         select(-"w")
+        print(variants)
         colnames(variants)[10:length(colnames(variants))] = c(paste("1", dinucleotidePropertyNames, sep = "_"), paste("2", dinucleotidePropertyNames, sep = "_"), 
                                                 paste("3", dinucleotidePropertyNames, sep = "_"), paste("4", dinucleotidePropertyNames, sep = "_"))
 

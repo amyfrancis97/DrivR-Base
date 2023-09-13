@@ -191,6 +191,7 @@ if __name__ == "__main__":
             res3.columns = res3.columns.tolist()[:7] + atom_site_list
             res4 = pd.concat([res3.iloc[:,:6], res3.iloc[:,17:22]], axis = 1)
             res4 = res4[res4["chrom"].notna()]
+            res4 = res4.drop(["R", "driver_stat"], axis = 1)
             file_path = variantDir + "alpha_fold_pbd_atom_site.txt"
             if os.path.exists(file_path):
                 res4.to_csv(file_path, mode= "a", index=False, sep = "\t", header = None)
@@ -218,5 +219,6 @@ if __name__ == "__main__":
         results2 = results2[results2["chrom"].notna()]
         # One-hot-encoding of structural conformation results
         results_encoded = pd.get_dummies(results2, columns=['_struct_conf.conf_type_id', '_struct_conf.id'], dtype=float)
+        results_encoded = results_encoded.drop(["R", "driver_stat"], axis = 1)
         file_path = variantDir + "alpha_fold_pbd_struct_conf.txt"
         results_encoded.to_csv(file_path, mode="w", index=False, sep="\t")

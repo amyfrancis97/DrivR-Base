@@ -49,5 +49,6 @@ for(subMatrix in as.list(names(sub.mat))){
 # Write matrix to CSV
 colnames(AA) = c(colnames(AA[, 1:8]), names(sub.mat))
 AA = AA[ , !(names(AA) %in% c("WT_AA", "mutant_AA"))]
+AA <- AA[-c(5,6)]
 name = paste(featureDir,"AASubstMatrices.txt", sep = "")
 write.table(AA, name, quote = FALSE, row.names = FALSE, sep = "\t")
