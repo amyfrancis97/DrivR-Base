@@ -6,7 +6,7 @@ The **FG7_aa_substitution_matrices** script utilizes 13 different substitution m
 ## Installation and Dependencies
 Please configure the required packages for this module in the top-level directory **/DrivR-Base**. Importantly, make sure that the anaconda environment is loaded properly.
 
-## Prerequisits
+## Prerequisites
 Before executing the script, ensure you have the human genome in GRCh38 fasta format to enable accurate querying of nucleotide windows and k-mers. You can download the genome from NCBI. To proceed, update the "hg38_seq" variable in the config.py file to specify the path to your downloaded genome.
 
 ## Usage
