@@ -19,12 +19,10 @@ To execute the script, navigate to the /FG8_aa_properties directory and run:
 
 ```bash
 RENVCMD="renv::activate(\"$renv_dir/renv.lock\")"
-Rscript extract_aa_properties.R $variantDir $variantFileName $outputDir
+Rscript extract_aa_properties.R $outputDir
 ```
 
 * $renv_dir: Location of the renv.lock file (within /DrivR-Base folder)
-* $variantDir: Location of the variant file (ends with /).
-* $variantFileName: Name of the variant file.
 * $outputDir: Location to store the resulting file (ends with /).
 
 ## Conclusion
