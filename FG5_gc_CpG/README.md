@@ -16,7 +16,13 @@ Before running the script, ensure you have the human genome in GRCh38 fasta form
 
 This script performs the following tasks:
 1. Variant Query and Sequence Extraction: Similar to the approach used in the FG3_dinucleotide_properties and FG4_dna_shape modules, this script queries the GRCh38 genome for provided variants within a specified window size. Unlike the other scripts, this Python script requires the pre-downloaded GRCh38 genome for accurate querying. Make sure to update the "hg38_seq" variable in config.py before running the script.
-2. Calculation of GC Content, CpG Count, and CpG Observed/Expected Ratio: The script calculates GC content using the formula (wildType.count("G") + wildType.count("C")) / len(wildType) * 100. Additionally, CpG count is computed with wildType.count("CG"), and CpG observed/expected ratio is calculated using (CpGCount * len(wildType)) / (wildType.count("G") * wildType.count("C")).
+2. Calculation of GC Content, CpG Count, and CpG Observed/Expected Ratio: The script calculates GC content using the formula:
+
+$$
+\frac{{\text{{CpGCount}} \cdot \text{{len(wildType)}}}}{{\text{{wildType.count("G")}} \cdot \text{{wildType.count("C")}}}}
+$$
+
+   (wildType.count("G") + wildType.count("C")) / len(wildType) * 100. Additionally, CpG count is computed with wildType.count("CG"), and CpG observed/expected ratio is calculated using (CpGCount * len(wildType)) / (wildType.count("G") * wildType.count("C")).
 
 ### Script Input
 
