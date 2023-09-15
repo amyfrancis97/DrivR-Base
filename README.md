@@ -36,13 +36,13 @@ Welcome to DrivR-Base! This repository contains scripts for extracting feature i
 
 
 ## Data Input Structure
-All variant files must be presented in the format shown in the following table:
+All variant files must be presented in the BED format shown in the following table:
 
-| Chromosome | Position | Position | Reference Allele | Alternate Allele | Recurrence | Driver Status |
-| ---------- | -------- | -------- | ---------------- | ---------------- | ---------- | ------------- |
-|    chr1    |  934881  |  934881  |        A         |         G        |     N/A    |      N/A      |
+| Chromosome | Position | Position | Reference Allele | Alternate Allele | 
+| ---------- | -------- | -------- | ---------------- | ---------------- | 
+|    chr1    |  934881  |  934881  |        A         |         G        | 
 
-Importantly, the chromosomal position must exist in a string format with a prefix of "chr", and the positions must be in an integer format. The final two columns are optional and are not useful at this level of analysis. Hence, if these columns are not useful for the variants of interest, just fill these with N/A. This will not affect the analysis. Crucially, the chromosomal position **must** be in the GRCh38 reference genome format. All features are extracted and queried using these descriptors, if the variant is provided in the wrong reference genome, the feature information will be incorrect. An example variant file in the correct format can be found in the **/example** directory.
+Importantly, the chromosomal position must exist in a string format with a prefix of "chr", and the positions must be in an integer format. Crucially, the chromosomal position **must** be in the GRCh38 reference genome format. All features are extracted and queried using these descriptors, if the variant is provided in the wrong reference genome, the feature information will be incorrect. An example variant file in the correct format can be found in the **/example** directory.
 
 ## Dependencies and Installation
 The scripts in this repository require a range of dependencies.
