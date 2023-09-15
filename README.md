@@ -148,61 +148,63 @@ After running the script, the Conda environment named "DrivR-Base" will be creat
 ```bash
 DrivR-Base/
 |-- FG1_conservation/
-|   |-- 1_reformat.sh
-|   |-- 2_download_cons_features.sh
-|   |-- 3_query_cons_features.sh
+|   |-- get_conservation.sh
 |   |-- check_formatting.py
-|   |-- download_convert.job
-|   |-- module_dependencies.sh
-|   |-- package_dependencies.py
+|   |-- config.sh
+|   |-- README.md
 |
 |-- FG2_vep/
-|   |-- 1_get_vep_cache.sh
-|   |-- 2_query_vep_cache.sh
-|   |-- 3_reformat_vep_output.sh
-|   |-- query_vep.sh
-|   |-- reformat_vep.sh
+|   |-- get_vep.sh
 |   |-- reformat_vep_aa.py
 |   |-- reformat_vep_conseq.py
 |   |-- reformat_vep_distance.py
+|   |-- config.sh
+|   |-- README.md
 |
 |-- FG3_dinucleotide_properties/
-|   |-- 1_get_dinuc_properties.sh
 |   |-- dinucleotide_properties.R
+|   |-- dinucleotidePropertyTable.csv
+|   |-- config.R
+|   |-- README.md
 |
 |-- FG4_dna_shape/
-|   |-- 1_get_dna_shape.sh
 |   |-- dna_shape.R
+|   |-- config.R
+|   |-- README.md
 |
 |-- FG5_gc_CpG/
-|   |-- 1_get_gc_CpG.sh
 |   |-- get_gc_CpG.py
+|   |-- config.py
+|   |-- README.md
 |
 |-- FG6_kernel/
-|   |-- 1_get_kernel.sh
 |   |-- get_kernel.py
+|   |-- config.py
+|   |-- README.md
 |
 |-- FG7_aa_substitution_matrices/
-|   |-- 1_get_aa_matrices.sh
-|   |-- get_subs_matrix_table.R
 |   |-- aa_subs_matrices.R
+|   |-- config.sh
+|   |-- README.md
 |
 |-- FG8_aa_properties
-|   |-- 1_get_aa_properties.sh
 |   |-- extract_aa_properties.R
+|   |-- AAindex.rda
+|   |-- config.R
+|   |-- config.sh
+|   |-- README.md
 |
 |-- FG9_encode/
-|   |-- 11_getENCODEdatasets.sh
-|   |-- getENCODEdatasets.sh
-|   |-- getENCODEintersects.sh
-|   |-- getENCODEvalues.sh
-|   |-- getENCODEdatasets.py
-|   |-- getENCODEvalues.py
+|   |-- get_encode.sh
+|   |-- downloadEncode.py
+|   |-- addAnnotations.py
+|   |-- reformat_encode.py
+|   |-- config.sh
+|   |-- README.md
 |
 |-- FG10_alpha_fold/
-|   |-- get_alpha_fold_scores.sh
-|   |-- get_alpha_fold_atom.py
-|   |-- get_alpha_fold_struct_conf.py
+|   |-- get_alpha_fold.py
+|   |-- README.md
 ```
 
 ## Feature Description & Usage
