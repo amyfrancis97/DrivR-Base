@@ -15,7 +15,7 @@ if __name__ == "__main__":
 
     chunksize = 50000
     # Process the variant data in chunks (50000 rows at a time)
-    for df in pd.read_csv(variants + 'variant_effect_output_distance.txt', sep="\t", skiprows=4, chunksize=chunksize):
+    for df in pd.read_csv(variants + 'variant_effect_output_distance.txt', sep="\t", chunksize=chunksize):
         # Extract relevant information from the 'INFO' column
         df2 = df.INFO.str.split(",", expand=True).iloc[:, 1:]
         df2 = df2.fillna(value=np.nan)

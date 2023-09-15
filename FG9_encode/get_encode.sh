@@ -12,41 +12,44 @@ outputDir=$3
 #features=("DNase-seq" "Mint-ChIP-seq" "ATAC-seq" "eCLIP" "ChIA-PET" "GM+DNase-seq")
 features=("TF+ChIP-seq" "Histone+ChIP-seq")
 for feature in ${features[@]}; do
-cd $working_dir
+#cd $working_dir
 
 # Run python script to download all peak bedGraph files for each feature
-python downloadEncode.py $feature $download_dir
+#python downloadEncode.py $feature $download_dir
 
-wait
+#wait
 
-cd $download_dir
+#cd $download_dir
 
 # Convert the file from bedGraph to bed
-for i in *${feature}.bigBed; do bigBedToBed $i "${i%.bigBed}.bed"; done
+#for i in *${feature}.bigBed; do bigBedToBed $i "${i%.bigBed}.bed"; done
 
-rm *".${feature}.bigBed"
+#rm *".${feature}.bigBed"
 
 # Add the accession as a column in the file to query information later on
-for file in *${feature}.bed; do
-filename=$(echo "$file" | sed 's/+/_/g' | cut -d. -f1)
-awk -v OFS='\t' -v val="$filename" '{$(NF+1) = val} 1' $file > ${file}.tmp;
-done
+#for file in *${feature}.bed; do
+#filename=$(echo "$file" | sed 's/+/_/g' | cut -d. -f1)
+#awk -v OFS='\t' -v val="$filename" '{$(NF+1) = val} 1' $file > ${file}.tmp;
+#done
 
-rm *."${feature}.bed" 
+#rm *."${feature}.bed" 
 
 # Combine the files
-cat *${feature}.bed.tmp > ${feature}.bed 
+#cat *${feature}.bed.tmp > ${feature}.bed 
 
-rm *."${feature}.bed.tmp"
+#rm *."${feature}.bed.tmp"
 
-cd $working_dir
+#cd $working_dir
 
 # Merge annotation and peaks
-python addAnnotations.py $feature $download_dir
+#python addAnnotations.py $feature $download_dir
 
-wait
+#wait
 
+echo $download_dir
 cd $download_dir
+
+pwd
 
 # Remove all of the bed and bigBed files
 rm *"${feature}_fileInfo.txt"
@@ -57,6 +60,9 @@ rm ${feature}_feature+anno.tmp
 
 bedtools intersect -wa -wb -a ${feature}_feature+anno.sorted.bed -b ${variantDir}${variantFileName} -sorted > ${feature}.final.bed
 
+head ${feature}_feature+anno.sorted.bed
+head ${variantDir}${variantFileName}
+
 wait
 
 cd $working_dir
@@ -64,6 +70,5 @@ python reformat_encode.py $feature $download_dir $outputDir
 
 wait
 
-cd $download_dir
+cd $download_dir; done
 rm ${feature}.final.bed  ${feature}.bed; done
-

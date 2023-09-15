@@ -108,7 +108,6 @@ if __name__ == "__main__":
     results = []
     chunksize = 1000
     for chunk in pd.read_csv(variants + "_variant_effect_output_all.head.rem.txt", sep="\t", header=None, low_memory=False, chunksize=chunksize):
-
         # REMOVE BELOW SECTION IF YOU HAVE ALTERNATIVE INPUT FILE
         ##################################################################
         df2 = chunk[7].str.split("ENST", expand=True)[1].str.split("|", expand=True)
@@ -119,45 +118,23 @@ if __name__ == "__main__":
         df3 = pd.concat([chunk.iloc[:, :7], gene, proteinPosition], axis=1)
         df3 = df3.drop(2, axis=1)
         df3.columns = ["chrom", "pos", "ref_allele", "alt_allele", "R", "driver_stat", "gene", "protein_position"]
-        #####################################################################
 
         # If you are reading in the alternative file, rather than that generated from VEP, then use the code below
         # df3 = chunk
 
         df3["uniprot_conversion"] = np.nan
 
-        lst = []
-        for i in list(df3["gene"].unique()):
-
+        for row in range(0, len(df3)):
+            gene = df3.loc[row, "gene"]
             request = IdMappingClient.submit(
-                source="GeneCards", dest="UniProtKB", ids={i}
+                source="GeneCards", dest="UniProtKB", ids={gene}
             )
-            time.sleep(15)
-            # Continuously check for the completion of the results
-            while True:
-                try:
-                    ans = list(request.each_result())[0]
-                    uniprot_conv = [x for x in ans.values()][1]
-                    lst.append([i, uniprot_conv])
-                    break  # Break the loop if successful
-                except Exception as e:
-                    print("Waiting for results:", e)
-                    time.sleep(20)  # Adjust the sleep time based on your experience
-
-            ans = list(request.each_result())[0]
-            uniprot_conv = [x for x in ans.values()][1]
-            lst.append([i, uniprot_conv])
-        
-
-        # Find rows where the condition is met
-        condition = df3["gene"] == lst[0][0]
-        # Update the specified column for the matching rows using .loc[]
-        df3.loc[condition, "uniprot_conversion"] = lst[0][1]
-        # only retrieve info for those with protein position
+            res = list(request.each_result())[0]
+            uniprot_conv = [x for x in res.values()][1]
+            df3.loc[row, "uniprot_conversion"] = uniprot_conv
         df4 = df3[(df3["protein_position"] != "") & (df3["uniprot_conversion"] != "") & (df3["uniprot_conversion"] != np.nan) & (df3["protein_position"] != np.nan)].reset_index(drop=True)
-        
-        # Get the atom information
         res2 = [getAlphaFoldAtom(i, df4) for i in range(0, len(df4))]
+
         if len(res2) != 0:
             res3 = pd.concat(res2)
 
@@ -208,8 +185,6 @@ if __name__ == "__main__":
 
         if len(valid_res2) != 0:
             res3 = pd.concat(valid_res2)
-            for i in range(0, 16):
-                print(res3[i])
             res3 = res3.drop([0, 1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 14, 15, 16], axis=1)
             struct_conf_list = ["_struct_conf.conf_type_id", "_struct_conf.id"]
             res3.columns = res3.columns.tolist()[:7] + struct_conf_list

@@ -60,7 +60,7 @@ if __name__ == "__main__":
 
     chunksize = 50000
     # Process the variant data in chunks (50000 rows at a time)
-    for df in pd.read_csv(variants + "variant_effect_output_conseq.txt", sep="\t", skiprows=4, chunksize=chunksize):
+    for df in pd.read_csv(variants + "variant_effect_output_conseq.txt", sep="\t", chunksize=chunksize):
         # Replace '&' with ',' in the 'INFO' column
         df = df.replace("&", ",", regex=True)
 
@@ -97,6 +97,8 @@ if __name__ == "__main__":
         # Round the numeric columns to two decimal places
         df3 = df3.round(2)
         df3 = df3.drop(["R", "driver_stat"], axis = 1)        
+
+        df3.iloc[:, 4:] = df3.iloc[:, 4:].round().astype(int)
         # Save the processed DataFrame to a TSV file
         file_path = outputDir + "vepConsequences.bed"
         if os.path.exists(file_path):

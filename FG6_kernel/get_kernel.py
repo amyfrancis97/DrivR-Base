@@ -17,7 +17,7 @@ from itertools import islice
 import glob
 import multiprocessing
 from config import *
-from funtools import reduce
+from functools import reduce
 
 def process_kmer(windowSize, kmerSize):
     # kmer of window size 5 and kmer size 3
@@ -30,6 +30,8 @@ def process_kmer(windowSize, kmerSize):
     spectrumdf["chrom"] = spectrumdf["chrom"].str.replace("chr", "").astype(str)
     spectrumdf["pos"] = spectrumdf["pos"].astype(int)
     spectrumdf = spectrumdf.rename(columns={0: str(windowSize*2) + "_" + str(kmerSize) + "_w", 1: str(windowSize*2) + "_" + str(kmerSize) + "_x", 2: str(windowSize*2) + "_" + str(kmerSize) + "_y", 3: str(windowSize*2) + "_" + str(kmerSize) + "_z"})
+    spectrumdf = spectrumdf.drop("pos2", axis = 1)
+
     # save each result to CSV file
     spectrumdf.to_csv(outputDir  + str(windowSize*2) + "_" + str(kmerSize) + "_kernel.txt", sep="\t", index = False)
 
@@ -46,7 +48,7 @@ def getSequences(dataset, window_size, k):
 
         # mutant sequence
         # repeats the same as above but replaces WT variant with the mutant variant
-        mutant = str(record_dict[dataset.loc[i, "chrom"]].seq[int(dataset.loc[i, "pos"]-1-window_size):int(dataset.loc[i, "pos"]-1)]) + dataset.loc[i, "alternate_allele"] + str(record_dict[dataset.loc[i, "chrom"]].seq[int(dataset.loc[i, "pos"]):int(dataset.loc[i, "pos"]-1+window_size)]).upper()
+        mutant = str(record_dict[dataset.loc[i, "chrom"]].seq[int(dataset.loc[i, "pos"]-1-window_size):int(dataset.loc[i, "pos"]-1)]) + dataset.loc[i, "alt_allele"] + str(record_dict[dataset.loc[i, "chrom"]].seq[int(dataset.loc[i, "pos"]):int(dataset.loc[i, "pos"]-1+window_size)]).upper()
 
         kmerDf.loc[i, "wildType"] = wildType.upper()
         kmerDf.loc[i, "mutant"] = mutant.upper()
@@ -136,9 +138,8 @@ if __name__ == "__main__":
     record_dict = SeqIO.to_dict(SeqIO.parse(hg38_seq, "fasta"))
 
     chunk_size = 1000
-    for chunk in pd.read_csv(variants, sep = "\t", names = ['chrom', 'pos', 'pos2', 'reference_allele', 'alternate_allele'], chunksize = chunk_size):
+    for chunk in pd.read_csv(variants, sep = "\t", names = ['chrom', 'pos', 'pos2', 'ref_allele', 'alt_allele'], chunksize = chunk_size):
         # Reading in the variant file
-        #variants = pd.read_csv(variants, sep = "\t", names = ['chrom', 'pos', 'pos2', 'reference_allele', 'alternate_allele', 'reccurance', 'driver_status'])
         variants = chunk
         # Removes sex chromosomes
         variants = variants[(variants['chrom'] != "chrX") & (variants['chrom'] != "chrY")]
@@ -170,8 +171,10 @@ if __name__ == "__main__":
     dfs = []
     for file in glob.glob("*kernel.txt"):
         dfs.append(pd.read_csv(file, sep = "\t"))
+        os.remove(file)
 
     merged_df = dfs[0]
     for df in dfs[1:]:
         merged_df = pd.merge(merged_df, df, on=["chrom", "pos", "ref_allele", "alt_allele"], how='outer')
     merged_df.to_csv(outputDir  + "spectrum_kernels.txt", sep="\t", index = False)
+

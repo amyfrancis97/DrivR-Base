@@ -69,3 +69,5 @@ name = paste(featureOutputDir, "dnaShape.txt", sep = "")
 dnaShape = dnaShape[,colSums(is.na(dnaShape))<nrow(dnaShape)]
 
 write.table(dnaShape, name, quote = FALSE, row.names = FALSE, sep = "\t")
+
+unlink(paste(featureDir, "*.fa*", sep = ""))

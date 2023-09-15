@@ -1,7 +1,6 @@
 #!/bin/bash
 # Load required modules
 source config.sh
-source ${module_dependencies_loc}module_dependencies.sh
 
 # Print input arguments
 echo "Input files: ${1}${2}"
@@ -69,7 +68,7 @@ reformattedOutput="${1}${2}"
 
 echo "done before intersecting"
 # Find intersects between cosmic/gnomad data and conservation scores
-#bedtools intersect -wa -wb -a "$i" -b "$reformattedOutput" -sorted | awk '{print $5"\t"$7"\t"$8"\t"$9"\t"$10"\t"$11"\t"$4}' > "${outputDir}${i[6]}.bed"
-bedtools intersect -wa -wb -a "$i" -b "$reformattedOutput" -sorted > "${outputDir}${i[6]}.bed"
+bedtools intersect -wa -wb -a "$i" -b "$reformattedOutput" -sorted | awk '{print $5"\t"$7"\t"$8"\t"$9"\t"$10"\t"$11"\t"$4}' > "${outputDir}${i[6]}.bed"
+#bedtools intersect -wa -wb -a "$i" -b "$reformattedOutput" -sorted > "${outputDir}${i[6]}.bed"
 wait;
 done

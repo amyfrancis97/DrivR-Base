@@ -1,4 +1,4 @@
-# Import packages
+# Import necessary packages
 import pandas as pd
 import os
 import re
@@ -7,50 +7,87 @@ import numpy as np
 import sys
 from functools import reduce
 
+# Check if the script is being run as the main program
 if __name__ == "__main__":
-    # Read command-line arguments
+    # Define file paths and output directory
     variants = sys.argv[2]  # Path to the variant file
     outputDir = sys.argv[1]  # Output directory
 
+    # Initialize lists and variables
     all_regions = []
-    chunksize = 50000
+    chunksize = 5000
 
-    # Initialize the merged_df with None
+    # Initialize an empty list for merging DataFrames
     merged_df = []
 
-    # Process the variant data in chunks (50000 rows at a time)
-    for df in pd.read_csv(variants + "variant_effect_output_AA.txt", sep="\t", skiprows=4, chunksize=chunksize):
-        # Extract relevant information from the 'INFO' column
-        x = df["INFO"].str.split(",", expand=True)[0].str.split("=", expand=True)[1].str.split("/", expand=True)
-        # Fill missing values in the second column with values from the first column
-        x[1] = x[1].mask(x[1].isnull(), x[0])
+    # Process the variant data in chunks (2 rows at a time)
+    for df in pd.read_csv(variants + "variant_effect_output_AA.txt", sep="\t", chunksize=chunksize):
+        print(df.head())
+        df = df.reset_index(drop=True)
 
-        # Combine the extracted data with the original DataFrame
-        df3 = pd.concat([df.iloc[:, :7], x], axis=1)
-        # Drop the 'ID' column and rename the columns for clarity
-        df3 = df3.drop(["ID"], axis=1)
-        df3 = df3.rename(columns={"#CHROM": "chrom", "POS": "pos", "REF": "ref_allele", "ALT": "alt_allele", "QUAL": "R", "FILTER": "driver_stat", 0: "WT_AA", 1: "mutant_AA"})
-        df3 = df3[(df3["ref_allele"].str.len() == 1) & (df3["alt_allele"].str.len() == 1) ]
-        df3 = df3.drop(["R", "driver_stat"], axis = 1)
-        # Save the processed DataFrame to a TSV file
-        file_path = outputDir + "vepAA.bed"
-        if os.path.exists(file_path):
-            df3.to_csv(file_path, header=None, index=None, sep="\t", mode='a')
-        else:
-            df3.to_csv(file_path, index=None, sep="\t")
+        # Define the regular expression pattern to split INFO column
+        pattern = r"[,=]"
 
-        # Convert 'WT_AA' and 'mutant_AA' columns to one-hot encoded columns
-        # One-hot encode the categorical columns 'WT_AA' and 'mutant_AA'
-        df_encoded = pd.get_dummies(df3, columns=['WT_AA', 'mutant_AA'])
-        # Display the resulting DataFrame
-        print(df_encoded)
-        merged_df.append(df_encoded)  # Append the processed DataFrame to the list
+        # Use re.split() to split INFO column based on the pattern
+        list_res = [re.split(pattern, df["INFO"][i]) for i in range(0, len(df))]
+        df2 = pd.DataFrame(list_res).drop(0, axis=1)
 
-    # Merge DataFrames in the list
-    data_merge = reduce(lambda left, right: pd.merge(left, right, how="left"), merged_df)
-    for col in data_merge.columns.tolist()[7:]:
-        data_merge[col] = data_merge[col].astype("Int64")
+        # Initialize a list to store rows
+        rows = []
+
+        # Iterate through each row
+        for row_index in range(0, len(df)):
+
+            # Function to check if an element is a non-empty string
+            def is_non_empty_string(element):
+                return isinstance(element, str) and element != ''
+
+            # Apply the is_non_empty_string function to each element in the specified row
+            row_contains_string = df2.iloc[row_index].apply(is_non_empty_string)
+
+            # Get the column names where the row contains a string
+            columns_with_string = row_contains_string[row_contains_string].index.tolist()
+
+            # Create a new DataFrame row
+            row = pd.DataFrame(df.iloc[row_index, :]).transpose()
+
+            # Check if there are no columns with strings
+            if len(columns_with_string) == 0:
+                row["WT_AA"] = np.nan
+                row["mutant_AA"] = np.nan
+            else:
+                # Split the AA string based on '/'
+                AA = df2.iloc[row_index, :][columns_with_string[0]].split("/")
+
+                if len(AA) == 1:
+                    row["WT_AA"] = AA
+                    row["mutant_AA"] = AA
+                else:
+                    row["WT_AA"] = AA[0]
+                    row["mutant_AA"] = AA[1]
+
+            # Append the row to the list of rows
+            rows.append(row)
+
+        # Concatenate the rows and drop unnecessary columns
+        df_fin = pd.concat(rows).drop(["QUAL", "FILTER", "INFO", "ID"], axis=1)
+        merged_df.append(df_fin)
+
+    # Concatenate DataFrames from chunks into a final DataFrame
+    final_df = pd.concat(merged_df)
+
+    # Rename columns for clarity
+    final_df = final_df.rename(columns={"#CHROM": "chrom", "POS": "pos", "REF": "ref_allele", "ALT": "alt_allele"})
+
+    # Save the processed DataFrame to a TSV file
+    file_path = outputDir + "vepAA.bed"
+    final_df.to_csv(file_path, index=None, sep="\t")
+
+    # Convert 'WT_AA' and 'mutant_AA' columns to one-hot encoded columns
+    final_df = pd.get_dummies(final_df, columns=['WT_AA', 'mutant_AA'])
+    final_df.iloc[:, 4:] = final_df.iloc[:, 4:].astype(int)
     # Fill missing values with 0 and save the final DataFrame to a TSV file
-    data_merge = data_merge.fillna(0)
+    final_df = final_df.fillna(0)
     file_path = outputDir + "vepAA_OHE.bed"
-    data_merge.to_csv(file_path, index=None, sep="\t")
+    final_df.to_csv(file_path, index=None, sep="\t")
+
