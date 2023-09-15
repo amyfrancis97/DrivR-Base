@@ -36,7 +36,7 @@ Welcome to DrivR-Base! This repository contains scripts for extracting feature i
 
 
 ## Data Input Structure
-All variant files must be presented in the BED format shown in the following table:
+All variant files must be presented in the BED format shown in the following table but **should not contain any headers**:
 
 | Chromosome | Position | Position | Reference Allele | Alternate Allele | 
 | ---------- | -------- | -------- | ---------------- | ---------------- | 
