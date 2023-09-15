@@ -38,7 +38,7 @@ Welcome to DrivR-Base! This repository contains scripts for extracting feature i
 ## Data Input Structure
 All variant files must be presented in the BED format shown in the following table but **should not contain any headers**:
 
-| Chromosome | Position | Position | Reference Allele | Alternate Allele | 
+| Chromosome |  Start   |    End   | Reference Allele | Alternate Allele | 
 | ---------- | -------- | -------- | ---------------- | ---------------- | 
 |    chr1    |  934881  |  934881  |        A         |         G        | 
 
