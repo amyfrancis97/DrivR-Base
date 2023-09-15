@@ -211,7 +211,7 @@ DrivR-Base/
 For individual feature descriptions and usage, please see the documentation within the relevant sub-directory.
 
 ## Contributing
-Contributions are welcome! Follow the guidelines in CONTRIBUTING.md
+Contributions are welcome! Follow the guidelines in [CONTRIBUTING.md](https://github.com/amyfrancis97/DrivR-Base/blob/main/CONTRIBUTING.md).
 
 ## License
 This project is licensed under [LICENSE](https://github.com/amyfrancis97/DrivR-Base/blob/main/LICENSE).
