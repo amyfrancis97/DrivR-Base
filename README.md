@@ -217,12 +217,14 @@ Contributions are welcome! Follow the guidelines in CONTRIBUTING.md
 This project is licensed under [LICENSE](https://github.com/amyfrancis97/DrivR-Base/blob/main/LICENSE).
 
 ## Acknowledgments
+This work was carried out in the UK Medical Research Council Integrative Epidemiology Unit (MC\_UU\_00032/03) and using the computational facilities of the Advanced Computing Research Centre, University of Bristol.
+
 Special thanks to:
-Tom Gaunt
-Colin Campbell
-Cancer Research UK
-University of Bristol
-MRC Integrative Cancer Epidemiology Unit
+* Tom Gaunt
+* Colin Campbell
+
+## Funding
+This work was funded by Cancer Research UK [C18281/A30905]. 
 
 ## Contact
 For inquiries, contact us at [amy.francis@bristol.ac.uk](mailto:amy.francis@bristol.ac.uk).
