@@ -1,4 +1,4 @@
-# FG10: Alpha Fold features
+# FG10: Alpha Fold Features
 
 ## Introduction
 This repository contains scripts for extracting key structural information from alpha-fold protein models. The extracted data includes atomic site properties and structural conformation features.
