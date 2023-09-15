@@ -14,10 +14,6 @@ Thanks for your interest in contributing to DrivR-Base! We welcome contributions
 - Make your changes and commit them.
 - Submit a pull request (PR) with a clear description of your changes and why they are needed.
 
-## Code Style
-
-- Follow our [coding style guidelines](link-to-style-guide.md).
-
 ## Contact
 
 If you have any questions or need assistance, you can [reach out to us](https://research-information.bris.ac.uk/en/persons/amy-l-francis).
