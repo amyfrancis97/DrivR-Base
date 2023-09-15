@@ -27,7 +27,7 @@ def process_kmer(windowSize, kmerSize):
     spectrumList = [list(spectrumFeatureList[x].loc[0, :]) + list(spectrumFeatureList[x].loc[1, :]) for x in range(0, len(spectrumFeatureList))]
     spectrumdf = pd.DataFrame(spectrumList)
     spectrumdf = pd.concat([variants, spectrumdf], axis=1)
-    spectrumdf["chrom"] = spectrumdf["chrom"].str.replace("chr", "").astype(str)
+    spectrumdf["chrom"] = spectrumdf["chrom"]
     spectrumdf["pos"] = spectrumdf["pos"].astype(int)
     spectrumdf = spectrumdf.rename(columns={0: str(windowSize*2) + "_" + str(kmerSize) + "_w", 1: str(windowSize*2) + "_" + str(kmerSize) + "_x", 2: str(windowSize*2) + "_" + str(kmerSize) + "_y", 3: str(windowSize*2) + "_" + str(kmerSize) + "_z"})
     spectrumdf = spectrumdf.drop("pos2", axis = 1)
@@ -120,13 +120,6 @@ def getFinalSpectrumDf(windowSize, kmerSize):
     spectrumdf["pos"] = spectrumdf["pos"].astype(int)
     spectrumdf = spectrumdf.rename(columns = {0: str(windowSize*2) + "_" + str(kmerSize) + "_w", 1: str(windowSize*2) + "_" + str(kmerSize) + "_x", 2: str(windowSize*2) + "_" + str(kmerSize) + "_y", 3: str(windowSize*2) + "_" + str(kmerSize) + "_z"})
     spectrumdf = spectrumdf.drop("pos2", axis = 1)    
-    # Check if the output file already exists
-#    if os.path.exists(outputDir + str(windowSize) + "_" + str(kmerSize) + "_kernel.txt"):
- #       # If the file exists, append the new data to it
-  #      spectrumdf.to_csv(outputDir + str(windowSize) + "_" + str(kmerSize) + "_kernel.txt", sep='\t', mode='a', header=False, index = False)
-   # else:
-    #    # If the file doesn't exist, create a new file and write the data to it
-     #   spectrumdf.to_csv(outputDir  + str(windowSize) + "_" + str(kmerSize) + "_kernel.txt", sep='\t', index=False)
 
 
 if __name__ == "__main__":

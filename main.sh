@@ -1,7 +1,7 @@
 #!/bin/bash
 #SBATCH --job-name=reformatVariants
 #SBATCH --partition=test,short,compute,mrcieu
-#SBATCH --mem=150G
+#SBATCH --mem=80G
 #SBATCH --time=3-00:00:00
 #SBATCH --chdir=/user/home/uw20204/DrivR-Base
 #SBATCH --account=sscm013903
@@ -45,8 +45,8 @@ outputDir="/bp1/mrcieu1/data/encode/public/test/"
 #python get_gc_CpG.py $variantDir $variantFileName $outputDir
 
 # FG6: Get kernels - DONE
-#cd /user/home/uw20204/DrivR-Base/FG6_kernel
-#python get_kernel.py $variantDir $variantFileName $outputDir
+cd /user/home/uw20204/DrivR-Base/FG6_kernel
+python get_kernel.py $variantDir $variantFileName $outputDir
 
 # FG7: Get aa substitution matrices - DONE
 #cd /user/home/uw20204/DrivR-Base/FG7_aa_substitution_matrices
@@ -57,10 +57,8 @@ outputDir="/bp1/mrcieu1/data/encode/public/test/"
 #Rscript extract_aa_properties.R ${outputDir}
 
 # FG9: Get encode values
-cd /user/home/uw20204/DrivR-Base/FG9_encode
-./get_encode.sh $variantDir $variantFileName $outputDir
-#./download_encode_data.sh $variantDir $variantFileName $outputDir
-#./query_encode.sh $variantDir $variantFileName $outputDir
+#cd /user/home/uw20204/DrivR-Base/FG9_encode
+#./get_encode.sh $variantDir $variantFileName $outputDir
 
 # FG10: Get alpha fold scores -DONE but may need to change sleep time depending on query size
 #cd /user/home/uw20204/DrivR-Base/FG10_alpha_fold
