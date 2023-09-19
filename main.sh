@@ -25,8 +25,8 @@ outputDir="/bp1/mrcieu1/data/encode/public/test/"
 #mkdir -p $outputDir
 
 # FG1: Get conservation features
-#cd /user/home/uw20204/DrivR-Base/FG1_conservation
-#./get_conservation.sh $variantDir $variantFileName $outputDir
+cd /user/home/uw20204/DrivR-Base/FG1_conservation
+./get_conservation.sh $variantDir $variantFileName $outputDir
 
 # FG2: Get VEP features - DONE
 #cd /user/home/uw20204/DrivR-Base/FG2_vep
@@ -45,8 +45,8 @@ outputDir="/bp1/mrcieu1/data/encode/public/test/"
 #python get_gc_CpG.py $variantDir $variantFileName $outputDir
 
 # FG6: Get kernels - DONE
-cd /user/home/uw20204/DrivR-Base/FG6_kernel
-python get_kernel.py $variantDir $variantFileName $outputDir
+#cd /user/home/uw20204/DrivR-Base/FG6_kernel
+#python get_kernel.py $variantDir $variantFileName $outputDir
 
 # FG7: Get aa substitution matrices - DONE
 #cd /user/home/uw20204/DrivR-Base/FG7_aa_substitution_matrices
