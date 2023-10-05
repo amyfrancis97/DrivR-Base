@@ -1,4 +1,4 @@
-# DrivR-Base
+# DrivR-Base: A Feature Extraction Toolkit For Variant Effect Prediction Model Construction
 
 ## Introduction and Overview
 Welcome to DrivR-Base! This repository contains scripts for extracting feature information from different databases for single nucleotide variants (SNVs). These features are designed to be inputs for machine learning models, aiding in the prediction of functional impacts of genetic variants in human genome sequencing. The repository is organized into separate sub-directories for different feature groups (**FG_**), each serving a unique purpose. Please note that these scripts are only set up to analyse autosomal variants in the GRCh38 genome format.
