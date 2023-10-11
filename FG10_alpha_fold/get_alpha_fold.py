@@ -113,7 +113,7 @@ if __name__ == "__main__":
         df2 = chunk[7].str.split("ENST", expand=True)[1].str.split("|", expand=True)
         proteinPosition = df2[8]
         gene = chunk[7].str.split("ENST", expand=True)[0].str.split("|", expand=True)[3]
-
+        print(gene)
         # Create a new dataframe with these values
         df3 = pd.concat([chunk.iloc[:, :7], gene, proteinPosition], axis=1)
         df3 = df3.drop(2, axis=1)
@@ -121,19 +121,19 @@ if __name__ == "__main__":
 
         # If you are reading in the alternative file, rather than that generated from VEP, then use the code below
         # df3 = chunk
-
+        df3 = df3[(df3["protein_position"] != "") & (df3["uniprot_conversion"] != "") & (df3["uniprot_conversion"] != np.nan) & (df3["protein_position"] != np.nan)].reset_index(drop=True)
         df3["uniprot_conversion"] = np.nan
-
+        print(df3)
         for row in range(0, len(df3)):
             gene = df3.loc[row, "gene"]
             request = IdMappingClient.submit(
                 source="GeneCards", dest="UniProtKB", ids={gene}
             )
+            time.sleep(40)
             res = list(request.each_result())[0]
             uniprot_conv = [x for x in res.values()][1]
             df3.loc[row, "uniprot_conversion"] = uniprot_conv
-        df4 = df3[(df3["protein_position"] != "") & (df3["uniprot_conversion"] != "") & (df3["uniprot_conversion"] != np.nan) & (df3["protein_position"] != np.nan)].reset_index(drop=True)
-        res2 = [getAlphaFoldAtom(i, df4) for i in range(0, len(df4))]
+        res2 = [getAlphaFoldAtom(i, df3) for i in range(0, len(df3))]
 
         if len(res2) != 0:
             res3 = pd.concat(res2)
