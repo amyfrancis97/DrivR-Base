@@ -106,7 +106,7 @@ if __name__ == "__main__":
         fout.writelines(data[5:])
 
     results = []
-    chunksize = 1000
+    chunksize = 10000
     for chunk in pd.read_csv(variants + "_variant_effect_output_all.head.rem.txt", sep="\t", header=None, low_memory=False, chunksize=chunksize):
         # REMOVE BELOW SECTION IF YOU HAVE ALTERNATIVE INPUT FILE
         ##################################################################
@@ -121,8 +121,9 @@ if __name__ == "__main__":
 
         # If you are reading in the alternative file, rather than that generated from VEP, then use the code below
         # df3 = chunk
-        df3 = df3[(df3["protein_position"] != "") & (df3["uniprot_conversion"] != "") & (df3["uniprot_conversion"] != np.nan) & (df3["protein_position"] != np.nan)].reset_index(drop=True)
         df3["uniprot_conversion"] = np.nan
+        df3 = df3[(df3["protein_position"] != "") & (df3["protein_position"] != "None") & (df3["protein_position"] != np.nan)].reset_index(drop = True)
+        df3 = df3[df3['protein_position'].notna()].reset_index(drop = True)
         print(df3)
         for row in range(0, len(df3)):
             gene = df3.loc[row, "gene"]
@@ -130,9 +131,13 @@ if __name__ == "__main__":
                 source="GeneCards", dest="UniProtKB", ids={gene}
             )
             time.sleep(40)
+            print(list(request.each_result()))
             res = list(request.each_result())[0]
+            print(res)
+#            uniprot_conv = [entry['to'] for entry in request.each_result()]
             uniprot_conv = [x for x in res.values()][1]
             df3.loc[row, "uniprot_conversion"] = uniprot_conv
+        df3 = df3[(df3["protein_position"] != "") & (df3["uniprot_conversion"] != "") & (df3["uniprot_conversion"] != np.nan) & (df3["protein_position"] != np.nan)].reset_index(drop=True)
         res2 = [getAlphaFoldAtom(i, df3) for i in range(0, len(df3))]
 
         if len(res2) != 0:
