@@ -181,7 +181,7 @@ if __name__ == "__main__":
                 res4.to_csv(file_path, mode= "w", index=False, sep = "\t")
 
         # Get the structural conformation information
-        res2 = [getAlphaFoldStructConf(i, df4) for i in range(0, len(df4))]
+        res2 = [getAlphaFoldStructConf(i, df3) for i in range(0, len(df3))]
 
         res3 = pd.DataFrame()
 
