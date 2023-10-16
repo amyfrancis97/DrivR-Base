@@ -162,12 +162,23 @@ if __name__ == "__main__":
     
     os.chdir(outputDir)
     dfs = []
+
+    # Define the chunk size for reading each CSV file
+    chunksize = 10000  # You can adjust this based on your available memory
+
+    # Loop through the CSV files
     for file in glob.glob("*kernel.txt"):
-        dfs.append(pd.read_csv(file, sep = "\t"))
+        for chunk in pd.read_csv(file, sep="\t", chunksize=chunksize):
+            dfs.append(chunk)
+            print(dfs.head())
         os.remove(file)
 
-    merged_df = dfs[0]
-    for df in dfs[1:]:
-        merged_df = pd.merge(merged_df, df, on=["chrom", "pos", "ref_allele", "alt_allele"], how='outer')
-    merged_df.to_csv(outputDir  + "spectrum_kernels.txt", sep="\t", index = False)
+    # Initialize merged_df with the first chunk
+    merged_df = dfs.pop(0)
 
+    # Merge the remaining chunks
+    for chunk in dfs:
+        merged_df = pd.merge(merged_df, chunk, on=["chrom", "pos", "ref_allele", "alt_allele"], how='outer')
+
+    # Save the merged dataframe to a CSV
+    merged_df.to_csv(outputDir  + "spectrum_kernels.txt", sep="\t", index=False)
