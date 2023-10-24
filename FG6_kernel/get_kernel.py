@@ -32,8 +32,16 @@ def process_kmer(windowSize, kmerSize):
     spectrumdf = spectrumdf.rename(columns={0: str(windowSize*2) + "_" + str(kmerSize) + "_w", 1: str(windowSize*2) + "_" + str(kmerSize) + "_x", 2: str(windowSize*2) + "_" + str(kmerSize) + "_y", 3: str(windowSize*2) + "_" + str(kmerSize) + "_z"})
     spectrumdf = spectrumdf.drop("pos2", axis = 1)
 
-    # save each result to CSV file
-    spectrumdf.to_csv(outputDir  + str(windowSize*2) + "_" + str(kmerSize) + "_kernel.txt", sep="\t", index = False)
+    # Save each result to CSV file
+    output_file_path = os.path.join(outputDir, f"{windowSize*2}_{kmerSize}_kernel.txt")
+
+    # Check if the output file already exists
+    if os.path.exists(output_file_path):
+        # Append to the existing file
+        spectrumdf.to_csv(output_file_path, sep="\t", index=False, mode='a', header=False)
+    else:
+        # Create a new file
+        spectrumdf.to_csv(output_file_path, sep="\t", index=False)
 
 # unput is the variant dataset and window size either side of the variants (e.g. w of 100 = 200 bp in total)
 def getSequences(dataset, window_size, k):
@@ -166,19 +174,22 @@ if __name__ == "__main__":
     # Define the chunk size for reading each CSV file
     chunksize = 10000  # You can adjust this based on your available memory
 
+    merged_df = pd.DataFrame()  # Initialize merged_df as an empty DataFrame
     # Loop through the CSV files
     for file in glob.glob("*kernel.txt"):
-        for chunk in pd.read_csv(file, sep="\t", chunksize=chunksize):
-            dfs.append(chunk)
-            print(dfs.head())
-        os.remove(file)
+        for chunk in pd.read_csv(file, sep="\t", chunksize=chunksize, header=0):
+            if merged_df is None:
+                merged_df = chunk  # Initialize merged_df with the first chunk
+            else:
+                merged_df = pd.merge(merged_df, chunk, how='outer')
 
-    # Initialize merged_df with the first chunk
-    merged_df = dfs.pop(0)
+            print(merged_df.head())  # Print the merged DataFrame for each chunk
 
-    # Merge the remaining chunks
-    for chunk in dfs:
-        merged_df = pd.merge(merged_df, chunk, on=["chrom", "pos", "ref_allele", "alt_allele"], how='outer')
+        #os.remove(file)
 
-    # Save the merged dataframe to a CSV
-    merged_df.to_csv(outputDir  + "spectrum_kernels.txt", sep="\t", index=False)
+    # Save the final merged dataframe to a CSV
+    merged_df.to_csv(outputDir + "spectrum_kernels.txt", sep="\t", index=False)
+
+
+
+

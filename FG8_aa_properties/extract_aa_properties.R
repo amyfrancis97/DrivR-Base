@@ -82,3 +82,5 @@ df = cbind(AA[, 1:4], df)
 df = round_df(df, 4)
 name = paste(featureDir,"AAproperties.txt", sep = "")
 write.table(df, name, quote = FALSE, row.names = FALSE, sep = "\t")
+# %%
+
