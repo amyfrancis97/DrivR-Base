@@ -106,14 +106,13 @@ if __name__ == "__main__":
         fout.writelines(data[5:])
 
     results = []
-    chunksize = 10000
+    chunksize = 1000
     for chunk in pd.read_csv(variants + "_variant_effect_output_all.head.rem.txt", sep="\t", header=None, low_memory=False, chunksize=chunksize):
         # REMOVE BELOW SECTION IF YOU HAVE ALTERNATIVE INPUT FILE
         ##################################################################
         df2 = chunk[7].str.split("ENST", expand=True)[1].str.split("|", expand=True)
         proteinPosition = df2[8]
         gene = chunk[7].str.split("ENST", expand=True)[0].str.split("|", expand=True)[3]
-        print(gene)
         # Create a new dataframe with these values
         df3 = pd.concat([chunk.iloc[:, :7], gene, proteinPosition], axis=1)
         df3 = df3.drop(2, axis=1)
@@ -124,16 +123,13 @@ if __name__ == "__main__":
         df3["uniprot_conversion"] = np.nan
         df3 = df3[(df3["protein_position"] != "") & (df3["protein_position"] != "None") & (df3["protein_position"] != np.nan)].reset_index(drop = True)
         df3 = df3[df3['protein_position'].notna()].reset_index(drop = True)
-        print(df3)
         for row in range(0, len(df3)):
             gene = df3.loc[row, "gene"]
             request = IdMappingClient.submit(
                 source="GeneCards", dest="UniProtKB", ids={gene}
             )
-            time.sleep(40)
-            print(list(request.each_result()))
+            time.sleep(100)
             res = list(request.each_result())[0]
-            print(res)
 #            uniprot_conv = [entry['to'] for entry in request.each_result()]
             uniprot_conv = [x for x in res.values()][1]
             df3.loc[row, "uniprot_conversion"] = uniprot_conv
@@ -201,4 +197,7 @@ if __name__ == "__main__":
         results_encoded = pd.get_dummies(results2, columns=['_struct_conf.conf_type_id', '_struct_conf.id'], dtype=float)
         results_encoded = results_encoded.drop(["R", "driver_stat"], axis = 1)
         file_path = variantDir + "alpha_fold_pbd_struct_conf.txt"
-        results_encoded.to_csv(file_path, mode="w", index=False, sep="\t")
+        if os.path.exists(file_path):
+            res4.to_csv(file_path, mode="a", index=False, sep="\t", header=None)
+        else:
+            res4.to_csv(file_path, mode="w", index=False, sep="\t")
