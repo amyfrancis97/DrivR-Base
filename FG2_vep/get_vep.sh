@@ -6,9 +6,9 @@ source ${module_dependencies_loc}module_dependencies.sh
 
 # Download and install VEP
 cd ${vep_cache}
-git clone https://github.com/Ensembl/ensembl-vep
-cd ensembl-vep
-perl INSTALL.pl -a acf -s homo_sapiens -y GRCh38
+#git clone https://github.com/Ensembl/ensembl-vep
+#cd ensembl-vep
+#perl INSTALL.pl -a acf -s homo_sapiens -y GRCh38
 
 # Set input and output directories
 variantDir="$1"
@@ -21,6 +21,8 @@ cd ${vep_cache}ensembl-vep
 # Set input variables
 file="${variantDir}${variantFile}"
 
+bedtools sort -i $file > ${file}.sorted.bed
+mv ${file}.sorted.bed $file
 
 # Query VEP cache for all variant effect output
 ./vep -i "${file[@]}" --fork 4 --offline --cache --force_overwrite --vcf --protein --uniprot -o "${outputDir[@]}$(basename "$file")_variant_effect_output_all.txt" --no_stats
@@ -63,6 +65,3 @@ wait
 
 # Delete the original vep output files
 rm -rf  "${outputDir[@]}$(basename "$file")_variant_effect_output_distance.txt" "${outputDir[@]}$(basename "$file")_variant_effect_output_AA.txt" "${outputDir[@]}$(basename "$file")_variant_effect_output_conseq.txt"
-
-# Delete the cache
-rm -rf ${vep_cache}ensembl-vep

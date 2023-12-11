@@ -24,7 +24,7 @@ library(stringr)
 library(tidyr)
 
 args <- commandArgs()
-# Reads in variant file in the format: "chrom", "start", "end", "ref", "alt", "R", "driver_stat"
+# Reads in variant file in the format: "chrom", "start", "end", "ref", "alt"
 
 variantDir=args[6]
 file=args[7]
@@ -109,10 +109,8 @@ getDinucleotideProperties = function(chrom, variants){
 
         variants = variants %>%
         select(-"w")
-        print(variants)
-        colnames(variants)[10:length(colnames(variants))] = c(paste("1", dinucleotidePropertyNames, sep = "_"), paste("2", dinucleotidePropertyNames, sep = "_"), 
+        colnames(variants)[8:length(colnames(variants))] = c(paste("1", dinucleotidePropertyNames, sep = "_"), paste("2", dinucleotidePropertyNames, sep = "_"), 
                                                 paste("3", dinucleotidePropertyNames, sep = "_"), paste("4", dinucleotidePropertyNames, sep = "_"))
-
         # only keep one column if they are duplicated
         variants <- variants[, !duplicated(colnames(variants), fromLast = TRUE)]
 

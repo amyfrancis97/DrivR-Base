@@ -9,8 +9,7 @@ variantFileName=$2
 outputDir=$3
 
 # Download the ENCODE datasets
-features=("DNase-seq" "Mint-ChIP-seq" "ATAC-seq" "eCLIP" "ChIA-PET" "GM+DNase-seq")
-#features=("TF+ChIP-seq" "Histone+ChIP-seq")
+features=("TF+ChIP-seq" "Histone+ChIP-seq" "DNase-seq" "Mint-ChIP-seq" "ATAC-seq" "eCLIP" "ChIA-PET" "GM+DNase-seq")
 for feature in ${features[@]}; do
 #cd $working_dir
 
@@ -46,7 +45,6 @@ for feature in ${features[@]}; do
 
 #wait
 
-echo $download_dir
 cd $download_dir
 
 pwd
@@ -60,9 +58,6 @@ sort -k 1,1 -k2,2n ${feature}_feature+anno.tmp |  awk -F"\t" '{ $2 = int($2); $3
 
 bedtools intersect -wa -wb -a ${feature}_feature+anno.sorted.bed -b ${variantDir}${variantFileName} -sorted > ${feature}.final.bed
 
-head ${feature}_feature+anno.sorted.bed
-head ${variantDir}${variantFileName}
-
 wait
 
 cd $working_dir
@@ -71,4 +66,4 @@ python reformat_encode.py $feature $download_dir $outputDir
 wait
 
 cd $download_dir; done
-rm ${feature}.final.bed  ${feature}.bed; done
+#rm ${feature}.final.bed  ${feature}.bed; done

@@ -168,27 +168,7 @@ if __name__ == "__main__":
         pool.close()
         pool.join()
     
-    os.chdir(outputDir)
-    dfs = []
 
-    # Define the chunk size for reading each CSV file
-    chunksize = 10000  # You can adjust this based on your available memory
-
-    merged_df = pd.DataFrame()  # Initialize merged_df as an empty DataFrame
-    # Loop through the CSV files
-    for file in glob.glob("*kernel.txt"):
-        for chunk in pd.read_csv(file, sep="\t", chunksize=chunksize, header=0):
-            if merged_df is None:
-                merged_df = chunk  # Initialize merged_df with the first chunk
-            else:
-                merged_df = pd.merge(merged_df, chunk, how='outer')
-
-            print(merged_df.head())  # Print the merged DataFrame for each chunk
-
-        #os.remove(file)
-
-    # Save the final merged dataframe to a CSV
-    merged_df.to_csv(outputDir + "spectrum_kernels.txt", sep="\t", index=False)
 
 
 
