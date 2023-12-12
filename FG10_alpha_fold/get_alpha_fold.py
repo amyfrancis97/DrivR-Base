@@ -27,9 +27,11 @@ def getAlphaFoldAtom(variantVEPresults, df4):
 
                 # Concatenate the words with a single tab between them
                 result_string = ' '.join(["ATOM", df4["protein_position"][variantVEPresults]])
+                print(result_string)
                 if line.startswith(result_string):
 
                     table_data = line.split('\t')
+                    print(line)
                     atoms.append(line)
 
         try:
@@ -41,6 +43,7 @@ def getAlphaFoldAtom(variantVEPresults, df4):
         
         if len(res) != 0:
             res = pd.concat([pd.DataFrame(df4.iloc[variantVEPresults, :7]).transpose().reset_index(drop=True), res],axis = 1)
+            print(res)
             return res
 
 def getAlphaFoldStructConf(variantVEPresults, df4):
@@ -98,7 +101,7 @@ def getAlphaFoldStructConf(variantVEPresults, df4):
 
 if __name__ == "__main__":
     variantDir = sys.argv[1]
-    variants = variantDir + sys.argv[2]
+    variants = sys.argv[3] + sys.argv[2]
 
     with open(variants + "_variant_effect_output_all.txt", 'r') as fin:
         data = fin.read().splitlines(True)
@@ -106,7 +109,7 @@ if __name__ == "__main__":
         fout.writelines(data[5:])
 
     results = []
-    chunksize = 1000
+    chunksize = 100
     for chunk in pd.read_csv(variants + "_variant_effect_output_all.head.rem.txt", sep="\t", header=None, low_memory=False, chunksize=chunksize):
         # REMOVE BELOW SECTION IF YOU HAVE ALTERNATIVE INPUT FILE
         ##################################################################
@@ -123,81 +126,92 @@ if __name__ == "__main__":
         df3["uniprot_conversion"] = np.nan
         df3 = df3[(df3["protein_position"] != "") & (df3["protein_position"] != "None") & (df3["protein_position"] != np.nan)].reset_index(drop = True)
         df3 = df3[df3['protein_position'].notna()].reset_index(drop = True)
-        for row in range(0, len(df3)):
-            gene = df3.loc[row, "gene"]
-            request = IdMappingClient.submit(
-                source="GeneCards", dest="UniProtKB", ids={gene}
-            )
-            time.sleep(100)
-            res = list(request.each_result())[0]
-#            uniprot_conv = [entry['to'] for entry in request.each_result()]
-            uniprot_conv = [x for x in res.values()][1]
-            df3.loc[row, "uniprot_conversion"] = uniprot_conv
-        df3 = df3[(df3["protein_position"] != "") & (df3["uniprot_conversion"] != "") & (df3["uniprot_conversion"] != np.nan) & (df3["protein_position"] != np.nan)].reset_index(drop=True)
-        res2 = [getAlphaFoldAtom(i, df3) for i in range(0, len(df3))]
+        if len(df3) != 0:
+            for row in range(0, len(df3)):
+                gene = df3.loc[row, "gene"]
+                print(gene)
+                request = IdMappingClient.submit(
+                    source="GeneCards", dest="UniProtKB", ids={gene}
+                )
+                time.sleep(5)
+                res = list(request.each_result())[0]
+                print(res)
+    #            uniprot_conv = [entry['to'] for entry in request.each_result()]
+                uniprot_conv = [x for x in res.values()][1]
+                print("uniprot:")
+                print(uniprot_conv)
+                df3.loc[row, "uniprot_conversion"] = uniprot_conv
+            print(df3)
+            df3 = df3[(df3["protein_position"] != "") & (df3["uniprot_conversion"] != "") & (df3["uniprot_conversion"] != np.nan) & (df3["protein_position"] != np.nan)].reset_index(drop=True)
+            print(df3)
+            res2 = [getAlphaFoldAtom(i, df3) for i in range(0, len(df3))]
 
-        if len(res2) != 0:
-            res3 = pd.concat(res2)
+            # Filter out None values from res2
+            valid_res2 = [res for res in res2 if res is not None]
 
-            atom_site_list = [
-                "_atom_site.group_PDB",
-                "_atom_site.id",
-                "_atom_site.type_symbol",
-                "_atom_site.label_atom_id",
-                "_atom_site.label_alt_id",
-                "_atom_site.label_comp_id",
-                "_atom_site.label_asym_id",
-                "_atom_site.label_entity_id",
-                "_atom_site.label_seq_id",
-                "_atom_site.pdbx_PDB_ins_code",
-                "_atom_site.Cartn_x",
-                "_atom_site.Cartn_y",
-                "_atom_site.Cartn_z",
-                "_atom_site.occupancy",
-                "_atom_site.B_iso_or_equiv",
-                "_atom_site.pdbx_formal_charge",
-                "_atom_site.auth_seq_id",
-                "_atom_site.auth_comp_id",
-                "_atom_site.auth_asym_id",
-                "_atom_site.auth_atom_id",
-                "_atom_site.pdbx_PDB_model_num",
-                "_atom_site.pdbx_sifts_xref_db_acc",
-                "_atom_site.pdbx_sifts_xref_db_name",
-                "_atom_site.pdbx_sifts_xref_db_num",
-                "_atom_site.pdbx_sifts_xref_db_res",
-            ]
-            res3.columns = res3.columns.tolist()[:7] + atom_site_list
-            res4 = pd.concat([res3.iloc[:,:6], res3.iloc[:,17:22]], axis = 1)
-            res4 = res4[res4["chrom"].notna()]
-            res4 = res4.drop(["R", "driver_stat"], axis = 1)
-            file_path = variantDir + "alpha_fold_pbd_atom_site.txt"
+            if len(res2) != 0:
+                res3 = pd.concat(valid_res2)
+
+                atom_site_list = [
+                    "_atom_site.group_PDB",
+                    "_atom_site.id",
+                    "_atom_site.type_symbol",
+                    "_atom_site.label_atom_id",
+                    "_atom_site.label_alt_id",
+                    "_atom_site.label_comp_id",
+                    "_atom_site.label_asym_id",
+                    "_atom_site.label_entity_id",
+                    "_atom_site.label_seq_id",
+                    "_atom_site.pdbx_PDB_ins_code",
+                    "_atom_site.Cartn_x",
+                    "_atom_site.Cartn_y",
+                    "_atom_site.Cartn_z",
+                    "_atom_site.occupancy",
+                    "_atom_site.B_iso_or_equiv",
+                    "_atom_site.pdbx_formal_charge",
+                    "_atom_site.auth_seq_id",
+                    "_atom_site.auth_comp_id",
+                    "_atom_site.auth_asym_id",
+                    "_atom_site.auth_atom_id",
+                    "_atom_site.pdbx_PDB_model_num",
+                    "_atom_site.pdbx_sifts_xref_db_acc",
+                    "_atom_site.pdbx_sifts_xref_db_name",
+                    "_atom_site.pdbx_sifts_xref_db_num",
+                    "_atom_site.pdbx_sifts_xref_db_res",
+                ]
+                res3.columns = res3.columns.tolist()[:7] + atom_site_list
+                res4 = pd.concat([res3.iloc[:,:6], res3.iloc[:,17:22]], axis = 1)
+                res4 = res4[res4["chrom"].notna()]
+                res4 = res4.drop(["R", "driver_stat"], axis = 1)
+                file_path = sys.argv[3] + "alpha_fold_pbd_atom_site.txt"
+                if os.path.exists(file_path):
+                    res4.to_csv(file_path, mode= "a", index=False, sep = "\t", header = None)
+                else:
+                    res4.to_csv(file_path, mode= "w", index=False, sep = "\t")
+
+            # Get the structural conformation information
+            res2 = [getAlphaFoldStructConf(i, df3) for i in range(0, len(df3))]
+
+            res3 = pd.DataFrame()
+
+            # Filter out None values from res2
+            valid_res2 = [res for res in res2 if res is not None]
+
+            if len(valid_res2) != 0:
+                res3 = pd.concat(valid_res2)
+                res3 = res3.drop([0, 1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 14, 15, 16], axis=1)
+                struct_conf_list = ["_struct_conf.conf_type_id", "_struct_conf.id"]
+                res3.columns = res3.columns.tolist()[:7] + struct_conf_list
+                results.append(res3)
+            results2 = pd.concat(results)
+            results2 = results2[results2["chrom"].notna()]
+            # One-hot-encoding of structural conformation results
+            results_encoded = pd.get_dummies(results2, columns=['_struct_conf.conf_type_id', '_struct_conf.id'], dtype=float)
+            results_encoded = results_encoded.drop(["R", "driver_stat"], axis = 1)
+
+            file_path = sys.argv[3] + "alpha_fold_pbd_struct_conf.txt"
             if os.path.exists(file_path):
-                res4.to_csv(file_path, mode= "a", index=False, sep = "\t", header = None)
+                results_encoded.to_csv(file_path, mode= "a", index=False, sep = "\t", header = None)
             else:
-                res4.to_csv(file_path, mode= "w", index=False, sep = "\t")
+                results_encoded.to_csv(file_path, mode= "w", index=False, sep = "\t")
 
-        # Get the structural conformation information
-        res2 = [getAlphaFoldStructConf(i, df3) for i in range(0, len(df3))]
-
-        res3 = pd.DataFrame()
-
-        # Filter out None values from res2
-        valid_res2 = [res for res in res2 if res is not None]
-
-        if len(valid_res2) != 0:
-            res3 = pd.concat(valid_res2)
-            res3 = res3.drop([0, 1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 14, 15, 16], axis=1)
-            struct_conf_list = ["_struct_conf.conf_type_id", "_struct_conf.id"]
-            res3.columns = res3.columns.tolist()[:7] + struct_conf_list
-            results.append(res3)
-
-        results2 = pd.concat(results)
-        results2 = results2[results2["chrom"].notna()]
-        # One-hot-encoding of structural conformation results
-        results_encoded = pd.get_dummies(results2, columns=['_struct_conf.conf_type_id', '_struct_conf.id'], dtype=float)
-        results_encoded = results_encoded.drop(["R", "driver_stat"], axis = 1)
-        file_path = variantDir + "alpha_fold_pbd_struct_conf.txt"
-        if os.path.exists(file_path):
-            res4.to_csv(file_path, mode="a", index=False, sep="\t", header=None)
-        else:
-            res4.to_csv(file_path, mode="w", index=False, sep="\t")
