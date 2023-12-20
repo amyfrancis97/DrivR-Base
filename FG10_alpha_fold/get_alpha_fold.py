@@ -6,209 +6,247 @@ import numpy as np
 from unipressed import IdMappingClient
 import time
 import re
+from unipressed import IdMappingClient
+#from unipressed import IdMappingError, IdMappingClientError
 
-def getAlphaFoldAtom(variantVEPresults, df4):
-    # Replace the URL with the actual URL of the text file
-    if df4["uniprot_conversion"][variantVEPresults] is not None and df4["protein_position"][variantVEPresults] is not None:
-        url = "https://alphafold.ebi.ac.uk/files/AF-" + df4["uniprot_conversion"][variantVEPresults] + "-F1-model_v4.cif"
-        # Fetch the content of the text file
-        response = requests.get(url)
-        res = []
-        atoms = []
-        # Check if the request was successful (status code 200)
-        if response.status_code == 200:
-            # Read the content as text
-            text_data = response.text
-            # Split the text into lines
-            lines = text_data.splitlines()
+def getUniprotIDs(vep_dataset):
+    """
+    Extract UniProt IDs and related information from a VEP (Variant Effect Predictor) dataset.
 
-            # Iterate through each line and print lines starting with "ATO"
-            for line in lines:
+    Parameters:
+    - vep_dataset (str): Path to the VEP dataset file.
 
-                # Concatenate the words with a single tab between them
-                result_string = ' '.join(["ATOM", df4["protein_position"][variantVEPresults]])
-                print(result_string)
-                if line.startswith(result_string):
+    Returns:
+    - Tuple: A tuple containing two DataFrames - the first with UniProt IDs and the second with processed information.
+    """
+    # Check if the input parameter is valid
+    if not vep_dataset or not os.path.isfile(vep_dataset):
+        print("Invalid input: vep_dataset is empty or does not exist.")
+        return None
 
-                    table_data = line.split('\t')
-                    print(line)
-                    atoms.append(line)
+    # Read the VEP dataset, skipping the first 5 lines
+    df = pd.read_csv(vep_dataset, sep="\t", header=None, low_memory=False, skiprows=5)
 
-        try:
-            # Split the string by white spaces and remove any empty strings resulting from consecutive white spaces
-            result_list = [field.strip() for field in atoms[0].split() if field.strip()]
-            res = pd.DataFrame(result_list).transpose()
-        except:
-            res = []
+    # Extract protein position and gene information
+    df2 = df[7].str.split("ENST", expand=True)[1].str.split("|", expand=True)
+    proteinPosition = df2[8]
+    gene = df[7].str.split("ENST", expand=True)[0].str.split("|", expand=True)[3]
+
+    # Create a new DataFrame (df3) with relevant columns
+    df3 = df.iloc[:, :7]
+    df3["gene"] = gene
+    df3["protein_position"] = proteinPosition
+    df3 = df3.drop(2, axis=1)
+    df3.columns = ["chrom", "pos", "ref_allele", "alt_allele", "R", "driver_stat", "gene", "protein_position"]
+    df3["uniprot_conversion"] = np.nan
+
+    # Filter rows where protein_position is not empty, "None", or NaN
+    df3 = df3[df3["protein_position"].isin(["", "None", np.nan]) == False].reset_index(drop=True)
+
+    # Extract unique genes for UniProt ID conversion
+    genes = df3["gene"].unique().tolist()
+
+    # Convert the list of genes to a string with curly braces
+    genes_str = "{" + ", ".join(f'"{gene}"' for gene in genes) + "}"
+    print(genes_str)
+    # Retrieve UniProt IDs using IdMappingClient
+    try:
+        request = IdMappingClient.submit(source="GeneCards", dest="UniProtKB", ids={genes_str})
+        time.sleep(1)
+        uniprotIDs = pd.DataFrame(list(request.each_result()))
+        uniprotIDs.columns = ["gene", "uniprot_res"]
+    except:
+        print("Error in uniprot mapping")
+        uniprotIDs = pd.DataFrame(columns=["gene", "uniprot_res"])
+
+    # Return a tuple with UniProt IDs and the processed DataFrame
+    return uniprotIDs, df3
+
+def get_alpha_fold_atom(uniprot_id):
+    """
+    Get AlphaFold Atom Information for a UniProt ID
+
+    This function takes a UniProt ID as input and retrieves relevant information from a CIF file associated with the AlphaFold protein structure prediction. It involves the following steps:
+
+    Error Handling:
+    - Handles FileNotFoundError if the CIF file is not found for the given UniProt ID.
+    - Handles pd.errors.EmptyDataError if there is no data in the CIF file.
+    - Catches other unexpected exceptions and prints an error message with details.
+
+    Parameters:
+    - uniprot_id (str): UniProt ID of the protein.
+
+    Returns:
+    - pd.DataFrame: DataFrame containing relevant information from the CIF file.
+    """
+    try:
+        # Select rows from DataFrame where "uniprot_res" column matches the provided uniprot_id
+        res = df[df["uniprot_res"] == uniprot_id].reset_index(drop=True)
+
+        # Construct the path to the CIF file based on the uniprot_id
+        cif_file_path = f"{alpha_fold_cif_location}/AF-{uniprot_id}-F1-model_v4.cif.gz"
         
-        if len(res) != 0:
-            res = pd.concat([pd.DataFrame(df4.iloc[variantVEPresults, :7]).transpose().reset_index(drop=True), res],axis = 1)
-            print(res)
-            return res
+        # Read the CIF file into a DataFrame with tab-separated values and no header
+        cif_file = pd.read_csv(cif_file_path, sep="\t", header=None)
 
-def getAlphaFoldStructConf(variantVEPresults, df4):
-    # Replace the URL with the actual URL of the text file
-    if df4["uniprot_conversion"][variantVEPresults] is not None and df4["protein_position"][variantVEPresults] is not None:
-        url = "https://alphafold.ebi.ac.uk/files/AF-" + df4["uniprot_conversion"][variantVEPresults] + "-F1-model_v4.cif"
-        # Fetch the content of the text file
-        response = requests.get(url)
-        res = []
-        atoms = []
-        filtered_rows = []
-        try:
-            # Check if the request was successful (status code 200)
-            if response.status_code == 200:
-                # Read the content as text
-                text_data = response.text
-                # Split the text into lines
-                lines = text_data.splitlines()
+        # Initialize an empty DataFrame to store the results
+        results = pd.DataFrame()
 
-                # Iterate through each line and print lines starting with "ATO"
-                all_lines = []
-                for line in lines:
+        if len(res) == 1:
+            # If there is only one matching row in the DataFrame
+            atom_mask = cif_file[0].str.contains("ATOM")  # Select rows with "ATOM"
+            filtered_cif = cif_file[atom_mask][0]  # Extract column 0 from filtered rows
+            position_mask = filtered_cif[filtered_cif.str.contains(res.loc[0, "protein_position"])]  # Select rows with protein position
+            results = position_mask.str.split("?", expand=True)[1].to_string()  # Split and select the relevant column
+            results = pd.DataFrame(" ".join(results.split()).split()).transpose().iloc[:, 1:6]
+            results = pd.concat([res[["chrom", "pos", "ref_allele", "alt_allele"]], results], axis=1)
 
-                    # Concatenate the words with a single tab between them
-                    if line.startswith("A ") and "?" in line:
-                        output_line = re.sub(r'\s+', ' ', line)
-                        table_data = output_line.split(' ')
-                        df_res = pd.DataFrame(table_data).transpose()
-                        all_lines.append(df_res)
+        else:
+            # If there are multiple rows with different protein positions
+            results = []
+            for position in res["protein_position"].tolist():
+                atom_mask = cif_file[0].str.contains("ATOM")
+                filtered_cif = cif_file[atom_mask][0]
+                position_mask = filtered_cif[filtered_cif.str.contains(position)]
+                cif_res = position_mask.str.split("?", expand=True)[1].to_string()
+                cif_res = pd.DataFrame(" ".join(cif_res.split()).split()).transpose().iloc[:, 1:6]
+                cif_res = pd.concat([res[["chrom", "pos", "ref_allele", "alt_allele"]], cif_res], axis=1)
+                results.append(cif_res)
 
-                res = pd.concat(all_lines).reset_index(drop=True)
-                
-                target_value = df4["protein_position"][variantVEPresults]
+            # Concatenate the results from multiple positions and drop any NaN values
+            results = pd.concat(results).dropna()
+        
+        results = results.rename(columns = {1: "X_coordinate", 2: "Y_coordinate", 3: "Z_coordinate", 4: "atom_sit_occupancy", 5: "isotropic_temperature"})
 
-                if "-" in target_value and "?" not in target_value:
-                    target_value = int(target_value.split("-")[0])
-                elif "-" not in target_value and "?" not in target_value:
-                    target_value = int(target_value)
-                else:
-                    target_value = np.nan
+        # Return the final DataFrame containing the results
+        return results
 
-                # Convert column 2 to numeric values for comparison
-                res[2] = pd.to_numeric(res[2])
+    except FileNotFoundError:
+        print(f"CIF file not found for {uniprot_id}")
+    except pd.errors.EmptyDataError:
+        print(f"No data in CIF file for {uniprot_id}")
+    except Exception as e:
+        print(f"An unexpected error occurred for {uniprot_id}: {e}")
 
-                # Filter the rows based on the condition
-                filtered_rows = res[(res[2] <= target_value) & (target_value <= res[2].shift(-1))]
+def get_alpha_fold_struct(uniprot_id):
+    """
+    Get AlphaFold Atom Information for a UniProt ID
 
-            if len(res) != 0:
-                res = pd.concat([pd.DataFrame(df4.iloc[variantVEPresults, :7]).transpose().reset_index(drop=True), filtered_rows.reset_index(drop=True)], axis=1)
-                return res
-            else:
-                return None  # Return None when there is no valid result
-        except:
-            return None  # Return None if an exception occurs
+    This function takes a UniProt ID as input and retrieves relevant information from a CIF file associated with the AlphaFold protein structure prediction. It involves the following steps:
+
+    Error Handling:
+    - Handles FileNotFoundError if the CIF file is not found for the given UniProt ID.
+    - Handles pd.errors.EmptyDataError if there is no data in the CIF file.
+    - Catches other unexpected exceptions and prints an error message with details.
+
+    Parameters:
+    - uniprot_id (str): UniProt ID of the protein.
+
+    Returns:
+    - pd.DataFrame: DataFrame containing relevant information from the CIF file.
+    """
+    try:
+        # Select rows from DataFrame where "uniprot_res" column matches the provided uniprot_id
+        res = df[df["uniprot_res"] == uniprot_id].reset_index(drop=True)
+
+        # Construct the path to the CIF file based on the uniprot_id
+        cif_file_path = f"{alpha_fold_cif_location}/AF-{uniprot_id}-F1-model_v4.cif.gz"
+        
+        # Read the CIF file into a DataFrame with tab-separated values and no header
+        cif_file = pd.read_csv(cif_file_path, sep="\t", header=None)
+
+        # Initialize an empty DataFrame to store the results
+        results = pd.DataFrame()
+
+        if len(res) == 1:
+            # If there is only one matching row in the DataFrame
+            atom_mask = cif_file[0].str.contains("A ")  # Select rows with "ATOM"
+            filtered_cif = cif_file[atom_mask][0]   # Extract column 0 from filtered rows
+ 
+            atom_mask = filtered_cif.str.contains("\?") # Select rows with "ATOM"
+            filtered_cif = filtered_cif[atom_mask]
+
+            atom_mask = filtered_cif.str.contains("ATOM")
+            filtered_cif = filtered_cif[~atom_mask]
+            
+
+            filtered_cif = filtered_cif[filtered_cif.str.contains(res.loc[0, "protein_position"])]
+
+
+            filtered_cif = filtered_cif.str.split(expand = True).dropna()
+
+            filtered_cif = filtered_cif.loc[filtered_cif[2] == res.loc[0, "protein_position"], [6, 13]].reset_index(drop = True)
+
+            #.loc[:, [6, 13]]
+
+            filtered_cif.columns = ["struct_conf_type", "struct_conf_type_ID"]
+
+            results = pd.concat([res[["chrom", "pos", "ref_allele", "alt_allele"]], filtered_cif], axis=1)
+
+        else:
+            # If there are multiple rows with different protein positions
+            results = []
+            for position in res["protein_position"].tolist():
+                # If there is only one matching row in the DataFrame
+                atom_mask = cif_file[0].str.contains("A ")  # Select rows with "A "
+                filtered_cif = cif_file[atom_mask][0]   # Extract column 0 from filtered rows
+
+                atom_mask = filtered_cif.str.contains("\?")
+                filtered_cif = filtered_cif[atom_mask]
+                atom_mask = filtered_cif.str.contains("ATOM")
+                filtered_cif = filtered_cif[~atom_mask]
+                filtered_cif = filtered_cif[filtered_cif.str.contains(position)]
+
+                filtered_cif = filtered_cif.str.split(expand = True).dropna()
+
+                filtered_cif = filtered_cif.loc[filtered_cif[2] == position, [6, 13]].reset_index(drop = True)
+
+                filtered_cif.columns = ["struct_conf_type", "struct_conf_type_ID"]
+                results = pd.concat([res[["chrom", "pos", "ref_allele", "alt_allele"]], filtered_cif], axis=1)
+
+            # Concatenate the results from multiple positions and drop any NaN values
+            results = pd.concat(results).dropna()
+
+        # Return the final DataFrame containing the results
+        return results.dropna()
+
+    except FileNotFoundError:
+        print(f"CIF file not found for {uniprot_id}")
+    except pd.errors.EmptyDataError:
+        print(f"No data in CIF file for {uniprot_id}")
+    except Exception as e:
+        print(f"An unexpected error occurred for {uniprot_id}: {e}")
+
 
 if __name__ == "__main__":
     variantDir = sys.argv[1]
     variants = sys.argv[3] + sys.argv[2]
+    alpha_fold_cif_location = "/user/home/uw20204/DrivR-Base/alphafold_UP000005640_9606_HUMAN_v4"
 
-    with open(variants + "_variant_effect_output_all.txt", 'r') as fin:
-        data = fin.read().splitlines(True)
-    with open(variants + "_variant_effect_output_all.head.rem.txt", 'w') as fout:
-        fout.writelines(data[5:])
+    dataset = variants + "_variant_effect_output_all.txt"
 
-    results = []
-    chunksize = 100000
-    for chunk in pd.read_csv(variants + "_variant_effect_output_all.head.rem.txt", sep="\t", header=None, low_memory=False, chunksize=chunksize):
-        # REMOVE BELOW SECTION IF YOU HAVE ALTERNATIVE INPUT FILE
-        ##################################################################
-        df2 = chunk[7].str.split("ENST", expand=True)[1].str.split("|", expand=True)
-        proteinPosition = df2[8]
-        gene = chunk[7].str.split("ENST", expand=True)[0].str.split("|", expand=True)[3]
-        # Create a new dataframe with these values
-        df3 = pd.concat([chunk.iloc[:, :7], gene, proteinPosition], axis=1)
-        df3 = df3.drop(2, axis=1)
-        df3.columns = ["chrom", "pos", "ref_allele", "alt_allele", "R", "driver_stat", "gene", "protein_position"]
+    uniprotIDs, df3 = getUniprotIDs(dataset)
 
-        # If you are reading in the alternative file, rather than that generated from VEP, then use the code below
-        # df3 = chunk
-        df3["uniprot_conversion"] = np.nan
-        df3 = df3[(df3["protein_position"] != "") & (df3["protein_position"] != "None") & (df3["protein_position"] != np.nan)].reset_index(drop = True)
-        df3 = df3[df3['protein_position'].notna()].reset_index(drop = True)
-        if len(df3) != 0:
-            for row in range(0, len(df3)):
-                gene = df3.loc[row, "gene"]
-                request = IdMappingClient.submit(
-                    source="GeneCards", dest="UniProtKB", ids={gene}
-                )
-                time.sleep(5)
-                try:
-                    res = list(request.each_result())[0]
-                    uniprot_conv = [x for x in res.values()][1]
-                except:
-                    uniprot_conv = np.nan    
-  
-            df3.loc[row, "uniprot_conversion"] = uniprot_conv
-            df3 = df3[(df3["protein_position"] != "") & (df3["uniprot_conversion"] != "") & (df3["uniprot_conversion"] != np.nan) & (df3["protein_position"] != np.nan)].reset_index(drop=True)
-            res2 = [getAlphaFoldAtom(i, df3) for i in range(0, len(df3))]
+    df = pd.merge(df3, uniprotIDs, on = "gene", how = "right").drop("uniprot_conversion", axis =1)
 
-            # Filter out None values from res2
-            valid_res2 = [res for res in res2 if res is not None]
+    all_alphafold = [get_alpha_fold_atom(uniprot_id) for uniprot_id in df["uniprot_res"].unique()]
+    all_alphafold = pd.concat(all_alphafold)
 
-            if len(res2) != 0:
-                res3 = pd.concat(valid_res2)
+    struct_alphafold = [get_alpha_fold_struct(uniprot_id) for uniprot_id in df["uniprot_res"].unique()]
+    struct_alphafold = pd.concat(struct_alphafold)
 
-                atom_site_list = [
-                    "_atom_site.group_PDB",
-                    "_atom_site.id",
-                    "_atom_site.type_symbol",
-                    "_atom_site.label_atom_id",
-                    "_atom_site.label_alt_id",
-                    "_atom_site.label_comp_id",
-                    "_atom_site.label_asym_id",
-                    "_atom_site.label_entity_id",
-                    "_atom_site.label_seq_id",
-                    "_atom_site.pdbx_PDB_ins_code",
-                    "_atom_site.Cartn_x",
-                    "_atom_site.Cartn_y",
-                    "_atom_site.Cartn_z",
-                    "_atom_site.occupancy",
-                    "_atom_site.B_iso_or_equiv",
-                    "_atom_site.pdbx_formal_charge",
-                    "_atom_site.auth_seq_id",
-                    "_atom_site.auth_comp_id",
-                    "_atom_site.auth_asym_id",
-                    "_atom_site.auth_atom_id",
-                    "_atom_site.pdbx_PDB_model_num",
-                    "_atom_site.pdbx_sifts_xref_db_acc",
-                    "_atom_site.pdbx_sifts_xref_db_name",
-                    "_atom_site.pdbx_sifts_xref_db_num",
-                    "_atom_site.pdbx_sifts_xref_db_res",
-                ]
-                res3.columns = res3.columns.tolist()[:7] + atom_site_list
-                res4 = pd.concat([res3.iloc[:,:6], res3.iloc[:,17:22]], axis = 1)
-                res4 = res4[res4["chrom"].notna()]
-                res4 = res4.drop(["R", "driver_stat"], axis = 1)
-                file_path = sys.argv[3] + "alpha_fold_pbd_atom_site.txt"
-                if os.path.exists(file_path):
-                    res4.to_csv(file_path, mode= "a", index=False, sep = "\t", header = None)
-                else:
-                    res4.to_csv(file_path, mode= "w", index=False, sep = "\t")
 
-            # Get the structural conformation information
-            res2 = [getAlphaFoldStructConf(i, df3) for i in range(0, len(df3))]
+    # Get one hot encoding of columns B
+    struct_conf_type = pd.get_dummies(struct_alphafold['struct_conf_type'])
+    
+    # Get one hot encoding of columns B
+    struct_conf_type_ID = pd.get_dummies(struct_alphafold['struct_conf_type_ID'])
 
-            res3 = pd.DataFrame()
+    # Drop column B as it is now encoded
+    struct_alphafold = struct_alphafold.drop(['struct_conf_type', 'struct_conf_type_ID'],axis = 1)
 
-            # Filter out None values from res2
-            valid_res2 = [res for res in res2 if res is not None]
+    # Join the encoded df
+    struct_alphafold = pd.concat([struct_alphafold, struct_conf_type, struct_conf_type_ID], axis = 1)
 
-            if len(valid_res2) != 0:
-                res3 = pd.concat(valid_res2)
-                res3 = res3.drop([0, 1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 14, 15, 16], axis=1)
-                struct_conf_list = ["_struct_conf.conf_type_id", "_struct_conf.id"]
-                res3.columns = res3.columns.tolist()[:7] + struct_conf_list
-                results.append(res3)
-            results2 = pd.concat(results)
-            results2 = results2[results2["chrom"].notna()]
-            # One-hot-encoding of structural conformation results
-            results_encoded = pd.get_dummies(results2, columns=['_struct_conf.conf_type_id', '_struct_conf.id'], dtype=float)
-            results_encoded = results_encoded.drop(["R", "driver_stat"], axis = 1)
-
-            file_path = sys.argv[3] + "alpha_fold_pbd_struct_conf.txt"
-            if os.path.exists(file_path):
-                results_encoded.to_csv(file_path, mode= "a", index=False, sep = "\t", header = None)
-            else:
-                results_encoded.to_csv(file_path, mode= "w", index=False, sep = "\t")
-
+    all_alphafold.to_csv(sys.argv[3] + "alphafold_3D_coordinates.bed", sep = "\t", index = None)
+    struct_alphafold.to_csv(sys.argv[3] + "alphafold_structural.bed", sep = "\t", index = None)
