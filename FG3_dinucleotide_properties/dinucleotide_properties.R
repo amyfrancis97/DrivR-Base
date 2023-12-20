@@ -99,14 +99,31 @@ getDinucleotideProperties = function(chrom, variants){
         return(z)
         }
 
-        # Carry out function to retrieve mutant dicleotide properties for each variant
+        # Carry out function to retrieve mutant dinucleotide properties for each variant
         # Four concatenated vectors
         dinucleotides <- lapply(1:nrow(variants), getDinucleotidePropertyVector)
 
-        # Melt lists of variants into a dataframe
-        variantdf = do.call(rbind.data.frame, dinucleotides)
-        variants = cbind(variants, variantdf)
+        # Apply length function to each element in the dinucleotides list
+        lengths <- sapply(dinucleotides, function(x) ncol(x))
 
+        # Check if all lengths are the same
+        if (all(lengths == lengths[1])) {
+        } else {
+        
+        # Identify inconsistent lengths
+        inconsistent_indices <- which(lengths != lengths[1])
+        
+        # Remove inconsistent lengths from dinucleotides list
+        dinucleotides <- dinucleotides[-inconsistent_indices]
+        
+        # Remove corresponding rows from variants dataframe
+        variants <- variants[-inconsistent_indices, ]
+        }
+
+        # Melt lists of variants into a dataframe
+        variantdf <- do.call(rbind.data.frame, dinucleotides)
+
+        variants <- cbind(variants, variantdf)
         variants = variants %>%
         select(-"w")
         colnames(variants)[8:length(colnames(variants))] = c(paste("1", dinucleotidePropertyNames, sep = "_"), paste("2", dinucleotidePropertyNames, sep = "_"), 
