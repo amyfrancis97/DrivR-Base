@@ -109,7 +109,7 @@ if __name__ == "__main__":
         fout.writelines(data[5:])
 
     results = []
-    chunksize = 100
+    chunksize = 100000
     for chunk in pd.read_csv(variants + "_variant_effect_output_all.head.rem.txt", sep="\t", header=None, low_memory=False, chunksize=chunksize):
         # REMOVE BELOW SECTION IF YOU HAVE ALTERNATIVE INPUT FILE
         ##################################################################
@@ -129,21 +129,18 @@ if __name__ == "__main__":
         if len(df3) != 0:
             for row in range(0, len(df3)):
                 gene = df3.loc[row, "gene"]
-                print(gene)
                 request = IdMappingClient.submit(
                     source="GeneCards", dest="UniProtKB", ids={gene}
                 )
                 time.sleep(5)
-                res = list(request.each_result())[0]
-                print(res)
-    #            uniprot_conv = [entry['to'] for entry in request.each_result()]
-                uniprot_conv = [x for x in res.values()][1]
-                print("uniprot:")
-                print(uniprot_conv)
-                df3.loc[row, "uniprot_conversion"] = uniprot_conv
-            print(df3)
+                try:
+                    res = list(request.each_result())[0]
+                    uniprot_conv = [x for x in res.values()][1]
+                except:
+                    uniprot_conv = np.nan    
+  
+            df3.loc[row, "uniprot_conversion"] = uniprot_conv
             df3 = df3[(df3["protein_position"] != "") & (df3["uniprot_conversion"] != "") & (df3["uniprot_conversion"] != np.nan) & (df3["protein_position"] != np.nan)].reset_index(drop=True)
-            print(df3)
             res2 = [getAlphaFoldAtom(i, df3) for i in range(0, len(df3))]
 
             # Filter out None values from res2
