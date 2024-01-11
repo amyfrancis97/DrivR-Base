@@ -1,4 +1,7 @@
 #!/bin/bash
+start=$(date +%s)
+
+start=$(date +%s)
 
 # Load required modules
 source config.sh
@@ -65,3 +68,6 @@ wait
 
 # Delete the original vep output files
 rm -rf  "${outputDir[@]}$(basename "$file")_variant_effect_output_distance.txt" "${outputDir[@]}$(basename "$file")_variant_effect_output_AA.txt" "${outputDir[@]}$(basename "$file")_variant_effect_output_conseq.txt"
+
+end=$(date +%s)
+echo "Elapsed Time: $(($end-$start)) seconds"

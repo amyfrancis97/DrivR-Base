@@ -2,6 +2,8 @@
 # Load required modules
 source config.sh
 
+start=$(date +%s)
+
 # Print input arguments
 echo "Input files: ${1}${2}"
 basename="${2%.bed}"
@@ -55,11 +57,9 @@ wait
 
 # Set the directory for conservation files
 cd $download_cons_dir
-echo $download_cons_dir
 
 # Get all available conservation feature datasets for querying
 data=(*.bedGraph)
-echo ${data[@]}
 
 for i in ${data[@]}; do
 
@@ -72,3 +72,6 @@ reformattedOutput="${3}${basename}.reformatted.sorted.bed"
 bedtools intersect -wa -wb -a "$i" -b "$reformattedOutput" -sorted | awk '{print $5"\t"$7"\t"$8"\t"$9"\t"$4}' > "${outputDir}${i}"
 wait;
 done
+
+end=$(date +%s)
+echo "Elapsed Time: $(($end-$start)) seconds"
