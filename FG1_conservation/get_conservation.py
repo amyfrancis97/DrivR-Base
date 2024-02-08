@@ -9,7 +9,7 @@ if __name__ == "__main__":
 
     # Read in variant file
     variants = pd.read_csv(variants, sep = "\t", header = None, names = ["chrom", "start", "end", "ref_allele", "alt_allele"])
-
+    
     # Conservation files
     files = [
         "phyloP4way", "phyloP7way", "phyloP17way", "phyloP20way", "phyloP30way",
@@ -22,12 +22,15 @@ if __name__ == "__main__":
     ]
 
     for file in files:
+        variants2 = variants
         try:
             if "way" in file:
                 # Path to BigWig file
                 bw_path = f'https://hgdownload.soe.ucsc.edu/goldenPath/hg38/{file}/hg38.{file}.bw'
+                print(bw_path)
             else:
                 bw_path = f'http://hgdownload.soe.ucsc.edu/gbdb/hg38/hoffmanMappability/{file}.bw'
+                print(bw_path)
             # Open the BigWig file
             bw = pyBigWig.open(bw_path)
 
@@ -35,19 +38,19 @@ if __name__ == "__main__":
             results = []
 
             # Loop through the DataFrame rows
-            for index, row in variants.iterrows():
+            for index, row in variants2.iterrows():
                 # Query the BigWig file for each position
                 value = bw.values(row['chrom'], row['start'], row['end'])[0] # Assuming we want the first value in the returned list
                 results.append((row['chrom'], row['start'], row['end'], value))
 
             # Process the results 
-            variants[file] = [result[3] for result in results]
-            variants = variants.drop("start", axis = 1)
+            variants2[file] = [result[3] for result in results]
+            variants2 = variants2.drop("start", axis = 1)
 
             # Save to CSV
-            variants.to_csv(f'{output_dir}hg38{file}.bedGraph', header = None, sep = "\t", index = None)
-            bw.close()
-        except:
-            print("cannot access file") # 470-way not available at the moment
-#%%
+            variants2.to_csv(f'{output_dir}hg38{file}.bedGraph', header = None, sep = "\t", index = None)
 
+            bw.close()
+            time.sleep(15)
+        except:
+           print("cannot access file") # 470-way not available at the moment
