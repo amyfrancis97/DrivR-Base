@@ -70,4 +70,5 @@ if __name__ == "__main__":
                      dataframeList)
     # Write the merged dataframe to a CSV file
     output_file = os.path.join(outputDir, "GC.csv")
+    data_merge = data_merge.drop_duplicates(keep = "first")
     data_merge.to_csv(output_file, index=None, sep="\t")

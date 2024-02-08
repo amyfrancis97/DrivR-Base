@@ -50,7 +50,7 @@ def getUniprotIDs(vep_dataset):
     # Retrieve UniProt IDs using IdMappingClient
     try:
         request = IdMappingClient.submit(source="GeneCards", dest="UniProtKB", ids={genes_str})
-        time.sleep(1)
+        time.sleep(10)
         uniprotIDs = pd.DataFrame(list(request.each_result()))
         uniprotIDs.columns = ["gene", "uniprot_res"]
     except (IdMappingError, IdMappingClientError) as e:
