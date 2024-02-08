@@ -35,7 +35,10 @@ if __name__ == "__main__":
             else:
                 bw_path = f'http://hgdownload.soe.ucsc.edu/gbdb/hg38/hoffmanMappability/{file}.bw'
                 print(bw_path)
+<<<<<<< HEAD
 
+=======
+>>>>>>> 96ab38da1e885195de60d1caf72e9bbdc66aee1d
             # Open the BigWig file
             bw = pyBigWig.open(bw_path)
 
@@ -56,7 +59,13 @@ if __name__ == "__main__":
             variants2.to_csv(f'{output_dir}hg38{file}.bedGraph', header = None, sep = "\t", index = None)
 
             bw.close()
+<<<<<<< HEAD
             time.sleep(10)
         except:
            print("cannot access file") # 470-way not available at the moment
 # %%
+=======
+            time.sleep(15)
+        except:
+           print("cannot access file") # 470-way not available at the moment
+>>>>>>> 96ab38da1e885195de60d1caf72e9bbdc66aee1d

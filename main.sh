@@ -29,6 +29,6 @@ outputDir=${variantDir}features/
 mkdir -p $outputDir
 for i in {7..10}; do
 job=get_FG${i}.sh
-sbatch $job $variantDir $variantFileName $variantFileNameReformat $outputDir;
+sbatch $job $variantDir $variantFileName $outputDir;
 done
 
