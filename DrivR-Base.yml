@@ -131,4 +131,4 @@ dependencies:
   - zstd=1.5.2=hfc55251_7
   - pip:
     - unipressed==1.2.0
-prefix: /user/work/uw20204/anaconda3/envs/DrivR-Base
+prefix: /opt/conda/envs/DrivR-Base

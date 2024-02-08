@@ -4,12 +4,11 @@ import pandas as pd
 import sys
 
 if __name__ == "__main__":
-    variantDir = sys.argv[1]
-    variantFileName = sys.argv[2]
-    output_dir = sys.argv[3]
+    variants = sys.argv[1]
+    output_dir = sys.argv[2]
 
     # Read in variant file
-    variants = pd.read_csv(f'{variantDir}{variantFileName}', sep = "\t", header = None, names = ["chrom", "start", "end", "ref_allele", "alt_allele"])
+    variants = pd.read_csv(variants, sep = "\t", header = None, names = ["chrom", "start", "end", "ref_allele", "alt_allele"])
 
     # Conservation files
     files = [
