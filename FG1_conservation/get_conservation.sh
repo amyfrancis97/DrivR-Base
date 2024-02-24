@@ -1,6 +1,5 @@
 #!/bin/bash
 # Load required modules
-source config.sh
 
 start=$(date +%s)
 

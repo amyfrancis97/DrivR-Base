@@ -1,6 +1,6 @@
 # Get DNA shapes of 10 BP regions overlapping with variant
 # Load project path and any other variables
-source("config.R")
+source("/opt/vep/.vep/FG3_dinucleotide_properties/config.R")
 
 library(bios2mds)
 library(BSgenome.Hsapiens.UCSC.hg38)

@@ -5,7 +5,6 @@ import sys
 def getValues(variant):
     # Get the unique variant at the given index
     unique_variants = unique_variants_1.iloc[variant, :]
-    print(unique_variants.head())
     # Filter the DataFrame to include only rows with matching variant values
     df2 = df[
         (df[15] == unique_variants[15]) &
@@ -52,10 +51,8 @@ if __name__ == "__main__":
 
     # Read the CSV file into a DataFrame
     df = pd.read_csv(f"{inputDir}{feature}.final.bed", header=None, sep="\t")
-    print(df.head())
     # Extract unique variants by selecting columns 16 to 22 and dropping duplicates
     unique_variants_1 = df[range(15, 20)].drop_duplicates()
-    print(unique_variants_1)
     # Create a result DataFrame by concatenating results for all variants
     res = pd.concat([getValues(variant) for variant in range(0, len(unique_variants_1))])
     res = res.drop("start", axis = 1)

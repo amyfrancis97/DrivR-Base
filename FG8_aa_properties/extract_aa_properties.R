@@ -3,7 +3,7 @@
 # Relating to each of the 20 amino acids
 # Get DNA shapes of 10 BP regions overlapping with variant
 # Load project path and any other variables
-source("config.R")
+source("/opt/vep/.vep/FG8_aa_properties/config.R")
 
 library(bios2mds)
 library(BSgenome.Hsapiens.UCSC.hg38)

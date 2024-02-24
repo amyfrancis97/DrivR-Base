@@ -6,6 +6,7 @@ import numpy as np
 from unipressed import IdMappingClient
 import time
 import re
+from config import *
 
 def getUniprotIDs(vep_dataset):
     """
@@ -224,7 +225,7 @@ def get_alpha_fold_struct(uniprot_id):
 if __name__ == "__main__":
     variantDir = sys.argv[1]
     variants = sys.argv[3] + sys.argv[2]
-    alpha_fold_cif_location = "/user/home/uw20204/DrivR-Base/alphafold_UP000005640_9606_HUMAN_v4"
+    alpha_fold_cif_location = alpha_fold_files
 
     dataset = variants + "_variant_effect_output_all.txt"
     uniprotIDs, df3 = getUniprotIDs(dataset)

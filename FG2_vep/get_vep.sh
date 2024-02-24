@@ -1,17 +1,10 @@
 #!/bin/bash
 start=$(date +%s)
 
-start=$(date +%s)
-
-# Load required modules
 source config.sh
-source ${module_dependencies_loc}module_dependencies.sh
 
-# Download and install VEP
-cd ${vep_cache}
-#git clone https://github.com/Ensembl/ensembl-vep
-#cd ensembl-vep
-#perl INSTALL.pl -a acf -s homo_sapiens -y GRCh38
+# Set location of vep cache
+cd $vep_cache
 
 # Set input and output directories
 variantDir="$1"
@@ -19,7 +12,7 @@ variantFile="$2"
 outputDir="$3"
 
 # relocate to where the cache was downloaded
-cd ${vep_cache}ensembl-vep
+#cd ${vep_cache}ensembl-vep
 
 # Set input variables
 file="${variantDir}${variantFile}"
@@ -28,22 +21,22 @@ bedtools sort -i $file > ${file}.sorted.bed
 mv ${file}.sorted.bed $file
 
 # Query VEP cache for all variant effect output
-./vep -i "${file[@]}" --fork 4 --offline --cache --force_overwrite --vcf --protein --uniprot -o "${outputDir[@]}$(basename "$file")_variant_effect_output_all.txt" --no_stats
+vep -i "${file[@]}" --fork 4 --offline --cache --force_overwrite --vcf --protein --uniprot -o "${outputDir[@]}$(basename "$file")_variant_effect_output_all.txt" --no_stats
 
 wait
 
 # Query VEP cache for consequence features
-./vep -i "${file[@]}" --fork 4 --offline --cache --force_overwrite --vcf --fields "Consequence" -o "${outputDir[@]}$(basename "$file")_variant_effect_output_conseq.txt" --no_stats
+vep -i "${file[@]}" --fork 4 --offline --cache --force_overwrite --vcf --fields "Consequence" -o "${outputDir[@]}$(basename "$file")_variant_effect_output_conseq.txt" --no_stats
 
 wait 
 
 # Query VEP cache for AA features
-./vep -i "${file[@]}" --fork 4 --offline --cache --force_overwrite --vcf --fields "Amino_acids" -o "${outputDir[@]}$(basename "$file")_variant_effect_output_AA.txt" --no_stats
+vep -i "${file[@]}" --fork 4 --offline --cache --force_overwrite --vcf --fields "Amino_acids" -o "${outputDir[@]}$(basename "$file")_variant_effect_output_AA.txt" --no_stats
 
 wait 
 
 # Query VEP cache for distance features
-./vep -i "${file[@]}" --fork 4 --offline --cache --force_overwrite --vcf --fields "DISTANCE" -o "${outputDir[@]}$(basename "$file")_variant_effect_output_distance.txt" --no_stats
+vep -i "${file[@]}" --fork 4 --offline --cache --force_overwrite --vcf --fields "DISTANCE" -o "${outputDir[@]}$(basename "$file")_variant_effect_output_distance.txt" --no_stats
 
 wait 
 
