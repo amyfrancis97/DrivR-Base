@@ -7,3 +7,4 @@ example/features
 FG10_alpha_fold/__pycache__/
 FG5_gc_CpG/__pycache__/
 htslib/
+FG5_gc_CpG/hg38_seq.fa

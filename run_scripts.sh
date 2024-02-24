@@ -1,5 +1,17 @@
 #!/bin/bash
 
+# Default value for running encode
+run_encode=false
+
+# Parse command line arguments
+while [[ "$#" -gt 0 ]]; do
+    case $1 in
+        --encode) run_encode="$2"; shift ;;
+        *) echo "Unknown parameter passed: $1"; exit 1 ;;
+    esac
+    shift
+done
+
 # Load the example data
 variantDir="/opt/vep/.vep/example/"
 outputDir=${variantDir}features/
@@ -74,12 +86,12 @@ Rscript /opt/vep/.vep/FG8_aa_properties/extract_aa_properties.R "$outputDir" "$v
 
 wait
 
-# Run FG9 ENCODE script
-# This script queries downloaded ENCODE features for regulatory features
-#cd /opt/vep/.vep/FG9_encode
-#./get_encode.sh "$variantDir" "$variantFileName" "$outputDir"
-
-#wait
+# Conditional execution of FG9 section based on the run_encode flag
+if [[ "$run_encode" == "true" ]]; then
+    cd /opt/vep/.vep/FG9_encode
+    ./intersect_encode.sh "$variantDir" "$variantFileName" "$outputDir"
+    wait
+fi
 
 # Run FG10 Alpha Fold script
 # This script queries the downloaded alpha fold cif files to etract information about the structural features at the coding positions
