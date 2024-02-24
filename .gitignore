@@ -4,3 +4,6 @@ alphafold_files/
 FG6_kernel/__pycache__/
 FG6_kernel/__pycache__/
 example/features
+FG10_alpha_fold/__pycache__/
+FG5_gc_CpG/__pycache__/
+htslib/
