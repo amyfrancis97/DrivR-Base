@@ -7,7 +7,8 @@ Welcome to DrivR-Base! This repository contains scripts for extracting feature i
 - [Introduction and Overview](#introduction-and-overview)
 - [Table of Contents](#table-of-contents)
 - [Feature Descriptions and Sources](#feature-descriptions)
-- [Running DrivR-Base in Docker](#drivrbase-docker)
+- [Running DrivR-Base in Docker (Recommended)](#drivrbase-docker)
+- [Running DrivR-Base without Docker](#drivrbase-docker)
 - [Data Input Structure](#data-input-structure)
 - [Dependencies](#dependencies)
 - [Package Installation](#package-installation)
@@ -79,7 +80,7 @@ chmod +x run_scripts.sh
 ### Running DrivR-Base with your own variants
 
 
-
+## Running DrivR-Base without Docker
 ## Data Input Structure
 All variant files must be presented in the BED format shown in the following table but **should not contain any headers**:
 
