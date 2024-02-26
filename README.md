@@ -58,7 +58,7 @@ Once the Docker image has been pulled, you can interact with the data and script
 ```bash
 docker run -it --name drivrbase-container amyfrancis2409/drivrbase:v1.1
 ```
-The above command will take a while since it will automatically download the variant effect predictor GRCh38 cache.
+The above command will take a while since it will automatically download the variant effect predictor GRCh38 cache. Please note that if you run into "disk full" errors at this stage, you may be required to increase your disk image sizes in you Docker Desktop preferences.
 
 Once interactive mode is running, activate the conda environment:
 
