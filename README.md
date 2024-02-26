@@ -60,6 +60,12 @@ docker run -it --name drivrbase-container amyfrancis2409/drivrbase:v1.1
 ```
 The above command will take a while since it will automatically download the variant effect predictor GRCh38 cache.
 
+Once interactive mode is running, activate the conda environment:
+
+```bash
+conda activate DrivR-Base
+```
+
 ### Testing the Docker container
 
 To test the scripts, run with the example variants in the /example directory:
