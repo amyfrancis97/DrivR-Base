@@ -7,6 +7,7 @@ Welcome to DrivR-Base! This repository contains scripts for extracting feature i
 - [Introduction and Overview](#introduction-and-overview)
 - [Table of Contents](#table-of-contents)
 - [Feature Descriptions and Sources](#feature-descriptions)
+- [Running DrivR-Base in Docker](#drivrbase-docker)
 - [Data Input Structure](#data-input-structure)
 - [Dependencies](#dependencies)
 - [Package Installation](#package-installation)
@@ -33,6 +34,25 @@ Welcome to DrivR-Base! This repository contains scripts for extracting feature i
 |         FG8         | 533 amino acid properties for both wild-type and mutant amino acids                                              | [AAindex](https://academic.oup.com/nar/article/28/1/374/2384334?login=false) |
 |         FG9         | Results for 10 different ENCODE assays, including transcription factor binding sites and histone modifications   | [ENCODE](https://www.encodeproject.org/)
 |         FG10        | AlphaFold structural conformation and atom properties at the predicted amino acid site                           | [AlphaFold](https://alphafold.ebi.ac.uk/)
+
+## Running DrivR-Base in Docker
+### Installing Docker
+If you havent already got docker desktop installed locally, then download from this site and create a docker account: https://www.docker.com/products/docker-desktop/
+
+### Setting up docker
+Once you have docker desktop installed locally, and an account set up, then pull the docker image using the following commands in your terminal:
+
+  ```bash
+  Docker login
+  Docker pull amyfrancis2409/drivrbase:v1.1
+  ```
+Once the docker image has been pulled, you can interact with the data and scripts using the docker run command:
+
+  ```bash
+  Docker run -it --name drivrbase-container amyfrancis2409/drivrbase:v1.1
+  ```
+
+
 
 
 ## Data Input Structure
