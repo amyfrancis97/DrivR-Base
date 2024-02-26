@@ -36,22 +36,47 @@ Welcome to DrivR-Base! This repository contains scripts for extracting feature i
 |         FG10        | AlphaFold structural conformation and atom properties at the predicted amino acid site                           | [AlphaFold](https://alphafold.ebi.ac.uk/)
 
 ## Running DrivR-Base in Docker
+
 ### Installing Docker
-If you havent already got docker desktop installed locally, then download from this site and create a docker account: https://www.docker.com/products/docker-desktop/
 
-### Setting up docker
-Once you have docker desktop installed locally, and an account set up, then pull the docker image using the following commands in your terminal:
+If you haven't already got Docker Desktop installed locally, then download it from this site and create a Docker account: <https://www.docker.com/products/docker-desktop/>
 
-  ```bash
-  Docker login
-  Docker pull amyfrancis2409/drivrbase:v1.1
-  ```
-Once the docker image has been pulled, you can interact with the data and scripts using the docker run command:
+### Setting up Docker
 
-  ```bash
-  Docker run -it --name drivrbase-container amyfrancis2409/drivrbase:v1.1
-  ```
+Once you have Docker Desktop installed locally, and an account set up, then pull the Docker image using the following commands in your terminal:
 
+```bash
+docker login
+docker pull amyfrancis2409/drivrbase:v1.1
+```
+
+### Interacting with the Docker container
+
+Once the Docker image has been pulled, you can interact with the data and scripts using the docker run command:
+
+```bash
+docker run -it --name drivrbase-container amyfrancis2409/drivrbase:v1.1
+```
+The above command will take a while since it will automatically download the variant effect predictor GRCh38 cache.
+
+### Testing the Docker container
+
+To test the scripts, run with the example variants in the /example directory:
+
+```bash
+chmod +x run_scripts.sh
+./run_scripts.sh
+```
+Upon execution, this will create a sub-directory named /features within the /example directory, and will output a file "all_features.bed" that will contain the results for the DrivR-Base example variants for all of the features.
+
+The ENCODE features are excluded automatically, since the scripts take a lot of time to run. If you want to include these features in the output file, please specify this when executing the run_scripts.sh script:
+
+```bash
+chmod +x run_scripts.sh
+./run_scripts.sh --run_encode true
+```
+
+### Running DrivR-Base with your own variants
 
 
 
