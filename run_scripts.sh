@@ -89,6 +89,7 @@ wait
 # Conditional execution of FG9 section based on the run_encode flag
 if [[ "$run_encode" == "true" ]]; then
     cd /opt/vep/.vep/FG9_encode
+    ./download_encode.sh "$variantDir" "$variantFileName" "$outputDir"
     ./intersect_encode.sh "$variantDir" "$variantFileName" "$outputDir"
     wait
 fi

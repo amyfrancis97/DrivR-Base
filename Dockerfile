@@ -121,6 +121,7 @@ ENV PATH /opt/conda/bin:$PATH
 
 # Copy Conda environment file
 COPY DrivR-Base.yml /tmp/
+COPY . /tmp/
 
 RUN conda env create -f /tmp/DrivR-Base.yml && \
     echo "Environment creation successful!" && \
@@ -183,6 +184,10 @@ ENV LC_ALL $LANG_VAR
 ENV LANG $LANG_VAR
 
 # Switch back to vep user
+# Create /data directory and set proper permissions
+#RUN mkdir -p /data/tmp && \
+ #   chown -R vep:vep /data
+
 USER vep
 ENV PERL5LIB $PERL5LIB_TMP
 

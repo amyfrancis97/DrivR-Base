@@ -1,0 +1,16 @@
+/homo_sapiens/**
+/ensembl-vep/**
+/htslib/**
+/conservation_data/**
+/example/**
+/../src/**
+/.git
+/alphafold_files/**
+
+/Users/uw20204/Documents/scripts/DrivR-Base/homo_sapiens/
+/Users/uw20204/Documents/scripts/DrivR-Base/ensembl-vep/
+/Users/uw20204/Documents/scripts/DrivR-Base/htslib/
+/Users/uw20204/Documents/scripts/DrivR-Base/conservation_data/
+/Users/uw20204/Documents/scripts/DrivR-Base/example/
+/Users/uw20204/Documents/scripts/DrivR-Base/../src/
+/Users/uw20204/Documents/scripts/DrivR-Base/.git
