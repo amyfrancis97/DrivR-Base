@@ -38,9 +38,15 @@ Welcome to DrivR-Base! This repository contains scripts for extracting feature i
 
 ## Running DrivR-Base in Docker
 
-### Installing Docker
+### Installing Docker and Git
 
 If you haven't already got Docker Desktop installed locally, then download it from this site and create a Docker account: <https://www.docker.com/products/docker-desktop/>
+Ensure that git is installed using:
+
+```bash
+git --version
+```
+If the above command does not return a git version, then please install git: 
 
 ### Setting up Docker
 
