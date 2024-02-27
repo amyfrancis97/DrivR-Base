@@ -1,12 +1,14 @@
 # DrivR-Base: A Feature Extraction Toolkit For Variant Effect Prediction Model Construction
 
 ## Introduction and Overview
-Welcome to DrivR-Base! This repository contains scripts for extracting feature information from different databases for single nucleotide variants (SNVs). These features are designed to be inputs for machine learning models, aiding in the prediction of functional impacts of genetic variants in human genome sequencing. The repository is organized into separate sub-directories for different feature groups (**FG_**), each serving a unique purpose. Please note that these scripts are only set up to analyse autosomal variants in the GRCh38 genome format.
+Welcome to DrivR-Base! This repository contains scripts for extracting feature information from different databases for single nucleotide variants (SNVs). These features are designed to be inputs for machine learning models, aiding in the prediction of functional impacts of genetic variants in human genome sequencing. The repository is organised into separate sub-directories for different feature groups (**FG_**), each serving a unique purpose. Please note that these scripts are only set up to analyse autosomal variants in the GRCh38 genome format.
 
 ## Table of Contents
 - [Introduction and Overview](#introduction-and-overview)
 - [Table of Contents](#table-of-contents)
 - [Feature Descriptions and Sources](#feature-descriptions)
+- [Running DrivR-Base in Docker (Recommended)](#drivrbase-docker)
+- [Running DrivR-Base without Docker](#drivrbase-docker)
 - [Data Input Structure](#data-input-structure)
 - [Dependencies](#dependencies)
 - [Package Installation](#package-installation)
@@ -34,7 +36,101 @@ Welcome to DrivR-Base! This repository contains scripts for extracting feature i
 |         FG9         | Results for 10 different ENCODE assays, including transcription factor binding sites and histone modifications   | [ENCODE](https://www.encodeproject.org/)
 |         FG10        | AlphaFold structural conformation and atom properties at the predicted amino acid site                           | [AlphaFold](https://alphafold.ebi.ac.uk/)
 
+## Running DrivR-Base in Docker
 
+### Installing Docker
+
+If you haven't already got Docker Desktop installed locally, then download it from this site and create a Docker account: <https://www.docker.com/products/docker-desktop/>
+
+### Setting up Docker
+
+Once you have Docker Desktop installed locally, and an account set up, then pull the Docker image using the following commands in your terminal:
+
+```bash
+docker login
+docker pull amyfrancis2409/drivrbase:v1.0
+```
+
+### Interacting with the Docker container
+
+Once the Docker image has been pulled, you can interact with the data and scripts using the docker run command:
+
+```bash
+docker run -it --name drivrbase-container amyfrancis2409/drivrbase:v1.0  /bin/bash
+```
+The above command will take a while since it will automatically download the variant effect predictor GRCh38 cache. Please note that if you run into "disk full" errors at this stage, you may be required to increase your disk image sizes in you Docker Desktop preferences.
+
+Once interactive mode is running, initialise the conda environment:
+```bash
+conda init
+```
+
+Exit the interactive environment:
+```bash
+exit
+```
+
+Clone the DrivR-Base GitHub repository:
+
+```bash
+git clone https://github.com/amyfrancis97/DrivR-Base.git
+cd DrivR-Base
+```
+
+Copy the contents of the repository into the container (this ensures that the scripts inside the container are consistently up-to-date):
+```bash
+docker cp . drivrbase-container:/data 
+```
+
+Start & run the interactive environment:
+```bash
+docker start drivrbase-container
+docker exec -it drivrbase-container /bin/bash
+```
+
+Activate the conda environment:
+```bash
+conda activate DrivR-Base
+```
+
+### Testing the Docker container
+
+To test the scripts, run with the example variants in the /example directory:
+
+```bash
+chmod +x run_scripts.sh
+./run_scripts.sh
+```
+Upon execution, this will create a sub-directory named /features within the /example directory, and will output a file "all_features.bed" that will contain the results for the DrivR-Base example variants for all of the features.
+
+The ENCODE features are excluded automatically, since the scripts take a lot of time to run. If you want to include these features in the output file, please specify this when executing the run_scripts.sh script:
+
+```bash
+chmod +x run_scripts.sh
+./run_scripts.sh --run_encode true
+```
+### DrivR-Base Output
+Upon execution, the "run_scripts.sh" script should output a file named all_featured.bed which will be located in the "/example/features" directory. The rows of the files contain the variants, and the columns contain all of the feature values for 1704 features. For a full list of features and their descriptions, please refer to our DrivR-Base paper and supplementary material.
+
+### Running DrivR-Base with your own variants
+Replace the example "variants_with_driver_stat.bed" file with your own variants, ensuring that the name is kept the same. The script will automatically generate the "variants.bed" file from this file and execute the rest of the scripts to generate the features for you variant set.
+
+The "variants_with_driver_stat.bed" should be in tab delimited format, and the columns should reflect those in the example file, where the driver status is either "0" or "1":
+
+| Chromosome |  Position  | Reference Allele | Alternate Allele | Driver Status | 
+| ---------- | ---------- | ---------------- | ---------------- | ------------- | 
+|    chr1    |   934881   |         A        |         G        |       1       |
+
+If the driver status is not relevant to your variants, please fill this column with either "0" or "1".
+
+Once you've replaced this file with your own variants, simply execute the "run_scripts.sh" as before:
+
+```bash
+chmod +x run_scripts.sh
+./run_scripts.sh --run_encode true
+```
+
+## Running DrivR-Base without Docker
 ## Data Input Structure
 All variant files must be presented in the BED format shown in the following table but **should not contain any headers**:
 
@@ -228,5 +324,4 @@ This work was funded by Cancer Research UK [C18281/A30905].
 
 ## Contact
 For inquiries, contact us at [amy.francis@bristol.ac.uk](mailto:amy.francis@bristol.ac.uk).
-
 
