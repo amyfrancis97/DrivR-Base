@@ -60,8 +60,34 @@ docker run -it --name drivrbase-container amyfrancis2409/drivrbase:v1.1
 ```
 The above command will take a while since it will automatically download the variant effect predictor GRCh38 cache. Please note that if you run into "disk full" errors at this stage, you may be required to increase your disk image sizes in you Docker Desktop preferences.
 
-Once interactive mode is running, activate the conda environment:
+Once interactive mode is running, initialise the conda environment:
+```bash
+conda init
+```
 
+Exit the interactive environment:
+```bash
+exit
+```
+
+Clone the DrivR-Base GitHub repository:
+
+```bash
+git clone
+```
+
+Copy the contents of the repository into the container (this ensures that the scripts inside the container are consistently up-to-date):
+```bash
+docker cp . drivrbase-container:/data 
+```
+
+Start & run the interactive environment:
+```bash
+docker start drivrbase-container
+docker exec -it drivrbase-container /bin/bash
+```
+
+Activate the conda environment:
 ```bash
 conda activate DrivR-Base
 ```
