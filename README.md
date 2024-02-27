@@ -48,7 +48,7 @@ Once you have Docker Desktop installed locally, and an account set up, then pull
 
 ```bash
 docker login
-docker pull amyfrancis2409/drivrbase:v1.1
+docker pull amyfrancis2409/drivrbase:v1.0
 ```
 
 ### Interacting with the Docker container
@@ -56,7 +56,7 @@ docker pull amyfrancis2409/drivrbase:v1.1
 Once the Docker image has been pulled, you can interact with the data and scripts using the docker run command:
 
 ```bash
-docker run -it --name drivrbase-container drivrbase:v1  /bin/bash
+docker run -it --name drivrbase-container amyfrancis2409/drivrbase:v1.0  /bin/bash
 ```
 The above command will take a while since it will automatically download the variant effect predictor GRCh38 cache. Please note that if you run into "disk full" errors at this stage, you may be required to increase your disk image sizes in you Docker Desktop preferences.
 
