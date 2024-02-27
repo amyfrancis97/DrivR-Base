@@ -1,0 +1,123 @@
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load .dockerignore
+#1 transferring context: 2B done
+#1 DONE 0.0s
+
+#2 [internal] load build definition from Dockerfile
+#2 transferring dockerfile: 1.59kB done
+#2 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/continuumio/miniconda3:latest
+#3 DONE 0.4s
+
+#4 [ 1/20] FROM docker.io/continuumio/miniconda3@sha256:5ee0ed861bce8f67acb0a3e8a416891781db54302d93bf20a3c6301d7683d7b9
+#4 DONE 0.0s
+
+#5 [internal] load build context
+#5 transferring context: 36B done
+#5 DONE 0.0s
+
+#6 [ 9/20] RUN conda install -c conda-forge mysql-client
+#6 CACHED
+
+#7 [ 6/20] RUN conda install -c anaconda wget git curl
+#7 CACHED
+
+#8 [10/20] RUN git clone https://github.com/Ensembl/ensembl-vep.git
+#8 CACHED
+
+#9 [13/20] RUN export PERL5LIB=$PERL5LIB:$HOME/cpanm/lib/perl5
+#9 CACHED
+
+#10 [ 2/20] WORKDIR /usr/src/app
+#10 CACHED
+
+#11 [ 3/20] COPY DrivR-Base.yml ./
+#11 CACHED
+
+#12 [ 7/20] RUN conda install -c conda-forge make
+#12 CACHED
+
+#13 [ 5/20] RUN conda install -c bioconda bedtools
+#13 CACHED
+
+#14 [11/20] RUN curl -L https://cpanmin.us | perl - App::cpanminus
+#14 CACHED
+
+#15 [ 4/20] RUN conda env create -f DrivR-Base.yml
+#15 CACHED
+
+#16 [ 8/20] RUN conda install -c conda-forge gcc
+#16 CACHED
+
+#17 [12/20] RUN mkdir -p $HOME/cpanm
+#17 CACHED
+
+#18 [14/20] RUN cpanm --local-lib=~/perl5 local::lib && eval $(perl -I ~/perl5/lib/perl5/ -Mlocal::lib)
+#18 CACHED
+
+#19 [15/20] RUN cpanm Archive::Zip
+#19 0.283 --> Working on Archive::Zip
+#19 0.283 Fetching http://www.cpan.org/authors/id/P/PH/PHRED/Archive-Zip-1.68.tar.gz ... OK
+#19 0.467 Configuring Archive-Zip-1.68 ... OK
+#19 0.689 Building and testing Archive-Zip-1.68 ... OK
+#19 5.965 Successfully installed Archive-Zip-1.68
+#19 5.996 1 distribution installed
+#19 DONE 6.1s
+
+#20 [16/20] RUN cpanm DBI
+#20 0.418 --> Working on DBI
+#20 0.418 Fetching http://www.cpan.org/authors/id/T/TI/TIMB/DBI-1.643.tar.gz ... OK
+#20 0.653 Configuring DBI-1.643 ... OK
+#20 2.045 Building and testing DBI-1.643 ... OK
+#20 81.98 Successfully installed DBI-1.643
+#20 82.01 1 distribution installed
+#20 DONE 82.1s
+
+#21 [17/20] RUN cpanm DBD::mysql
+#21 0.323 --> Working on DBD::mysql
+#21 0.323 Fetching http://www.cpan.org/authors/id/D/DV/DVEEDEN/DBD-mysql-5.003.tar.gz ... OK
+#21 0.516 ==> Found dependencies: Devel::CheckLib
+#21 0.559 --> Working on Devel::CheckLib
+#21 0.559 Fetching http://www.cpan.org/authors/id/M/MA/MATTN/Devel-CheckLib-1.16.tar.gz ... OK
+#21 0.616 Configuring Devel-CheckLib-1.16 ... OK
+#21 0.792 ==> Found dependencies: Capture::Tiny, Mock::Config
+#21 0.827 --> Working on Capture::Tiny
+#21 0.827 Fetching http://www.cpan.org/authors/id/D/DA/DAGOLDEN/Capture-Tiny-0.48.tar.gz ... OK
+#21 0.889 Configuring Capture-Tiny-0.48 ... OK
+#21 1.089 Building and testing Capture-Tiny-0.48 ... OK
+#21 32.75 Successfully installed Capture-Tiny-0.48
+#21 32.83 --> Working on Mock::Config
+#21 32.83 Fetching http://www.cpan.org/authors/id/R/RU/RURBAN/Mock-Config-0.03.tar.gz ... OK
+#21 32.89 Configuring Mock-Config-0.03 ... OK
+#21 33.08 Building and testing Mock-Config-0.03 ... OK
+#21 33.85 Successfully installed Mock-Config-0.03
+#21 33.90 Building and testing Devel-CheckLib-1.16 ... OK
+#21 36.82 Successfully installed Devel-CheckLib-1.16
+#21 36.88 Configuring DBD-mysql-5.003 ... ! Configure failed for DBD-mysql-5.003. See /root/.cpanm/work/1707731887.7/build.log for details.
+#21 37.11 N/A
+#21 37.11 3 distributions installed
+#21 ERROR: process "/bin/sh -c cpanm DBD::mysql" did not complete successfully: exit code: 1
+------
+ > [17/20] RUN cpanm DBD::mysql:
+32.75 Successfully installed Capture-Tiny-0.48
+32.83 --> Working on Mock::Config
+32.83 Fetching http://www.cpan.org/authors/id/R/RU/RURBAN/Mock-Config-0.03.tar.gz ... OK
+OK
+33.85 Successfully installed Mock-Config-0.03
+OK
+36.82 Successfully installed Devel-CheckLib-1.16
+! Configure failed for DBD-mysql-5.003. See /root/.cpanm/work/1707731887.7/build.log for details.
+37.11 N/A
+37.11 3 distributions installed
+------
+Dockerfile:41
+--------------------
+  39 |     RUN cpanm DBI
+  40 |     
+  41 | >>> RUN cpanm DBD::mysql
+  42 |     
+  43 |     # Install VEP
+--------------------
+ERROR: failed to solve: process "/bin/sh -c cpanm DBD::mysql" did not complete successfully: exit code: 1

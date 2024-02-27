@@ -1,0 +1,7 @@
+ensembl-vep/
+FG6_kernel/__pycache__/
+FG6_kernel/__pycache__/
+FG10_alpha_fold/__pycache__/
+FG5_gc_CpG/__pycache__/
+FG5_gc_CpG/hg38_seq.fa.gz
+htslib/
