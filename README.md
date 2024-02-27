@@ -109,9 +109,26 @@ The ENCODE features are excluded automatically, since the scripts take a lot of 
 chmod +x run_scripts.sh
 ./run_scripts.sh --run_encode true
 ```
+### DrivR-Base Output
+Upon execution, the "run_scripts.sh" script should output a file named all_featured.bed which will be located in the "/example/features" directory. The rows of the files contain the variants, and the columns contain all of the feature values for 1704 features. For a full list of features and their descriptions, please refer to our DrivR-Base paper and supplementary material.
 
 ### Running DrivR-Base with your own variants
+Replace the example "variants_with_driver_stat.bed" file with your own variants, ensuring that the name is kept the same. The script will automatically generate the "variants.bed" file from this file and execute the rest of the scripts to generate the features for you variant set.
 
+The "variants_with_driver_stat.bed" should be in tab delimited format, and the columns should reflect those in the example file, where the driver status is either "0" or "1":
+
+| Chromosome |  Position  | Reference Allele | Alternate Allele | Driver Status | 
+| ---------- | ---------- | ---------------- | ---------------- | ------------- | 
+|    chr1    |   934881   |         A        |         G        |       1       |
+
+If the driver status is not relevant to your variants, please fill this column with either "0" or "1".
+
+Once you've replaced this file with your own variants, simply execute the "run_scripts.sh" as before:
+
+```bash
+chmod +x run_scripts.sh
+./run_scripts.sh --run_encode true
+```
 
 ## Running DrivR-Base without Docker
 ## Data Input Structure
