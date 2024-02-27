@@ -40,8 +40,8 @@ Welcome to DrivR-Base! This repository contains scripts for extracting feature i
 
 ### Installing Docker and Git
 
-If you haven't already got Docker Desktop installed locally, then download it and create a [Docker]([https://www.docker.com/products/docker-desktop/]) account.
-Ensure that git is [installed]([https://alphafold.ebi.ac.uk/](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git))
+If you haven't already got Docker Desktop installed locally, then download it and create a [Docker](https://www.docker.com/products/docker-desktop/) account.
+Ensure that git is [installed](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
 
 ```bash
 git --version
