@@ -59,7 +59,9 @@ wait
 # Run FG5 GC content script
 # This script calculates GC content and CpG islands for different window sizes flanking the variant
 cd /opt/vep/.vep/FG5_gc_CpG
-gunzip hg38_seq.fa.gz
+wget http://hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/hg38.fa.gz
+gunzip hg38.fa.gz
+mv hg38.fa hg38_seq.fa
 python get_gc_CpG.py "$variantDir" "$variantFileName" "$outputDir"
 wait
 
