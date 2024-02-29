@@ -121,7 +121,6 @@ ENV PATH /opt/conda/bin:$PATH
 
 # Copy Conda environment file
 COPY DrivR-Base.yml /tmp/
-COPY . /tmp/
 
 RUN conda env create -f /tmp/DrivR-Base.yml && \
     echo "Environment creation successful!" && \
@@ -269,6 +268,12 @@ RUN apt-get update && apt-get -y install \
     libxml2-dev \
     libhts-dev \
     libcurl4-gnutls-dev \
+    g++ \
+    libcairo2-dev \
+    libglib2.0-dev \
+    libfreetype6-dev \
+    nano \
+    gcc \
     pkg-config \
     vim && \
     rm -rf /var/lib/apt/lists/*
