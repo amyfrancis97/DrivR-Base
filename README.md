@@ -99,11 +99,10 @@ Exit the interactive environment:
 exit
 ```
 
-Clone the DrivR-Base GitHub repository:
-
+Adjust the permissions of the files in the DrivR-Base directory:
 ```bash
-git clone https://github.com/amyfrancis97/DrivR-Base.git
-cd DrivR-Base
+find . -type d -exec chmod 777 {} +
+find . -type f -exec chmod 777 {} +
 ```
 
 Copy the contents of the repository into the container (this ensures that the scripts inside the container are up-to-date):
@@ -121,7 +120,6 @@ Activate the conda environment:
 ```bash
 conda activate DrivR-Base
 ```
-
 
 ## Testing the Docker Container
 
