@@ -63,11 +63,14 @@ docker pull amyfrancis2409/drivrbase:v2.0
 Once the Docker image has been pulled, you can interact with the data and scripts using the docker run command:
 
 ```bash
-docker run -it --name drivrbase-container amyfrancis2409/drivrbase:v2.0  /bin/bash
+docker run -it -u root --name drivrbase-container amyfrancis2409/drivrbase:v2.0  /bin/bash
 ```
-The above command will take a while since it will automatically download the variant effect predictor GRCh38 cache. Please note that if you run into "disk full" errors at this stage, you may be required to increase your disk image sizes in you Docker Desktop preferences. If you run into a timeout error when downloaded the VEP cache, simply re-run the download command from the "entrypoint.sh" script, once inside the interactive container:
+The above command will take a while since it will automatically download the variant effect predictor GRCh38 cache. Please note that if you run into "disk full" errors at this stage, you may be required to increase your disk image sizes in you Docker Desktop preferences. In case the VEP cache fails to download due to VEP FTP server errors, try to run the perl script again after adjusting the "timeout" parameter in the FTP.pm script, or alternatively manually download the cache with curl.
+
 ```bash
+vim /usr/share/perl/5.34/Net/FTP.pm # Increase the timeout from 120s
 perl /opt/vep/src/ensembl-vep/INSTALL.pl -a cf -s homo_sapiens -y GRCh38 --CACHEDIR /data
+curl -O ftp://ftp.ensembl.org/pub/release-98/variation/indexed_vep_cache/homo_sapiens_vep_111_GRCh38.tar.gz # update this if required
 ```
 
 Once interactive mode is running, initialise the conda environment:
