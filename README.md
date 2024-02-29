@@ -161,6 +161,8 @@ chmod +x run_scripts.sh
 ```
 
 ## Running DrivR-Base without Docker
+Due to the complexities of the environments and the packages used in DrivR-Base, we recommend that you use the above Docker containers for running the scripts. However, If you'd like to use the scripts independently then please refer to the .README files in the relevant sub-directories for the features you'd like to extract.
+
 ## Data Input Structure
 All variant files must be presented in the BED format shown in the following table but **should not contain any headers**:
 
