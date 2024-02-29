@@ -348,9 +348,10 @@ This work was carried out in the UK Medical Research Council Integrative Epidemi
 Special thanks to:
 * Tom Gaunt
 * Colin Campbell
+  
 ## Funding
 This work was funded by Cancer Research UK [C18281/A30905]. 
 
 ## Contact
-For inquiries, contact us at [amy.francis@bristol.ac.uk](mailto:amy.francis@bristol.ac.uk).
+For enquiries, contact us at [amy.francis@bristol.ac.uk](mailto:amy.francis@bristol.ac.uk).
 
