@@ -109,7 +109,6 @@ python get_alpha_fold.py "$outputDir" "$variantFileName" "$outputDir"
 
 # Merge all of the feature files
 cd /opt/vep/.vep/
-chmod +x merge_features.sh
 ./merge_features.sh
 
 mv ${outputDir}all_features.bed ${outputDir}all_features.tmp
