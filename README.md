@@ -7,7 +7,11 @@ Welcome to DrivR-Base! This repository contains scripts for extracting feature i
 - [Introduction and Overview](#introduction-and-overview)
 - [Table of Contents](#table-of-contents)
 - [Feature Descriptions and Sources](#feature-descriptions)
-- [Running DrivR-Base in Docker (Recommended)](#drivrbase-docker)
+- [Setting up Docker and Git](#setting-up)
+- [Option 1: Pulling the DrivR-Base Docker Image](#drivrbase-docker-pull)
+- [Option 2: Building the DrivR-Base Docker Image from the Dockerfile](#drivrbase-docker-build)
+- [Interacting with the Docker Container](#drivrbase-docker-interact)
+- [Testing the Docker Container](#drivrbase-docker-testing)
 - [Running DrivR-Base without Docker](#drivrbase-docker)
 - [Data Input Structure](#data-input-structure)
 - [Dependencies](#dependencies)
@@ -36,9 +40,7 @@ Welcome to DrivR-Base! This repository contains scripts for extracting feature i
 |         FG9         | Results for 10 different ENCODE assays, including transcription factor binding sites and histone modifications   | [ENCODE](https://www.encodeproject.org/)
 |         FG10        | AlphaFold structural conformation and atom properties at the predicted amino acid site                           | [AlphaFold](https://alphafold.ebi.ac.uk/)
 
-## Running DrivR-Base in Docker
-
-### Installing Docker and Git
+## Setting up Docker and Git
 
 If you haven't already got Docker Desktop installed locally, then download it and create a [Docker](https://www.docker.com/products/docker-desktop/) account.
 
@@ -47,30 +49,44 @@ Ensure that git is also [installed](https://git-scm.com/book/en/v2/Getting-Start
 ```bash
 git --version
 ```
-If the above command does not return a git version, then please install git: 
+If the above command does not return a git version, then please install git.
 
-### Setting up Docker
+Clone the DrivR-Base GitHub repository, which also contains the Dockerfile.
+
+```bash
+git clone https://github.com/amyfrancis97/DrivR-Base.git
+cd DrivR-Base
+```
+
+## Option 1: Pulling the DrivR-Base Docker Image
 
 Once you have Docker Desktop installed locally, and an account set up, then pull the Docker image using the following commands in your terminal:
 
 ```bash
 docker login
-docker pull amyfrancis2409/drivrbase:v2.0
+docker pull amyfrancis2409/drivrbase:latest # This pulls the Docker image
+docker tag amyfrancis2409/drivrbase:latest drivrbase # This renames the image
 ```
+## Option 2: Building the DrivR-Base Docker Image from the Dockerfile
 
-### Interacting with the Docker container
-
-Once the Docker image has been pulled, you can interact with the data and scripts using the docker run command:
+Once inside the DrivR-Base directory, build the Docker image from the Dockerfile:
 
 ```bash
-docker run -it -u root --name drivrbase-container amyfrancis2409/drivrbase:v2.0  /bin/bash
+docker build -t drivrbase .
 ```
-The above command will take a while since it will automatically download the variant effect predictor GRCh38 cache. Please note that if you run into "disk full" errors at this stage, you may be required to increase your disk image sizes in you Docker Desktop preferences. In case the VEP cache fails to download due to VEP FTP server errors, try to run the perl script again after adjusting the "timeout" parameter in the FTP.pm script, or alternatively manually download the cache with curl.
+
+## Interacting with the Docker Container
+
+Once the Docker image has been pulled or built, you can interact with the data and scripts using the docker run command:
+Note: Please increase the CPU, memory, and disk limit in your Docker desktop preferences before interacting with the container.
 
 ```bash
-vim /usr/share/perl/5.34/Net/FTP.pm # Increase the timeout from 120s
+docker run -it --name drivrbase-container drivrbase /bin/bash
+```
+The above command will take a while since it will automatically download the variant effect predictor GRCh38 cache. Please note that if you run into "disk full" errors at this stage, you may be required to increase your disk image sizes in you Docker Desktop preferences. In case the VEP cache fails to download for any reason, you can manually install the file once inside the interactive Docker container by running:
+
+```bash
 perl /opt/vep/src/ensembl-vep/INSTALL.pl -a cf -s homo_sapiens -y GRCh38 --CACHEDIR /data
-curl -O ftp://ftp.ensembl.org/pub/release-98/variation/indexed_vep_cache/homo_sapiens_vep_111_GRCh38.tar.gz # update this if required
 ```
 
 Once interactive mode is running, initialise the conda environment:
@@ -90,7 +106,7 @@ git clone https://github.com/amyfrancis97/DrivR-Base.git
 cd DrivR-Base
 ```
 
-Copy the contents of the repository into the container (this ensures that the scripts inside the container are consistently up-to-date):
+Copy the contents of the repository into the container (this ensures that the scripts inside the container are up-to-date):
 ```bash
 docker cp . drivrbase-container:/data 
 ```
@@ -106,7 +122,8 @@ Activate the conda environment:
 conda activate DrivR-Base
 ```
 
-### Testing the Docker container
+
+## Testing the Docker Container
 
 To test the scripts, run with the example variants in the /example directory:
 
