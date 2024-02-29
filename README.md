@@ -8,8 +8,8 @@ Welcome to DrivR-Base! This repository contains scripts for extracting feature i
 - [Table of Contents](#table-of-contents)
 - [Feature Descriptions and Sources](#feature-descriptions)
 - [Setting up Docker and Git](#setting-up)
-- [Option 1: Pulling the DrivR-Base Docker Image](#drivrbase-docker-pull)
-- [Option 2: Building the DrivR-Base Docker Image from the Dockerfile](#drivrbase-docker-build)
+- [Option 1: Building the DrivR-Base Docker Image from the Dockerfile](#drivrbase-docker-build)
+- [Option 2: Pulling the DrivR-Base Docker Image](#drivrbase-docker-pull)
 - [Interacting with the Docker Container](#drivrbase-docker-interact)
 - [Testing the Docker Container](#drivrbase-docker-testing)
 - [Running DrivR-Base without Docker](#drivrbase-docker)
@@ -58,7 +58,14 @@ git clone https://github.com/amyfrancis97/DrivR-Base.git
 cd DrivR-Base
 ```
 
-## Option 1: Pulling the DrivR-Base Docker Image
+## Option 1: Building the DrivR-Base Docker Image from the Dockerfile
+
+Once inside the DrivR-Base directory, build the Docker image from the Dockerfile:
+
+```bash
+docker build -t drivrbase .
+```
+## Option 2: Pulling the DrivR-Base Docker Image
 
 Once you have Docker Desktop installed locally, and an account set up, then pull the Docker image using the following commands in your terminal:
 
@@ -66,13 +73,6 @@ Once you have Docker Desktop installed locally, and an account set up, then pull
 docker login
 docker pull amyfrancis2409/drivrbase:latest # This pulls the Docker image
 docker tag amyfrancis2409/drivrbase:latest drivrbase # This renames the image
-```
-## Option 2: Building the DrivR-Base Docker Image from the Dockerfile
-
-Once inside the DrivR-Base directory, build the Docker image from the Dockerfile:
-
-```bash
-docker build -t drivrbase .
 ```
 
 ## Interacting with the Docker Container
