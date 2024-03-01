@@ -24,6 +24,7 @@ Welcome to DrivR-Base! This repository contains scripts for extracting feature i
 - [License](#license)
 - [Acknowledgments](#acknowledgments)
 - [Contact](#contact)
+- [References](#references)
 
 ## Feature Descriptions and Sources
 
@@ -42,7 +43,7 @@ Welcome to DrivR-Base! This repository contains scripts for extracting feature i
 
 ## Setting up Docker and Git
 
-If you haven't already got Docker Desktop installed locally, then download it and create a [Docker](https://www.docker.com/products/docker-desktop/) account.
+If you haven't already got Docker Desktop installed locally, then download it and create a [Docker](https://www.docker.com/products/docker-desktop/) account. The drivrbase docker file has been adapted from the VEP docker file [1].
 
 Ensure that git is also [installed](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
 
@@ -354,4 +355,10 @@ This work was funded by Cancer Research UK [C18281/A30905].
 
 ## Contact
 For enquiries, contact us at [amy.francis@bristol.ac.uk](mailto:amy.francis@bristol.ac.uk).
+
+## References
+<a id="1">[1]</a> 
+Dijkstra, E. W. (1968). 
+Go to statement considered harmful. 
+Communications of the ACM, 11(3), 147-148.
 
