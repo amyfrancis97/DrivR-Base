@@ -358,7 +358,5 @@ For enquiries, contact us at [amy.francis@bristol.ac.uk](mailto:amy.francis@bris
 
 ## References
 <a id="1">[1]</a> 
-Dijkstra, E. W. (1968). 
-Go to statement considered harmful. 
-Communications of the ACM, 11(3), 147-148.
+https://github.com/Ensembl/ensembl-vep
 
